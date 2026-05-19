@@ -249,19 +249,19 @@ VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 npm run build
 ```
 
-将 `**dist/**` 作为静态站点根目录；服务器需将所有未匹配路径回退至 `**index.html**`（SPA fallback）。
+将 `dist/` 作为静态站点根目录；服务器需将所有未匹配路径回退至 `index.html`（SPA fallback）。
 
 ### Vercel
 
 1. 导入 Git 仓库，Framework 选择 **Vite**。
-2. **Build Command**：`npm run build`；**Output Directory**：`dist`。
+2. 仓库已提供 `vercel.json`：**Build Command** 为 `npm run build`，**Output Directory** 为 `dist`，并已配置 SPA 路由回退。
 3. 在 **Environment Variables** 配置 `VITE_SUPABASE_URL` 与 `VITE_SUPABASE_ANON_KEY`。
 
 ### Netlify
 
-1. 构建命令 `**npm run build`**，发布目录 `**dist`**。
-2. 配置同上环境变量。
-3. 添加 SPA 重定向规则：`/*` → `/index.html`（HTTP 200）。
+1. 导入 Git 仓库。
+2. 仓库已提供 `netlify.toml`：构建命令为 `npm run build`，发布目录为 `dist`，并已配置 `/*` → `/index.html`（HTTP 200）。
+3. 配置同上环境变量。
 
 ### Supabase 生产环境检查项
 
@@ -284,4 +284,3 @@ npm run build
 - **许可证**：本项目以 **MIT License** 发布，见仓库根目录 [LICENSE](./LICENSE)。  
 - **数据与版权**：示例 POI 与文案仅供演示；不保证实时性与准确性。媒体路径占位不隐含任何第三方授权；商用须自行取得许可。  
 - **合规**：处理个人数据与认证信息时，须遵守适用司法辖区的隐私法律（如 GDPR、个人信息保护法）及 Supabase 服务条款，并向终端用户提供隐私政策与数据删除渠道。
-
