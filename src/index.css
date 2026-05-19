@@ -1,0 +1,280 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /** 决策首页顶部安全区：至少约 44px，并尊重刘海 */
+  .pt-safe {
+    padding-top: max(2.75rem, env(safe-area-inset-top, 0px));
+  }
+
+  /**
+   * AI 决策页氛围底：柔光 + 微弱点阵（深色）
+   * 子内容请加 relative z-[1]
+   */
+  .wander-decision-scene {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .wander-decision-scene::before {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      radial-gradient(circle at 20% 48%, rgba(99, 102, 241, 0.09) 0%, transparent 52%),
+      radial-gradient(circle at 82% 82%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+      radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: auto, auto, 22px 22px;
+  }
+
+  .ql-light .wander-decision-scene::before {
+    background-image:
+      radial-gradient(circle at 22% 42%, rgba(99, 102, 241, 0.06) 0%, transparent 55%),
+      radial-gradient(circle at 78% 72%, rgba(139, 92, 246, 0.045) 0%, transparent 48%),
+      radial-gradient(rgba(24, 24, 27, 0.06) 1px, transparent 1px);
+    opacity: 0.9;
+  }
+
+  /** AI 助手全屏聊天：深色底 + 微弱网格 */
+  .wander-assistant-chat-bg {
+    background-color: #0a0a0a;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.12), transparent 55%),
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: auto, 22px 22px, 22px 22px;
+  }
+}
+
+@layer base {
+  :root {
+    /* 实体色（与 Tailwind theme 同步） */
+    --paper: #fffdf8;
+    --paper-dark: #f7f3e9;
+    --ink: #4a4a48;
+    --ink-light: #8c8c89;
+    --mint: #a8d5ba;
+    --coral: #ffb7b2;
+    --butter: #ffdac1;
+    --sky: #a0c4ff;
+    --lavender: #cdb4db;
+    --pencil-line: #e8e4d9;
+    --shadow-warm: rgba(139, 125, 107, 0.15);
+
+    /* shadcn 语义色 — 强制手账 HEX（供 var(--token) 使用） */
+    --background: #fffdf8;
+    --foreground: #4a4a48;
+    --card: #ffffff;
+    --card-foreground: #4a4a48;
+    --popover: #ffffff;
+    --popover-foreground: #4a4a48;
+    --primary: #a8d5ba;
+    --primary-foreground: #4a4a48;
+    --secondary: #f7f3e9;
+    --secondary-foreground: #4a4a48;
+    --muted: #f7f3e9;
+    --muted-foreground: #8c8c89;
+    --accent: #f7f3e9;
+    --accent-foreground: #4a4a48;
+    --destructive: #d14e4e;
+    --destructive-foreground: #ffffff;
+    --border: #e8e4d9;
+    --input: #e8e4d9;
+    --ring: #a8d5ba;
+    --radius: 0.75rem;
+
+    --sidebar-background: #fffdf8;
+    --sidebar-foreground: #4a4a48;
+    --sidebar-primary: #a8d5ba;
+    --sidebar-primary-foreground: #4a4a48;
+    --sidebar-accent: #f7f3e9;
+    --sidebar-accent-foreground: #4a4a48;
+    --sidebar-border: #e8e4d9;
+    --sidebar-ring: #a8d5ba;
+  }
+
+  .dark {
+    --background: #1e1e1c;
+    --foreground: #f5f3ee;
+    --card: #2a2926;
+    --card-foreground: #f5f3ee;
+    --popover: #2a2926;
+    --popover-foreground: #f5f3ee;
+    --primary: #8fb89e;
+    --primary-foreground: #1e1e1c;
+    --secondary: #3d3c38;
+    --secondary-foreground: #f5f3ee;
+    --muted: #3d3c38;
+    --muted-foreground: #a8a6a0;
+    --accent: #3d3c38;
+    --accent-foreground: #f5f3ee;
+    --destructive: #c45c5c;
+    --destructive-foreground: #ffffff;
+    --border: #4a4843;
+    --input: #4a4843;
+    --ring: #8fb89e;
+    --sidebar-background: #1e1e1c;
+    --sidebar-foreground: #f5f3ee;
+    --sidebar-primary: #8fb89e;
+    --sidebar-primary-foreground: #1e1e1c;
+    --sidebar-accent: #3d3c38;
+    --sidebar-accent-foreground: #f5f3ee;
+    --sidebar-border: #4a4843;
+    --sidebar-ring: #8fb89e;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color: var(--foreground);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100%;
+    @apply bg-paper font-serif text-ink antialiased;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='paper-noise' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper-noise)' opacity='0.035'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-attachment: fixed;
+  }
+
+  /** QL轻旅 主壳（与手账主题并存，由 body 类切换） */
+  body.ql-app {
+    @apply font-sans antialiased;
+    color: #ffffff;
+    background-color: #0f0f0f;
+    background-image: none;
+  }
+
+  body.ql-app.ql-light {
+    color: #18181b;
+    background-color: #f4f4f5;
+  }
+
+  /**
+   * 甲方演示：桌面浏览器中居中「手机视口」约 390px（iPhone 14/15 逻辑宽度）
+   * 真机全宽时 max-width 不生效，仅加两侧留白与阴影
+   */
+  @media (min-width: 420px) {
+    body.ql-app {
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      background: linear-gradient(165deg, #141418 0%, #0a0a0c 45%, #101014 100%);
+    }
+
+    body.ql-app #root {
+      width: 100%;
+      max-width: 390px;
+      min-height: 100dvh;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.07),
+        0 28px 90px rgba(0, 0, 0, 0.55);
+    }
+
+    body.ql-app.ql-light {
+      background: linear-gradient(165deg, #e4e4e7 0%, #d4d4d8 100%);
+    }
+
+    body.ql-app.ql-light #root {
+      box-shadow:
+        0 0 0 1px rgba(24, 24, 27, 0.08),
+        0 24px 70px rgba(24, 24, 27, 0.12);
+    }
+  }
+}
+
+/* 笔记本横线纸纹理（可叠加在卡片/编辑区） */
+.paper-texture {
+  background-color: var(--paper);
+  background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 26px,
+      rgba(232, 228, 217, 0.55) 26px,
+      rgba(232, 228, 217, 0.55) 27px
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+  background-repeat: repeat, repeat;
+  background-attachment: local, fixed;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9d8a78;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8a7868;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #9d8a78 transparent;
+}
+
+@media (hover: none) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@keyframes slide-in-from-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: slide-in-from-bottom 0.3s ease-out;
+}
+
+@keyframes wander-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.wander-shimmer {
+  background: linear-gradient(
+    90deg,
+    #242424 0%,
+    #2e2e2e 40%,
+    #242424 80%
+  );
+  background-size: 200% 100%;
+  animation: wander-shimmer 1.4s ease-in-out infinite;
+}

@@ -1,0 +1,122 @@
+import { motion } from 'framer-motion';
+import { Bookmark, Heart, Play } from 'lucide-react';
+import { WanderImage } from '@/components/media/WanderImage';
+import type { FeedItem } from '@/types/feed';
+import { formatLikes } from '@/lib/formatLikes';
+import { cn } from '@/lib/utils';
+
+type Props = {
+  item: FeedItem;
+  index: number;
+  onLike: () => void;
+  onCollect: () => void;
+  onOpen: () => void;
+};
+
+const ASPECT = ['4/5', '3/4', '5/6', '2/3'] as const;
+
+export function FeedCard({ item, index, onLike, onCollect, onOpen }: Props) {
+  const ar = ASPECT[index % ASPECT.length];
+
+  return (
+    <motion.article
+      layout
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onOpen();
+        }
+      }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      whileTap={{ scale: 0.98 }}
+      onClick={onOpen}
+      className="group mb-3 break-inside-avoid cursor-pointer overflow-hidden rounded-2xl border border-white/5 bg-wander-card shadow-none transition duration-300 hover:scale-[1.02] hover:shadow-wander-glow"
+    >
+      <div className="relative overflow-hidden rounded-t-2xl">
+        <div className="w-full" style={{ aspectRatio: ar }}>
+          <WanderImage
+            src={item.image}
+            alt={item.title}
+            fallbackLabel={item.title}
+            className="h-full w-full"
+            width={400}
+            height={520}
+          />
+        </div>
+        <span className="pointer-events-none absolute left-2 top-2 rounded-full border border-indigo-500/30 bg-indigo-500/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-indigo-200">
+          {item.category}
+        </span>
+        <div className="absolute right-2 top-2 flex gap-1.5">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onLike();
+            }}
+            className={cn(
+              'flex h-8 w-8 items-center justify-center rounded-full text-white backdrop-blur-sm transition active:scale-90',
+              item.isLiked ? 'bg-rose-500/85' : 'bg-black/45'
+            )}
+            aria-label={item.isLiked ? '取消点赞' : '点赞'}
+          >
+            <Heart className={cn('h-4 w-4', item.isLiked && 'fill-current')} />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onCollect();
+            }}
+            className={cn(
+              'flex h-8 w-8 items-center justify-center rounded-full text-white backdrop-blur-sm transition active:scale-90',
+              item.isCollected ? 'bg-amber-500/85' : 'bg-black/45'
+            )}
+            aria-label={item.isCollected ? '取消收藏' : '收藏'}
+          >
+            <Bookmark className={cn('h-4 w-4', item.isCollected && 'fill-current')} />
+          </button>
+        </div>
+        {item.type === 'video' && (
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/25">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-wander-bg shadow-lg">
+              <Play className="ml-0.5 h-5 w-5 fill-current" />
+            </span>
+          </div>
+        )}
+      </div>
+      <div className="p-2.5 pt-2">
+        {item.type === 'topic' ? (
+          <p className="text-sm font-semibold text-indigo-300">#{item.title.slice(0, 18)}</p>
+        ) : (
+          <h3 className="line-clamp-2 text-sm font-medium leading-snug text-white">{item.title}</h3>
+        )}
+        {item.tags.length > 0 ? (
+          <p className="mt-1 line-clamp-1 text-[10px] text-wander-muted">{item.tags.join(' · ')}</p>
+        ) : null}
+        <div className="mt-2 flex items-center justify-between gap-2 text-wander-muted">
+          <div className="flex min-w-0 items-center gap-1.5">
+            <div className="h-6 w-6 shrink-0 overflow-hidden rounded-full ring-1 ring-white/10">
+              <WanderImage
+                src={item.author.avatar}
+                alt={item.author.name}
+                fallbackLabel={item.author.name}
+                className="h-full w-full"
+                width={48}
+                height={48}
+              />
+            </div>
+            <span className="truncate text-xs text-wander-secondary">{item.author.name}</span>
+          </div>
+          <span className="flex shrink-0 items-center gap-0.5 text-[11px] text-rose-300">
+            <Heart className="h-3 w-3" />
+            {formatLikes(item.likes + (item.isLiked ? 1 : 0))}
+          </span>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
