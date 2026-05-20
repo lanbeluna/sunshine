@@ -278,12 +278,13 @@ export default function AiAssistantPage() {
   };
 
   return (
-    <motion.div
-      initial={{ y: '100%' }}
-      animate={{ y: 0 }}
-      transition={{ type: 'spring', damping: 30, stiffness: 320 }}
-      className="fixed inset-y-0 left-1/2 z-[200] flex w-full max-w-[430px] -translate-x-1/2 flex-col wander-assistant-chat-bg text-white"
-    >
+    <div className="fixed inset-y-0 left-1/2 z-[200] w-full max-w-[430px] -translate-x-1/2 overflow-hidden">
+      <motion.div
+        initial={{ y: '100%' }}
+        animate={{ y: 0 }}
+        transition={{ type: 'spring', damping: 30, stiffness: 320 }}
+        className="flex h-full w-full flex-col wander-assistant-chat-bg text-white"
+      >
       {/* 顶栏 */}
       <header className="flex shrink-0 items-center gap-2 border-b border-white/[0.08] px-2 pb-3 pt-safe">
         <button
@@ -547,6 +548,7 @@ export default function AiAssistantPage() {
           </motion.button>
         </div>
       </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }
