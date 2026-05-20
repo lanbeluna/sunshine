@@ -22,7 +22,7 @@ export function MenuRowButton({ icon, title, subtitle, onClick, trailing, noDivi
       type="button"
       onClick={onClick}
       className={cn(
-        'flex w-full items-center gap-3 border-b px-4 py-3.5 text-left transition active:bg-white/5',
+        'flex min-h-[56px] w-full items-center gap-3 border-b px-4 py-3.5 text-left transition active:bg-white/5',
         light ? 'border-zinc-100 active:bg-zinc-100' : 'border-white/10 active:bg-white/5',
         noDivider && 'border-b-0'
       )}

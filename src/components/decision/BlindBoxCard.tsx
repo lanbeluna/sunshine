@@ -115,7 +115,7 @@ export function BlindBoxCard({ flipped, disabled, preview, onActivate }: Props) 
 
   return (
     <div className="mt-6 px-4 pb-6">
-      <div className="mx-auto w-[calc(100%-32px)] max-w-md perspective-[1200px]">
+      <div className="mx-auto w-full max-w-md perspective-[1200px]">
         <motion.button
           type="button"
           disabled={disabled}

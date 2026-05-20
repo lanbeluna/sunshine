@@ -5,7 +5,7 @@ import { useAppContext } from '@/context/AppContext';
 import { cn } from '@/lib/utils';
 
 const tabClass =
-  'flex flex-1 flex-col items-center justify-end gap-0.5 pb-1 pt-2 text-[11px] font-medium transition-colors active:scale-[0.96] duration-150';
+  'flex min-h-14 flex-1 flex-col items-center justify-end gap-0.5 rounded-2xl pb-1.5 pt-2 text-[11px] font-medium transition-colors active:scale-[0.96] duration-150';
 
 function TabIcon({
   to,
@@ -49,12 +49,12 @@ export function BottomNav() {
   return (
     <nav
       className={cn(
-        'fixed bottom-0 left-1/2 z-50 w-full max-w-[390px] -translate-x-1/2 pb-safe backdrop-blur-xl',
+        'fixed bottom-0 left-1/2 z-50 w-full max-w-[430px] -translate-x-1/2 safe-bottom backdrop-blur-xl',
         light ? 'border-t border-zinc-200/90 bg-white/80' : 'border-t border-white/5 bg-black/60'
       )}
       aria-label="主导航"
     >
-      <div className="relative mx-auto flex w-full max-w-[390px] items-end justify-between px-1 pb-1 pt-1">
+      <div className="relative mx-auto flex w-full max-w-[430px] items-end justify-between px-2 pb-1 pt-1">
         <TabIcon to="/decision" label="灵感" Icon={Sparkles} inactiveClass={inactiveTab} />
         <TabIcon to="/explore" label="探索" Icon={Compass} inactiveClass={inactiveTab} />
         <div className="w-[4.25rem] shrink-0" aria-hidden />

@@ -103,7 +103,7 @@ export function DecisionEmptyState({ onStart }: Props) {
         ) : null}
       </p>
 
-      <div className="mt-4 w-full px-4">
+      <div className="mt-4 w-full">
         <motion.button
           ref={btnRef}
           type="button"
@@ -113,8 +113,8 @@ export function DecisionEmptyState({ onStart }: Props) {
           }}
           whileTap={{ scale: 0.98 }}
           className={cn(
-            'relative flex h-[52px] w-full max-w-md items-center justify-center gap-2 overflow-hidden rounded-2xl font-bold text-lg text-white',
-            'mx-auto w-[calc(100%-32px)] transition-transform duration-200',
+            'relative mx-auto flex h-[52px] w-full max-w-md items-center justify-center gap-2 overflow-hidden rounded-2xl font-bold text-lg text-white',
+            'transition-transform duration-200',
             'animate-wander-cta-breathe'
           )}
           style={{

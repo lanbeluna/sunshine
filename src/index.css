@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer utilities {
+  .safe-bottom {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  }
+
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom);
   }
@@ -138,11 +142,17 @@
 
   html {
     color: var(--foreground);
+    min-width: 320px;
+    overflow-x: hidden;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
     margin: 0;
     min-height: 100%;
+    overflow-x: hidden;
+    overscroll-behavior-y: none;
     @apply bg-paper font-serif text-ink antialiased;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='paper-noise' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper-noise)' opacity='0.035'/%3E%3C/svg%3E");
     background-repeat: repeat;
@@ -155,6 +165,7 @@
     color: #ffffff;
     background-color: #0f0f0f;
     background-image: none;
+    touch-action: manipulation;
   }
 
   body.ql-app.ql-light {
@@ -166,7 +177,7 @@
    * 甲方演示：桌面浏览器中居中「手机视口」约 390px（iPhone 14/15 逻辑宽度）
    * 真机全宽时 max-width 不生效，仅加两侧留白与阴影
    */
-  @media (min-width: 420px) {
+  @media (min-width: 768px) {
     body.ql-app {
       min-height: 100dvh;
       display: flex;
@@ -177,7 +188,7 @@
 
     body.ql-app #root {
       width: 100%;
-      max-width: 390px;
+      max-width: 430px;
       min-height: 100dvh;
       box-shadow:
         0 0 0 1px rgba(255, 255, 255, 0.07),
@@ -194,6 +205,26 @@
         0 24px 70px rgba(24, 24, 27, 0.12);
     }
   }
+}
+
+#root {
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
 }
 
 /* 笔记本横线纸纹理（可叠加在卡片/编辑区） */

@@ -7,7 +7,7 @@
 [Tailwind CSS](https://tailwindcss.com/)
 [Supabase](https://supabase.com/)
 
-**QL轻旅** 是基于 Web 的旅行灵感与行程原型：采集用户偏好，使用前端规则引擎与演示数据生成决策与行程视图；可选接入 **Supabase** 同步手账等数据，并与浏览器 **localStorage** 降级缓存协同。桌面浏览器中以约 **390px** 宽居中呈现，便于甲方按手机视口预览。
+**QL轻旅** 是基于 Web 的旅行灵感与行程原型：采集用户偏好，使用前端规则引擎与演示数据生成决策与行程视图；可选接入 **Supabase** 同步手账等数据，并与浏览器 **localStorage** 降级缓存协同。项目按手机浏览器优先适配，桌面浏览器中以约 **430px** 宽居中呈现，便于甲方按移动端视口预览。
 
 `[Screenshot Placeholder]`
 
@@ -34,6 +34,7 @@
 - 将行程单导出为 PNG 图片（`html-to-image`）。
 - 行程历史与反馈：支持写入 `trip_history`；个人偏好支持读写 `user_settings`。
 - 未配置 Supabase 或网络不可用时，地点与部分状态依赖本地数据与 **Zustand** `persist` 至 **localStorage**。
+- 支持基础 PWA：可在 iOS Safari / Android Chrome 中添加到主屏幕，以 standalone 形式启动。
 
 ---
 
@@ -251,17 +252,21 @@ npm run build
 
 将 `dist/` 作为静态站点根目录；服务器需将所有未匹配路径回退至 `index.html`（SPA fallback）。
 
-### Vercel
-
-1. 导入 Git 仓库，Framework 选择 **Vite**。
-2. 仓库已提供 `vercel.json`：**Build Command** 为 `npm run build`，**Output Directory** 为 `dist`，并已配置 SPA 路由回退。
-3. 在 **Environment Variables** 配置 `VITE_SUPABASE_URL` 与 `VITE_SUPABASE_ANON_KEY`。
-
 ### Netlify
 
 1. 导入 Git 仓库。
 2. 仓库已提供 `netlify.toml`：构建命令为 `npm run build`，发布目录为 `dist`，并已配置 `/*` → `/index.html`（HTTP 200）。
-3. 配置同上环境变量。
+3. 在 Netlify 后台进入 **Site configuration → Environment variables**，按需配置：
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+4. 保存环境变量后重新部署。不要提交真实 Supabase 密钥到 Git。
+
+### PWA 与添加到主屏幕
+
+- 构建时由 `vite-plugin-pwa` 生成 manifest 和 service worker。
+- 当前图标为临时占位：`public/pwa-192.png`、`public/pwa-512.png`、`public/apple-touch-icon.png`。后续替换时保持文件名和尺寸即可。
+- iPhone：用 Safari 打开 Netlify 链接 → 分享按钮 → **添加到主屏幕**。
+- Android：用 Chrome 打开 Netlify 链接 → 右上角菜单 → **添加到主屏幕** 或 **安装应用**。
 
 ### Supabase 生产环境检查项
 

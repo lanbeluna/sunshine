@@ -42,7 +42,7 @@ export function TripCard({ trip, index, onOpen }: Props) {
       transition={{ delay: index * 0.05, duration: 0.28 }}
       whileTap={{ scale: 0.99 }}
       onClick={onOpen}
-      className="flex w-full cursor-pointer items-stretch gap-3 rounded-2xl border border-white/8 bg-wander-card p-3 text-left shadow-none transition hover:border-white/12 active:bg-white/[0.04]"
+      className="flex min-h-[104px] w-full cursor-pointer items-stretch gap-3 rounded-2xl border border-white/8 bg-wander-card p-3 text-left shadow-none transition hover:border-white/12 active:bg-white/[0.04]"
     >
       <div className="relative h-[4.5rem] w-[4.5rem] shrink-0 overflow-hidden rounded-xl bg-wander-surface">
         <WanderImage

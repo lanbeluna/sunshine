@@ -282,7 +282,7 @@ export default function AiAssistantPage() {
       initial={{ y: '100%' }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', damping: 30, stiffness: 320 }}
-      className="fixed inset-y-0 left-1/2 z-[200] flex w-full max-w-[390px] -translate-x-1/2 flex-col wander-assistant-chat-bg text-white"
+      className="fixed inset-y-0 left-1/2 z-[200] flex w-full max-w-[430px] -translate-x-1/2 flex-col wander-assistant-chat-bg text-white"
     >
       {/* 顶栏 */}
       <header className="flex shrink-0 items-center gap-2 border-b border-white/[0.08] px-2 pb-3 pt-safe">

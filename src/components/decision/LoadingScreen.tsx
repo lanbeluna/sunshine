@@ -12,7 +12,7 @@ export function LoadingScreen() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-y-0 left-1/2 z-[70] flex w-full max-w-[390px] -translate-x-1/2 flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-wander-bg via-indigo-950/80 to-wander-bg px-8"
+      className="fixed inset-y-0 left-1/2 z-[70] flex w-full max-w-[430px] -translate-x-1/2 flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-wander-bg via-indigo-950/80 to-wander-bg px-8"
     >
       <motion.div
         className="pointer-events-none absolute inset-0 opacity-40"

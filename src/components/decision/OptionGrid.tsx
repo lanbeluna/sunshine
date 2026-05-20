@@ -12,7 +12,7 @@ type Props<T extends string> = {
 
 export function OptionGrid<T extends string>({ options, selected, onSelect }: Props<T>) {
   return (
-    <div className="grid grid-cols-2 gap-3 px-4">
+    <div className="grid grid-cols-2 gap-3 px-4 min-[430px]:gap-4">
       {options.map((opt, i) => {
         const on = selected === opt.value;
         return (
@@ -25,7 +25,7 @@ export function OptionGrid<T extends string>({ options, selected, onSelect }: Pr
             whileTap={{ scale: 0.96 }}
             onClick={() => onSelect(opt.value)}
             className={cn(
-              'relative flex min-h-[88px] flex-col items-center justify-center gap-1 rounded-2xl border px-3 py-3 text-center transition duration-200',
+              'relative flex min-h-[92px] flex-col items-center justify-center gap-1 rounded-2xl border px-3 py-3 text-center transition duration-200',
               on
                 ? 'border-indigo-500/60 bg-gradient-to-br from-indigo-500/25 to-purple-500/20 shadow-wander-glow'
                 : 'border-white/10 bg-wander-surface active:bg-white/5'

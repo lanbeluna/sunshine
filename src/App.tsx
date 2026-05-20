@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AppProvider } from '@/context/AppContext';
 import { QlBodyClass } from '@/components/layout/QlBodyClass';
 import { AppShell } from '@/components/layout/AppShell';
+import { OfflineNotice } from '@/components/layout/OfflineNotice';
 import DecisionPage from '@/pages/DecisionPage';
 import ExplorePage from '@/pages/ExplorePage';
 import ProfilePage from '@/pages/ProfilePage';
@@ -25,6 +26,7 @@ function App() {
     <AppProvider>
       <BrowserRouter>
         <QlBodyClass />
+        <OfflineNotice />
         <Routes>
           <Route path="/assistant" element={<AiAssistantPage />} />
           <Route element={<AppShell />}>

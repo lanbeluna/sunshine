@@ -14,7 +14,7 @@ export function AppShell() {
   return (
     <div
       className={cn(
-        'relative mx-auto min-h-dvh w-full max-w-[390px] overflow-x-hidden',
+        'relative mx-auto min-h-dvh w-full max-w-[430px] overflow-x-hidden',
         light ? 'bg-zinc-100 text-zinc-900' : 'bg-wander-bg text-white'
       )}
     >

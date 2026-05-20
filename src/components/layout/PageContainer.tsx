@@ -2,8 +2,8 @@ import type { ReactNode } from 'react';
 import { useAppContext } from '@/context/AppContext';
 import { cn } from '@/lib/utils';
 
-/** 底部 Tab 64px + 安全区 + 中间 FAB 预留 */
-const bottomPad = 'calc(5.5rem + env(safe-area-inset-bottom, 0px))';
+/** Bottom tab, center action button, and iOS/Android safe area. */
+const bottomPad = 'calc(6.75rem + env(safe-area-inset-bottom, 0px))';
 
 export function PageContainer({
   children,

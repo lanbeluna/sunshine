@@ -197,12 +197,12 @@ export default function TripDetailPage() {
 
       <div
         className={cn(
-          'fixed left-1/2 z-40 w-full max-w-[390px] -translate-x-1/2 border-t px-4 py-3 backdrop-blur-xl',
+          'fixed left-1/2 z-40 w-full max-w-[430px] -translate-x-1/2 border-t px-4 py-3 backdrop-blur-xl',
           light ? 'border-zinc-200/90 bg-white/95' : 'border-white/10 bg-wander-bg/95'
         )}
         style={{ bottom: bottomOffset }}
       >
-        <div className="mx-auto flex w-full max-w-[390px] items-center gap-3">
+        <div className="mx-auto flex w-full max-w-[430px] items-center gap-3">
           <button
             type="button"
             onClick={onEdit}

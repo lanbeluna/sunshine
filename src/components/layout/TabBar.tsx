@@ -12,11 +12,11 @@ export function TabBar({ active, onChange }: TabBarProps) {
   return (
     <nav
       className={cn(
-        'fixed bottom-0 left-0 right-0 z-[55] border-t border-pencil/30 bg-paper/75 pb-safe backdrop-blur-md'
+        'fixed bottom-0 left-0 right-0 z-[55] border-t border-pencil/30 bg-paper/75 safe-bottom backdrop-blur-md'
       )}
       aria-label="主导航"
     >
-      <div className="relative mx-auto flex h-[3.75rem] w-full max-w-[390px] items-end justify-between px-8 pb-1 pt-1">
+      <div className="relative mx-auto flex min-h-[3.75rem] w-full max-w-[430px] items-end justify-between px-8 pb-1 pt-1">
         <button
           type="button"
           onClick={() => onChange('books')}

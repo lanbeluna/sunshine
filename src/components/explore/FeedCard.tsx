@@ -58,12 +58,12 @@ export function FeedCard({ item, index, onLike, onCollect, onOpen }: Props) {
               onLike();
             }}
             className={cn(
-              'flex h-8 w-8 items-center justify-center rounded-full text-white backdrop-blur-sm transition active:scale-90',
+              'flex h-10 w-10 items-center justify-center rounded-full text-white backdrop-blur-sm transition active:scale-90',
               item.isLiked ? 'bg-rose-500/85' : 'bg-black/45'
             )}
             aria-label={item.isLiked ? '取消点赞' : '点赞'}
           >
-            <Heart className={cn('h-4 w-4', item.isLiked && 'fill-current')} />
+            <Heart className={cn('h-[18px] w-[18px]', item.isLiked && 'fill-current')} />
           </button>
           <button
             type="button"
@@ -72,12 +72,12 @@ export function FeedCard({ item, index, onLike, onCollect, onOpen }: Props) {
               onCollect();
             }}
             className={cn(
-              'flex h-8 w-8 items-center justify-center rounded-full text-white backdrop-blur-sm transition active:scale-90',
+              'flex h-10 w-10 items-center justify-center rounded-full text-white backdrop-blur-sm transition active:scale-90',
               item.isCollected ? 'bg-amber-500/85' : 'bg-black/45'
             )}
             aria-label={item.isCollected ? '取消收藏' : '收藏'}
           >
-            <Bookmark className={cn('h-4 w-4', item.isCollected && 'fill-current')} />
+            <Bookmark className={cn('h-[18px] w-[18px]', item.isCollected && 'fill-current')} />
           </button>
         </div>
         {item.type === 'video' && (
