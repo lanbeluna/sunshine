@@ -50,7 +50,7 @@ export function BottomNav() {
     <nav
       className={cn(
         'fixed bottom-0 left-1/2 z-50 w-full max-w-[430px] -translate-x-1/2 safe-bottom backdrop-blur-xl',
-        light ? 'border-t border-zinc-200/90 bg-white/80' : 'border-t border-white/5 bg-black/60'
+        light ? 'border-t border-zinc-200/90 bg-white/86' : 'border-t border-white/8 bg-black/72'
       )}
       aria-label="主导航"
     >
@@ -84,8 +84,8 @@ export function BottomNav() {
                 aria-hidden
               />
               <motion.span
-                className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-br from-wander-brand via-wander-violet to-wander-lilac opacity-45 blur-md"
-                animate={{ scale: [1, 1.12, 1], opacity: [0.38, 0.55, 0.38] }}
+                className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-br from-wander-brand via-wander-violet to-wander-lilac opacity-35 blur-md"
+                animate={{ scale: [1, 1.08, 1], opacity: [0.24, 0.4, 0.24] }}
                 transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
               />
               <button

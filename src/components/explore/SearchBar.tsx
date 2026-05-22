@@ -13,7 +13,16 @@ type Props = {
 
 export function SearchBar({ value, onChange, onRefresh, onMessageClick, hasUnread = true }: Props) {
   return (
-    <div className="sticky top-0 z-20 border-b border-wander-border/80 bg-wander-bg/90 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur-md">
+    <div className="sticky top-0 z-20 border-b border-wander-border/80 bg-wander-bg/92 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur-md">
+      <div className="mb-3 flex items-end justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-wander-brand">QL轻旅</p>
+          <h1 className="mt-1 truncate text-xl font-bold tracking-tight text-white">今天想去哪儿？</h1>
+        </div>
+        <p className="shrink-0 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] text-wander-secondary">
+          灵感地图
+        </p>
+      </div>
       <div className="flex items-center gap-2">
         <label className="relative min-w-0 flex-1">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-wander-muted" />

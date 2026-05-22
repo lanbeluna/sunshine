@@ -41,6 +41,8 @@ const QUICK_PROMPTS = [
   '欧洲防盗有什么习惯',
 ];
 
+const QUICK_PROMPT_ICONS = ['🧳', '🏡', '🗺️', '🍜', '🛂', '👨‍👩‍👧', '🎒', '🔒'];
+
 const TYPE_MS = 20;
 const FIVE_MIN = 5 * 60 * 1000;
 
@@ -181,6 +183,7 @@ export default function AiAssistantPage() {
   const [sendBurst, setSendBurst] = useState(false);
   const [quickKeys, setQuickKeys] = useState(() => QUICK_PROMPTS.map((t, i) => ({ id: `q-${i}`, text: t })));
   const [inputFocus, setInputFocus] = useState(false);
+  const isFreshChat = messages.length === 1 && messages[0]?.role === 'assistant' && !typing && !streaming;
 
   const scrollBottom = useCallback(() => {
     const el = scrollRef.current;
@@ -322,9 +325,44 @@ export default function AiAssistantPage() {
       </header>
 
       {/* 消息 */}
-      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-2">
+      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-3">
         <div className="mx-auto flex w-full flex-col gap-2 pb-4">
-          {messages.map((m, idx) => {
+          {isFreshChat ? (
+            <section className="px-1 pt-2">
+              <div className="overflow-hidden rounded-[1.75rem] border border-white/[0.08] bg-white/[0.055] p-4 shadow-2xl shadow-black/20">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-500 shadow-lg shadow-indigo-700/30">
+                    <Bot className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-base font-bold text-white">我是你的轻旅行助手</p>
+                    <p className="mt-1 text-sm leading-relaxed text-white/68">
+                      问我行前准备、住宿区域、美食清单或路线安排，我会按学生党预算给你一个可执行建议。
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                  {quickKeys.slice(0, 4).map((q, i) => (
+                    <motion.button
+                      key={q.id}
+                      type="button"
+                      layout
+                      onClick={() => onQuickPick(q.text, q.id)}
+                      whileTap={{ scale: 0.96 }}
+                      className="min-h-[58px] rounded-2xl border border-indigo-300/20 bg-black/22 px-3 py-2 text-left text-xs font-medium leading-snug text-indigo-50 transition active:bg-indigo-500/20"
+                    >
+                      <span className="mb-1 block text-base leading-none" aria-hidden>
+                        {QUICK_PROMPT_ICONS[i]}
+                      </span>
+                      {q.text}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+            </section>
+          ) : null}
+
+          {!isFreshChat && messages.map((m, idx) => {
             const prev = messages[idx - 1];
             const showTime = !prev || m.createdAt - prev.createdAt >= FIVE_MIN;
             return (
@@ -422,7 +460,7 @@ export default function AiAssistantPage() {
       </div>
 
       {/* 快捷问题 */}
-      <div className="shrink-0 border-t border-white/[0.06] bg-black/20 px-2 py-2">
+      <div className={cn('shrink-0 border-t border-white/[0.06] bg-black/20 px-2 py-2', isFreshChat && 'hidden')}>
         <div className="mx-auto flex w-full gap-2 overflow-x-auto pb-1 scrollbar-none">
           {quickKeys.map((q) => (
             <motion.button
