@@ -155,7 +155,7 @@ export default function ExplorePage() {
             onOpenItem={openItem}
           />
         )}
-        <p className="pb-safe pt-6 text-center text-[11px] font-medium uppercase tracking-wider text-wander-muted">
+        <p className="pb-safe pt-6 text-center text-[11px] font-medium tracking-wide text-white/35">
           共 {displayItems.length} 条 · 图片由 Unsplash 提供 · 点赞/收藏/评论存本地
         </p>
       </motion.main>
@@ -169,7 +169,7 @@ export default function ExplorePage() {
           }
         }}
       >
-        <DialogContent className="max-h-[90vh] overflow-y-auto border-white/10 bg-wander-card font-sans text-white sm:max-w-md [&_svg]:text-white">
+        <DialogContent className="max-h-[92vh] overflow-y-auto rounded-[1.75rem] border-white/10 bg-[#121216] p-4 font-sans text-white shadow-2xl shadow-black/50 sm:max-w-md [&_svg]:text-white">
           {previewLive ? (
             <>
               <DialogHeader>
@@ -178,7 +178,7 @@ export default function ExplorePage() {
                   {previewLive.category} · {previewLive.author.name}
                 </DialogDescription>
               </DialogHeader>
-              <div className="overflow-hidden rounded-xl border border-white/10">
+              <div className="overflow-hidden rounded-2xl border border-white/10 ql-photo-shadow">
                 <WanderImage
                   src={previewLive.image}
                   alt={previewLive.title}
@@ -188,17 +188,17 @@ export default function ExplorePage() {
                   height={500}
                 />
               </div>
-              <div className="flex flex-wrap gap-2 text-sm text-wander-secondary">
-                <span>❤️ {formatLikes(previewLive.likes + (previewLive.isLiked ? 1 : 0))}</span>
+              <div className="flex flex-wrap gap-2 text-sm font-medium text-white/70">
+                <span className="text-wander-coral">❤️ {formatLikes(previewLive.likes + (previewLive.isLiked ? 1 : 0))}</span>
                 <span>🔖 {previewLive.isCollected ? '已收藏' : '未收藏'}</span>
                 <span>💬 {previewComments.length} 条评论</span>
               </div>
               {previewLive.tags.length > 0 ? (
-                <p className="text-xs text-wander-muted">{previewLive.tags.join(' · ')}</p>
+                <p className="text-xs font-medium text-white/40">{previewLive.tags.join(' · ')}</p>
               ) : null}
               <div className="space-y-3 border-t border-white/10 pt-4">
-                <p className="text-xs font-semibold uppercase tracking-wider text-wander-muted">正文</p>
-                <div className="space-y-3 text-sm leading-relaxed text-wander-secondary">
+                <p className="text-xs font-semibold tracking-wider text-wander-coral">正文</p>
+                <div className="space-y-3 text-sm leading-relaxed text-white/75">
                   {previewLive.body.split(/\n\n+/).map((para, i) => (
                     <p key={i} className="whitespace-pre-wrap">
                       {para}
@@ -207,13 +207,13 @@ export default function ExplorePage() {
                 </div>
               </div>
               <div className="space-y-3 border-t border-white/10 pt-4">
-                <p className="text-xs font-semibold uppercase tracking-wider text-wander-muted">评论</p>
+                <p className="text-xs font-semibold tracking-wider text-wander-coral">评论</p>
                 <div className="space-y-3">
                   {previewComments.length === 0 ? (
                     <p className="text-sm text-wander-muted">暂无评论，来抢沙发吧。</p>
                   ) : (
                     previewComments.map((c) => (
-                      <div key={c.id} className="flex gap-3 rounded-xl border border-white/5 bg-black/20 p-3">
+                      <div key={c.id} className="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3">
                         <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full ring-1 ring-white/10">
                           <WanderImage
                             src={c.author.avatar}
@@ -234,7 +234,7 @@ export default function ExplorePage() {
                               </span>
                             ) : null}
                           </div>
-                          <p className="mt-1 text-sm leading-relaxed text-wander-secondary">{c.text}</p>
+                          <p className="mt-1 text-sm leading-relaxed text-white/70">{c.text}</p>
                         </div>
                       </div>
                     ))
@@ -248,12 +248,12 @@ export default function ExplorePage() {
                     rows={3}
                     className={cn(
                       'min-h-[88px] resize-none border-white/15 bg-black/35 text-sm text-white',
-                      'placeholder:text-wander-muted focus-visible:border-indigo-500/50 focus-visible:ring-indigo-500/25'
+                      'placeholder:text-wander-muted focus-visible:border-wander-coral/50 focus-visible:ring-wander-coral/25'
                     )}
                   />
                   <Button
                     type="button"
-                    className="h-10 w-full border-0 bg-gradient-to-r from-indigo-500 to-violet-600 font-sans text-white shadow-lg shadow-indigo-500/20 hover:from-indigo-400 hover:to-violet-500"
+                    className="h-10 w-full rounded-full border-0 bg-gradient-to-r from-wander-coral to-orange-400 font-sans text-white shadow-lg shadow-rose-500/20 hover:from-rose-400 hover:to-orange-300"
                     onClick={submitComment}
                   >
                     发表评论

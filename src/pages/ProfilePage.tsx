@@ -65,7 +65,7 @@ export default function ProfilePage() {
     <PageContainer>
       <ProfileHero />
 
-      <div className="space-y-6 px-4 pb-10 pt-2">
+      <div className="space-y-6 px-4 pb-10 pt-3">
         <MenuSection title="旅行偏好（灵感参考）">
           <MenuRowButton
             icon={<span className="text-lg leading-none">⭐</span>}
@@ -149,7 +149,7 @@ export default function ProfilePage() {
         <button
           type="button"
           onClick={() => setLogoutOpen(true)}
-          className="w-full rounded-xl py-3.5 text-center text-sm font-semibold text-red-500 transition active:bg-red-500/10"
+          className="ql-focus w-full rounded-full border border-red-500/20 bg-red-500/10 py-3.5 text-center text-sm font-semibold text-red-300 transition-colors active:bg-red-500/10"
         >
           退出登录
         </button>

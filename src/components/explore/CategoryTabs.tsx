@@ -20,7 +20,7 @@ type Props = {
 
 export function CategoryTabs({ active, onChange }: Props) {
   return (
-    <div className="sticky top-[60px] z-10 border-b border-white/5 bg-wander-bg/85 backdrop-blur-md">
+    <div className="sticky top-[92px] z-10 border-b border-white/[0.06] bg-[#0b0b0e]/80 backdrop-blur-xl">
       <div className="flex gap-2 overflow-x-auto px-4 py-2.5 scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {EXPLORE_CATEGORIES.map((c) => {
           const on = c.id === active;
@@ -29,10 +29,10 @@ export function CategoryTabs({ active, onChange }: Props) {
               key={c.id}
               type="button"
               onClick={() => onChange(c.id)}
-              className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium uppercase tracking-wider transition active:scale-[0.96] ${
+              className={`ql-focus shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-wide transition-colors active:scale-[0.96] ${
                 on
-                  ? 'bg-wander-brand text-white shadow-wander-glow'
-                  : 'bg-transparent text-wander-secondary hover:text-white'
+                  ? 'bg-white text-zinc-950 shadow-ql-card'
+                  : 'border border-white/[0.08] bg-white/[0.05] text-white/60 hover:text-white'
               }`}
             >
               {c.label}

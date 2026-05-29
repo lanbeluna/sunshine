@@ -55,6 +55,43 @@
       linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
     background-size: auto, 22px 22px, 22px 22px;
   }
+
+  .ql-app-surface {
+    background:
+      radial-gradient(circle at 16% -8%, rgba(255, 67, 91, 0.18), transparent 30%),
+      radial-gradient(circle at 90% 12%, rgba(56, 189, 248, 0.12), transparent 32%),
+      linear-gradient(180deg, #101013 0%, #09090b 42%, #0d0d10 100%);
+  }
+
+  .ql-card {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(23, 23, 26, 0.92);
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.28);
+  }
+
+  .ql-glass {
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(18, 18, 22, 0.72);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .ql-coral-glow {
+    box-shadow: 0 10px 30px rgba(255, 67, 91, 0.24);
+  }
+
+  .ql-photo-shadow {
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.34);
+  }
+
+  .ql-focus {
+    outline: none;
+  }
+
+  .ql-focus:focus-visible {
+    box-shadow: 0 0 0 3px rgba(255, 67, 91, 0.32);
+  }
 }
 
 @layer base {
@@ -164,7 +201,10 @@
     @apply font-sans antialiased;
     color: #ffffff;
     background-color: #0f0f0f;
-    background-image: none;
+    background-image:
+      radial-gradient(circle at 18% 0%, rgba(255, 67, 91, 0.13), transparent 34%),
+      radial-gradient(circle at 86% 18%, rgba(99, 102, 241, 0.12), transparent 34%),
+      linear-gradient(180deg, #101013 0%, #09090b 46%, #0d0d10 100%);
     touch-action: manipulation;
   }
 

@@ -38,15 +38,23 @@ export default function TripPage() {
 
   return (
     <PageContainer>
-      <header className="flex items-center justify-between px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
-        <h1 className="text-xl font-bold tracking-tight text-white">我的行程</h1>
-        <Link
-          to="/decision"
-          onClick={() => toast.success('新建行程', { description: '将前往 AI 决策页生成灵感。' })}
-          className="rounded-xl border border-white/10 bg-wander-surface px-3 py-2 text-xs font-semibold text-wander-secondary transition active:scale-[0.96] active:bg-white/5"
-        >
-          + 新建行程
-        </Link>
+      <header className="px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
+        <div className="ql-glass overflow-hidden rounded-[1.5rem] p-4">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-wander-coral">Trip Folder</p>
+              <h1 className="mt-1 text-2xl font-black tracking-tight text-white">我的行程</h1>
+              <p className="mt-1 text-xs leading-relaxed text-white/50">把灵感变成可出发的旅行计划</p>
+            </div>
+            <Link
+              to="/decision"
+              onClick={() => toast.success('新建行程', { description: '将前往 AI 决策页生成灵感。' })}
+              className="ql-focus shrink-0 rounded-full bg-white px-3.5 py-2 text-xs font-bold text-zinc-950 transition-transform active:scale-[0.96]"
+            >
+              + 新建
+            </Link>
+          </div>
+        </div>
       </header>
 
       <TripSegmented value={segment} onChange={setSegment} />

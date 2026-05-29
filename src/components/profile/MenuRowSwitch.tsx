@@ -21,7 +21,7 @@ export function MenuRowSwitch({ icon, title, checked, onCheckedChange }: Props) 
         light ? 'border-zinc-100' : 'border-white/10'
       )}
     >
-      <span className="flex h-6 w-6 shrink-0 items-center justify-center text-wander-brand">{icon}</span>
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-wander-coral/10 text-wander-coral">{icon}</span>
       <span className={cn('flex-1 text-sm font-medium', light ? 'text-zinc-900' : 'text-white')}>{title}</span>
       <Switch checked={checked} onCheckedChange={onCheckedChange} className="shrink-0 scale-110" />
     </div>

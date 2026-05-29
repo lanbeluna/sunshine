@@ -28,23 +28,16 @@ export function TripCard({ trip, index, onOpen }: Props) {
   const shown = trip.companionAvatars.slice(0, 3);
 
   return (
-    <motion.div
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onOpen();
-        }
-      }}
+    <motion.button
+      type="button"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, duration: 0.28 }}
       whileTap={{ scale: 0.99 }}
       onClick={onOpen}
-      className="flex min-h-[104px] w-full cursor-pointer items-stretch gap-3 rounded-2xl border border-white/8 bg-wander-card p-3 text-left shadow-none transition hover:border-white/12 active:bg-white/[0.04]"
+      className="ql-focus flex min-h-[116px] w-full cursor-pointer items-stretch gap-3 rounded-2xl border border-white/[0.08] bg-[#17171A] p-3 text-left shadow-ql-card transition-colors hover:border-white/15 active:bg-white/[0.04]"
     >
-      <div className="relative h-[4.5rem] w-[4.5rem] shrink-0 overflow-hidden rounded-xl bg-wander-surface">
+      <div className="relative h-[5.25rem] w-[5.25rem] shrink-0 overflow-hidden rounded-2xl bg-wander-surface ql-photo-shadow">
         <WanderImage
           src={trip.imageUrl}
           alt={trip.destination}
@@ -56,14 +49,14 @@ export function TripCard({ trip, index, onOpen }: Props) {
       </div>
       <div className="flex min-w-0 flex-1 flex-col justify-between py-0.5">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="truncate font-semibold text-white">{trip.destination}</h3>
+          <h3 className="truncate text-base font-bold text-white">{trip.destination}</h3>
           <ChevronRight className="mt-0.5 h-5 w-5 shrink-0 text-wander-muted" aria-hidden />
         </div>
-        <p className="text-xs text-wander-secondary">{formatTripDateRange(trip.startDate, trip.endDate)}</p>
+        <p className="text-xs font-medium text-white/55">{formatTripDateRange(trip.startDate, trip.endDate)}</p>
         <div className="flex flex-wrap items-center gap-2">
           <span
             className={cn(
-              'rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide',
+              'rounded-full border px-2 py-0.5 text-[10px] font-semibold tracking-wide',
               STATUS_STYLE[trip.status]
             )}
           >
@@ -88,6 +81,6 @@ export function TripCard({ trip, index, onOpen }: Props) {
           ) : null}
         </div>
       </div>
-    </motion.div>
+    </motion.button>
   );
 }

@@ -65,13 +65,15 @@ module.exports = {
         "pencil-line": "#E8E4D9",
         /** WanderAI 色板 */
         wander: {
-          bg: "#0F0F0F",
-          card: "#1A1A1A",
-          surface: "#242424",
+          bg: "#0B0B0E",
+          card: "#17171A",
+          surface: "#222229",
           border: "#27272A",
           muted: "#71717A",
           secondary: "#A1A1AA",
-          brand: "#6366F1",
+          brand: "#FF435B",
+          coral: "#FF435B",
+          blue: "#38BDF8",
           violet: "#8B5CF6",
           lilac: "#A78BFA",
           success: "#22C55E",
@@ -100,8 +102,10 @@ module.exports = {
           "0 4px 20px rgba(139, 125, 107, 0.12), 0 1px 3px rgba(139, 125, 107, 0.08)",
         "warm-lg":
           "0 4px 20px rgba(139, 125, 107, 0.12), 0 1px 3px rgba(139, 125, 107, 0.08), 0 12px 36px rgba(139, 125, 107, 0.14)",
-        "wander-glow": "0 8px 30px rgba(99, 102, 241, 0.3)",
-        "wander-glow-lg": "0 12px 40px rgba(99, 102, 241, 0.35)",
+        "wander-glow": "0 10px 30px rgba(255, 67, 91, 0.24)",
+        "wander-glow-lg": "0 18px 48px rgba(255, 67, 91, 0.28)",
+        "ql-card": "0 16px 42px rgba(0, 0, 0, 0.28)",
+        "ql-photo": "0 18px 34px rgba(0, 0, 0, 0.34)",
       },
       keyframes: {
         "accordion-down": {

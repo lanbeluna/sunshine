@@ -281,25 +281,25 @@ export default function AiAssistantPage() {
   };
 
   return (
-    <div className="fixed inset-y-0 left-1/2 z-[200] w-full max-w-[430px] -translate-x-1/2 overflow-hidden">
+    <div className="fixed inset-y-0 left-1/2 z-[200] w-dvw max-w-[430px] -translate-x-1/2 overflow-hidden">
       <motion.div
         initial={{ y: '100%' }}
         animate={{ y: 0 }}
         transition={{ type: 'spring', damping: 30, stiffness: 320 }}
-        className="flex h-full w-full flex-col wander-assistant-chat-bg text-white"
+        className="flex h-full w-full flex-col bg-[#09090b] text-white"
       >
       {/* 顶栏 */}
-      <header className="flex shrink-0 items-center gap-2 border-b border-white/[0.08] px-2 pb-3 pt-safe">
+      <header className="flex shrink-0 items-center gap-2 border-b border-white/[0.08] bg-[#09090b]/90 px-2 pb-3 pt-safe backdrop-blur-xl">
         <button
           type="button"
           onClick={handleBack}
-          className="flex h-10 w-10 items-center justify-center rounded-full text-white/90 transition active:scale-95 hover:bg-white/10"
+          className="ql-focus flex h-10 w-10 items-center justify-center rounded-full text-white/90 transition-colors active:scale-95 hover:bg-white/10"
           aria-label="返回"
         >
           <ArrowLeft className="h-5 w-5" />
         </button>
         <div className="relative flex min-w-0 flex-1 items-center gap-2">
-          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-600 shadow-lg shadow-indigo-500/30">
+          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-wander-blue via-indigo-500 to-violet-600 shadow-lg shadow-sky-500/20">
             <span className="pointer-events-none absolute inset-0 z-[1] w-[40%] bg-gradient-to-r from-transparent via-white/35 to-transparent animate-wander-ai-avatar-shimmer" />
             <Bot className="relative z-[2] h-5 w-5 text-white" strokeWidth={2.2} />
           </div>
@@ -317,7 +317,7 @@ export default function AiAssistantPage() {
         <button
           type="button"
           onClick={handleClear}
-          className="flex h-10 w-10 items-center justify-center rounded-full text-white/80 transition active:scale-95 hover:bg-white/10"
+          className="ql-focus flex h-10 w-10 items-center justify-center rounded-full text-white/80 transition-colors active:scale-95 hover:bg-white/10"
           aria-label="清空对话"
         >
           <Trash2 className="h-5 w-5" />
@@ -325,18 +325,18 @@ export default function AiAssistantPage() {
       </header>
 
       {/* 消息 */}
-      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-3">
+      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[radial-gradient(circle_at_50%_0%,rgba(56,189,248,0.12),transparent_34%)] px-3 py-3">
         <div className="mx-auto flex w-full flex-col gap-2 pb-4">
           {isFreshChat ? (
             <section className="px-1 pt-2">
-              <div className="overflow-hidden rounded-[1.75rem] border border-white/[0.08] bg-white/[0.055] p-4 shadow-2xl shadow-black/20">
+              <div className="overflow-hidden rounded-[1.75rem] border border-white/[0.09] bg-white/[0.06] p-4 shadow-2xl shadow-black/25 backdrop-blur-xl">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-500 shadow-lg shadow-indigo-700/30">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-wander-blue via-indigo-500 to-violet-500 shadow-lg shadow-sky-700/20">
                     <Bot className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
                     <p className="text-base font-bold text-white">我是你的轻旅行助手</p>
-                    <p className="mt-1 text-sm leading-relaxed text-white/68">
+                    <p className="mt-1 text-sm leading-relaxed text-white/70">
                       问我行前准备、住宿区域、美食清单或路线安排，我会按学生党预算给你一个可执行建议。
                     </p>
                   </div>
@@ -349,7 +349,7 @@ export default function AiAssistantPage() {
                       layout
                       onClick={() => onQuickPick(q.text, q.id)}
                       whileTap={{ scale: 0.96 }}
-                      className="min-h-[58px] rounded-2xl border border-indigo-300/20 bg-black/22 px-3 py-2 text-left text-xs font-medium leading-snug text-indigo-50 transition active:bg-indigo-500/20"
+                      className="ql-focus min-h-[58px] rounded-2xl border border-white/[0.09] bg-black/25 px-3 py-2 text-left text-xs font-semibold leading-snug text-white/85 transition-colors active:bg-sky-500/15"
                     >
                       <span className="mb-1 block text-base leading-none" aria-hidden>
                         {QUICK_PROMPT_ICONS[i]}
@@ -380,7 +380,7 @@ export default function AiAssistantPage() {
                     <div
                       className={cn(
                         'max-w-[70%] rounded-2xl rounded-bl-md px-3.5 py-2.5',
-                        'bg-gradient-to-br from-[#6366F1] to-[#8B5CF6] text-white shadow-md shadow-indigo-900/25'
+                        'bg-gradient-to-br from-wander-coral to-orange-400 text-white shadow-md shadow-rose-900/25'
                       )}
                     >
                       <p className="whitespace-pre-wrap text-sm leading-relaxed">{m.text}</p>
@@ -393,14 +393,14 @@ export default function AiAssistantPage() {
                     transition={{ duration: 0.2 }}
                     className="flex justify-start gap-2"
                   >
-                    <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500/90 to-violet-600/90 shadow-md shadow-black/30">
+                    <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-wander-blue/90 to-violet-600/90 shadow-md shadow-black/30">
                       <Bot className="h-3.5 w-3.5 text-white" />
                     </div>
                     <div className="max-w-[80%] min-w-0">
                       <div
                         className={cn(
                           'rounded-2xl rounded-br-md border border-white/[0.08]',
-                          'bg-white/[0.06] px-3.5 py-2.5 shadow-inner shadow-black/20'
+                          'bg-white/[0.065] px-3.5 py-2.5 shadow-inner shadow-black/20'
                         )}
                       >
                         <RichBlock text={m.text} />
@@ -430,7 +430,7 @@ export default function AiAssistantPage() {
 
           {streaming ? (
             <div className="flex justify-start gap-2">
-              <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500/90 to-violet-600/90">
+              <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-wander-blue/90 to-violet-600/90">
                 <Bot className="h-3.5 w-3.5 text-white" />
               </div>
               <div className="max-w-[80%] min-w-0">
@@ -490,7 +490,7 @@ export default function AiAssistantPage() {
           <div className="mx-auto grid w-full grid-cols-2 gap-2 text-xs">
             <button
               type="button"
-              className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition hover:bg-white/[0.08]"
+              className="ql-focus flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition-colors hover:bg-white/[0.08]"
               onClick={() => simAttach('发送图片', '演示：将分析照片中的景点与光线时段。')}
             >
               <ImageIcon className="h-4 w-4 shrink-0 text-indigo-300" />
@@ -498,7 +498,7 @@ export default function AiAssistantPage() {
             </button>
             <button
               type="button"
-              className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition hover:bg-white/[0.08]"
+              className="ql-focus flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition-colors hover:bg-white/[0.08]"
               onClick={() => simAttach('语音输入', '演示：将把你的语音转成文字并发送。')}
             >
               <Mic className="h-4 w-4 shrink-0 text-violet-300" />
@@ -506,7 +506,7 @@ export default function AiAssistantPage() {
             </button>
             <button
               type="button"
-              className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition hover:bg-white/[0.08]"
+              className="ql-focus flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition-colors hover:bg-white/[0.08]"
               onClick={() => simAttach('发送位置', '演示：将基于当前位置推荐附近步行可达景点。')}
             >
               <MapPin className="h-4 w-4 shrink-0 text-emerald-300" />
@@ -514,7 +514,7 @@ export default function AiAssistantPage() {
             </button>
             <button
               type="button"
-              className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition hover:bg-white/[0.08]"
+              className="ql-focus flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition-colors hover:bg-white/[0.08]"
               onClick={() => {
                 setAttachOpen(false);
                 setInput((prev) =>
@@ -534,15 +534,15 @@ export default function AiAssistantPage() {
       ) : null}
 
       {/* 输入区 */}
-      <div className="shrink-0 border-t border-white/[0.08] bg-black/40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2">
+      <div className="shrink-0 border-t border-white/[0.08] bg-black/70 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl">
         <div className="mx-auto flex w-full items-end gap-2">
           <button
             type="button"
             onClick={() => setAttachOpen((o) => !o)}
             className={cn(
-              'mb-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition',
+              'ql-focus mb-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-colors',
               attachOpen
-                ? 'border-indigo-500/60 bg-indigo-500/20 text-white'
+                ? 'border-sky-400/60 bg-sky-500/20 text-white'
                 : 'border-white/10 bg-[#1A1A1A] text-white/80 hover:bg-white/10'
             )}
             aria-label="更多"
@@ -565,9 +565,9 @@ export default function AiAssistantPage() {
               onBlur={() => setInputFocus(false)}
               placeholder="问 anything..."
               className={cn(
-                'max-h-28 min-h-[44px] w-full resize-none rounded-[24px] border px-4 py-2.5 text-sm text-white',
-                'bg-[#1A1A1A] placeholder:text-zinc-500 focus:outline-none',
-                inputFocus ? 'border-[#6366F1] ring-1 ring-indigo-500/35' : 'border-white/10'
+                'ql-focus max-h-24 min-h-[42px] w-full resize-none rounded-[24px] border px-4 py-2.5 text-sm text-white',
+                'bg-[#17171A] placeholder:text-zinc-500',
+                inputFocus ? 'border-sky-400/55 ring-1 ring-sky-400/25' : 'border-white/10'
               )}
             />
           </div>
@@ -577,7 +577,7 @@ export default function AiAssistantPage() {
             disabled={busy}
             whileTap={busy ? undefined : { scale: 0.9 }}
             className={cn(
-              'relative mb-1 flex h-11 w-11 shrink-0 items-center justify-center overflow-visible rounded-full bg-gradient-to-br from-[#6366F1] to-[#8B5CF6] text-white shadow-lg shadow-indigo-600/30',
+              'ql-focus relative mb-1 flex h-11 w-11 shrink-0 items-center justify-center overflow-visible rounded-full bg-gradient-to-br from-wander-coral to-orange-400 text-white shadow-lg shadow-rose-600/25',
               busy && 'opacity-45'
             )}
             aria-label="发送"

@@ -5,7 +5,7 @@ import { useAppContext } from '@/context/AppContext';
 import { cn } from '@/lib/utils';
 
 const tabClass =
-  'flex min-h-14 flex-1 flex-col items-center justify-end gap-0.5 rounded-2xl pb-1.5 pt-2 text-[11px] font-medium transition-colors active:scale-[0.96] duration-150';
+  'ql-focus flex min-h-14 flex-1 flex-col items-center justify-end gap-0.5 rounded-2xl pb-1.5 pt-2 text-[11px] font-medium transition-colors duration-150 active:scale-[0.96]';
 
 function TabIcon({
   to,
@@ -49,8 +49,8 @@ export function BottomNav() {
   return (
     <nav
       className={cn(
-        'fixed bottom-0 left-1/2 z-50 w-full max-w-[430px] -translate-x-1/2 safe-bottom backdrop-blur-xl',
-        light ? 'border-t border-zinc-200/90 bg-white/86' : 'border-t border-white/8 bg-black/72'
+        'fixed bottom-0 left-1/2 z-50 w-dvw max-w-[430px] -translate-x-1/2 safe-bottom backdrop-blur-xl',
+        light ? 'border-t border-zinc-200/90 bg-white/85' : 'border-t border-white/10 bg-black/80'
       )}
       aria-label="主导航"
     >
@@ -93,8 +93,8 @@ export function BottomNav() {
                 onClick={() => navigate('/assistant')}
                 className={cn(
                   'relative z-[1] flex h-14 w-14 items-center justify-center rounded-full',
-                  'bg-gradient-to-br from-wander-brand via-wander-violet to-wander-lilac text-white shadow-wander-glow',
-                  'active:scale-[0.96] duration-150 transition-transform'
+                  'ql-focus bg-gradient-to-br from-wander-coral via-rose-500 to-orange-400 text-white shadow-wander-glow',
+                  'duration-150 transition-transform active:scale-[0.96]'
                 )}
                 aria-label="AI助手"
               >

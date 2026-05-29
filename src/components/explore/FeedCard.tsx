@@ -35,7 +35,7 @@ function FeedCardComponent({ item, index, onLike, onCollect, onOpen }: Props) {
       transition={{ delay: index * 0.05, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
       whileTap={{ scale: 0.98 }}
       onClick={() => onOpen(item)}
-      className="group mb-3 break-inside-avoid cursor-pointer overflow-hidden rounded-2xl border border-white/5 bg-wander-card shadow-none transition duration-300 [content-visibility:auto] [contain-intrinsic-size:260px] hover:scale-[1.02] hover:shadow-wander-glow"
+      className="group break-inside-avoid cursor-pointer overflow-hidden rounded-2xl border border-white/[0.08] bg-[#17171A] text-left shadow-ql-photo transition-transform duration-300 [content-visibility:auto] [contain-intrinsic-size:260px] hover:scale-[1.015]"
     >
       <div className="relative overflow-hidden rounded-t-2xl">
         <div className="w-full" style={{ aspectRatio: ar }}>
@@ -50,7 +50,7 @@ function FeedCardComponent({ item, index, onLike, onCollect, onOpen }: Props) {
             fetchPriority={index === 0 ? 'high' : 'auto'}
           />
         </div>
-        <span className="pointer-events-none absolute left-2 top-2 rounded-full border border-indigo-500/30 bg-indigo-500/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-indigo-200">
+        <span className="pointer-events-none absolute left-2 top-2 rounded-full border border-white/20 bg-black/45 px-2.5 py-0.5 text-[10px] font-semibold tracking-wide text-white backdrop-blur-md">
           {item.category}
         </span>
         <div className="absolute right-2 top-2 flex gap-1.5">
@@ -62,7 +62,7 @@ function FeedCardComponent({ item, index, onLike, onCollect, onOpen }: Props) {
             }}
             className={cn(
               'flex h-10 w-10 items-center justify-center rounded-full text-white backdrop-blur-sm transition active:scale-90',
-              item.isLiked ? 'bg-rose-500/85' : 'bg-black/45'
+              item.isLiked ? 'bg-wander-coral/90 shadow-wander-glow' : 'bg-black/45'
             )}
             aria-label={item.isLiked ? '取消点赞' : '点赞'}
           >
@@ -76,7 +76,7 @@ function FeedCardComponent({ item, index, onLike, onCollect, onOpen }: Props) {
             }}
             className={cn(
               'flex h-10 w-10 items-center justify-center rounded-full text-white backdrop-blur-sm transition active:scale-90',
-              item.isCollected ? 'bg-amber-500/85' : 'bg-black/45'
+              item.isCollected ? 'bg-amber-500/90' : 'bg-black/45'
             )}
             aria-label={item.isCollected ? '取消收藏' : '收藏'}
           >
@@ -91,14 +91,14 @@ function FeedCardComponent({ item, index, onLike, onCollect, onOpen }: Props) {
           </div>
         )}
       </div>
-      <div className="p-2.5 pt-2">
+      <div className="p-3 pt-2.5">
         {item.type === 'topic' ? (
-          <p className="text-sm font-semibold text-indigo-300">#{item.title.slice(0, 18)}</p>
+          <p className="text-sm font-semibold text-wander-coral">#{item.title.slice(0, 18)}</p>
         ) : (
-          <h3 className="line-clamp-2 text-sm font-medium leading-snug text-white">{item.title}</h3>
+          <h3 className="line-clamp-2 text-[13px] font-semibold leading-snug text-white">{item.title}</h3>
         )}
         {item.tags.length > 0 ? (
-          <p className="mt-1 line-clamp-1 text-[10px] text-wander-muted">{item.tags.join(' · ')}</p>
+          <p className="mt-1 line-clamp-1 text-[10px] font-medium text-white/40">{item.tags.join(' · ')}</p>
         ) : null}
         <div className="mt-2 flex items-center justify-between gap-2 text-wander-muted">
           <div className="flex min-w-0 items-center gap-1.5">
@@ -114,7 +114,7 @@ function FeedCardComponent({ item, index, onLike, onCollect, onOpen }: Props) {
             </div>
             <span className="truncate text-xs text-wander-secondary">{item.author.name}</span>
           </div>
-          <span className="flex shrink-0 items-center gap-0.5 text-[11px] text-rose-300">
+          <span className="flex shrink-0 items-center gap-0.5 text-[11px] font-semibold text-wander-coral">
             <Heart className="h-3 w-3" />
             {formatLikes(item.likes + (item.isLiked ? 1 : 0))}
           </span>

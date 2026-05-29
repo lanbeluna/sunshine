@@ -10,7 +10,7 @@ type Props = {
 export function TripSegmented({ value, onChange }: Props) {
   return (
     <div
-      className="mx-4 flex rounded-xl border border-white/10 bg-wander-surface/80 p-1"
+      className="mx-4 flex rounded-full border border-white/10 bg-white/[0.06] p-1 backdrop-blur"
       role="tablist"
       aria-label="行程视图"
     >
@@ -20,10 +20,10 @@ export function TripSegmented({ value, onChange }: Props) {
         aria-selected={value === 'upcoming'}
         onClick={() => onChange('upcoming')}
         className={cn(
-          'flex-1 rounded-lg py-2.5 text-center text-sm font-semibold transition active:scale-[0.98]',
+          'ql-focus flex-1 rounded-full py-2.5 text-center text-sm font-semibold transition-colors active:scale-[0.98]',
           value === 'upcoming'
-            ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md shadow-indigo-500/20'
-            : 'text-wander-secondary hover:text-white'
+            ? 'bg-white text-zinc-950 shadow-md shadow-black/20'
+            : 'text-white/55 hover:text-white'
         )}
       >
         即将出发
@@ -34,10 +34,10 @@ export function TripSegmented({ value, onChange }: Props) {
         aria-selected={value === 'past'}
         onClick={() => onChange('past')}
         className={cn(
-          'flex-1 rounded-lg py-2.5 text-center text-sm font-semibold transition active:scale-[0.98]',
+          'ql-focus flex-1 rounded-full py-2.5 text-center text-sm font-semibold transition-colors active:scale-[0.98]',
           value === 'past'
-            ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md shadow-indigo-500/20'
-            : 'text-wander-secondary hover:text-white'
+            ? 'bg-white text-zinc-950 shadow-md shadow-black/20'
+            : 'text-white/55 hover:text-white'
         )}
       >
         历史足迹
