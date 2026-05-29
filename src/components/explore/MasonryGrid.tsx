@@ -17,9 +17,9 @@ export function MasonryGrid({ items, onToggleLike, onToggleCollect, onOpenItem }
             key={item.id}
             item={item}
             index={index}
-            onLike={() => onToggleLike(item.id)}
-            onCollect={() => onToggleCollect(item.id)}
-            onOpen={() => onOpenItem(item)}
+            onLike={onToggleLike}
+            onCollect={onToggleCollect}
+            onOpen={onOpenItem}
           />
         ))}
       </div>

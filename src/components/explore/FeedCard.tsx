@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Bookmark, Heart, Play } from 'lucide-react';
+import { memo } from 'react';
 import { WanderImage } from '@/components/media/WanderImage';
 import type { FeedItem } from '@/types/feed';
 import { formatLikes } from '@/lib/formatLikes';
@@ -8,14 +9,14 @@ import { cn } from '@/lib/utils';
 type Props = {
   item: FeedItem;
   index: number;
-  onLike: () => void;
-  onCollect: () => void;
-  onOpen: () => void;
+  onLike: (id: string) => void;
+  onCollect: (id: string) => void;
+  onOpen: (item: FeedItem) => void;
 };
 
 const ASPECT = ['4/5', '3/4', '5/6', '2/3'] as const;
 
-export function FeedCard({ item, index, onLike, onCollect, onOpen }: Props) {
+function FeedCardComponent({ item, index, onLike, onCollect, onOpen }: Props) {
   const ar = ASPECT[index % ASPECT.length];
 
   return (
@@ -26,15 +27,15 @@ export function FeedCard({ item, index, onLike, onCollect, onOpen }: Props) {
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onOpen();
+          onOpen(item);
         }
       }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
       whileTap={{ scale: 0.98 }}
-      onClick={onOpen}
-      className="group mb-3 break-inside-avoid cursor-pointer overflow-hidden rounded-2xl border border-white/5 bg-wander-card shadow-none transition duration-300 hover:scale-[1.02] hover:shadow-wander-glow"
+      onClick={() => onOpen(item)}
+      className="group mb-3 break-inside-avoid cursor-pointer overflow-hidden rounded-2xl border border-white/5 bg-wander-card shadow-none transition duration-300 [content-visibility:auto] [contain-intrinsic-size:260px] hover:scale-[1.02] hover:shadow-wander-glow"
     >
       <div className="relative overflow-hidden rounded-t-2xl">
         <div className="w-full" style={{ aspectRatio: ar }}>
@@ -45,6 +46,8 @@ export function FeedCard({ item, index, onLike, onCollect, onOpen }: Props) {
             className="h-full w-full"
             width={400}
             height={520}
+            loading={index < 4 ? 'eager' : 'lazy'}
+            fetchPriority={index === 0 ? 'high' : 'auto'}
           />
         </div>
         <span className="pointer-events-none absolute left-2 top-2 rounded-full border border-indigo-500/30 bg-indigo-500/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-indigo-200">
@@ -55,7 +58,7 @@ export function FeedCard({ item, index, onLike, onCollect, onOpen }: Props) {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              onLike();
+              onLike(item.id);
             }}
             className={cn(
               'flex h-10 w-10 items-center justify-center rounded-full text-white backdrop-blur-sm transition active:scale-90',
@@ -69,7 +72,7 @@ export function FeedCard({ item, index, onLike, onCollect, onOpen }: Props) {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              onCollect();
+              onCollect(item.id);
             }}
             className={cn(
               'flex h-10 w-10 items-center justify-center rounded-full text-white backdrop-blur-sm transition active:scale-90',
@@ -120,3 +123,5 @@ export function FeedCard({ item, index, onLike, onCollect, onOpen }: Props) {
     </motion.article>
   );
 }
+
+export const FeedCard = memo(FeedCardComponent);

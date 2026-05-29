@@ -5,7 +5,7 @@ import { VitePWA } from "vite-plugin-pwa"
 import { inspectAttr } from 'kimi-plugin-inspect-react'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   /** 使用根路径，避免 IDE/隧道预览、子路径下模块 404 导致白屏 */
   base: '/',
   server: {
@@ -14,7 +14,7 @@ export default defineConfig({
     port: 5173,
   },
   plugins: [
-    inspectAttr(),
+    mode === 'development' ? inspectAttr() : null,
     react(),
     VitePWA({
       registerType: 'autoUpdate',
@@ -57,4 +57,15 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-});
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'motion-vendor': ['framer-motion'],
+          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-slot', 'lucide-react'],
+        },
+      },
+    },
+  },
+}));

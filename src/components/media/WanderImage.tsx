@@ -12,6 +12,8 @@ type Props = {
   imgClassName?: string;
   width?: number;
   height?: number;
+  loading?: 'eager' | 'lazy';
+  fetchPriority?: 'high' | 'low' | 'auto';
 };
 
 const FALLBACK_BG = ['#2D3748', '#4A5568', '#1A202C', '#374151'] as const;
@@ -30,6 +32,8 @@ export function WanderImage({
   imgClassName,
   width,
   height,
+  loading = 'lazy',
+  fetchPriority = 'auto',
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ok' | 'err'>('loading');
   const [failGen, setFailGen] = useState(0);
@@ -69,7 +73,8 @@ export function WanderImage({
         alt={alt}
         width={width}
         height={height}
-        loading="lazy"
+        loading={loading}
+        fetchPriority={fetchPriority}
         decoding="async"
         onLoad={() => setPhase('ok')}
         onError={() => {
