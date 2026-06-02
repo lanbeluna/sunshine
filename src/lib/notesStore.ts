@@ -106,3 +106,13 @@ export function loadDraftNotes(): UserNoteCard[] {
     return [];
   }
 }
+
+export function appendDraftNote(note: UserNoteCard) {
+  if (typeof window === 'undefined') return;
+  try {
+    const next = [note, ...loadDraftNotes()];
+    localStorage.setItem(DRAFTS_KEY, JSON.stringify(next));
+  } catch {
+    /* quota */
+  }
+}

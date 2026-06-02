@@ -85,6 +85,21 @@
     box-shadow: 0 18px 34px rgba(0, 0, 0, 0.34);
   }
 
+  .ql-soft-surface {
+    background:
+      radial-gradient(circle at 14% 0%, rgba(255, 142, 118, 0.18), transparent 34%),
+      radial-gradient(circle at 88% 10%, rgba(125, 211, 252, 0.14), transparent 34%),
+      linear-gradient(180deg, var(--ql-bg-top) 0%, var(--ql-bg) 46%, var(--ql-bg-bottom) 100%);
+  }
+
+  .ql-paper-card {
+    border: 1px solid var(--ql-card-border);
+    background: var(--ql-card-bg);
+    box-shadow: var(--ql-card-shadow);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
   .ql-focus {
     outline: none;
   }
@@ -139,6 +154,20 @@
     --sidebar-accent-foreground: #4a4a48;
     --sidebar-border: #e8e4d9;
     --sidebar-ring: #a8d5ba;
+
+    --ql-bg: #fff8f1;
+    --ql-bg-top: #fffdf8;
+    --ql-bg-bottom: #f2fbff;
+    --ql-ink: #25201d;
+    --ql-muted: #746b63;
+    --ql-soft: rgba(255, 255, 255, 0.72);
+    --ql-card-bg: rgba(255, 255, 255, 0.78);
+    --ql-card-border: rgba(93, 72, 58, 0.12);
+    --ql-card-shadow: 0 18px 45px rgba(85, 72, 60, 0.12);
+    --ql-accent: #ff7a6e;
+    --ql-accent-2: #3fb8d7;
+    --ql-accent-3: #8b7cf6;
+    --ql-radius-card: 22px;
   }
 
   .dark {
@@ -169,6 +198,20 @@
     --sidebar-accent-foreground: #f5f3ee;
     --sidebar-border: #4a4843;
     --sidebar-ring: #8fb89e;
+
+    --ql-bg: #101013;
+    --ql-bg-top: #16161a;
+    --ql-bg-bottom: #0c0c0f;
+    --ql-ink: #ffffff;
+    --ql-muted: rgba(255, 255, 255, 0.62);
+    --ql-soft: rgba(255, 255, 255, 0.08);
+    --ql-card-bg: rgba(255, 255, 255, 0.075);
+    --ql-card-border: rgba(255, 255, 255, 0.1);
+    --ql-card-shadow: 0 18px 46px rgba(0, 0, 0, 0.26);
+    --ql-accent: #ff6f61;
+    --ql-accent-2: #38bdf8;
+    --ql-accent-3: #a78bfa;
+    --ql-radius-card: 22px;
   }
 }
 
@@ -202,9 +245,9 @@
     color: #ffffff;
     background-color: #0f0f0f;
     background-image:
-      radial-gradient(circle at 18% 0%, rgba(255, 67, 91, 0.13), transparent 34%),
-      radial-gradient(circle at 86% 18%, rgba(99, 102, 241, 0.12), transparent 34%),
-      linear-gradient(180deg, #101013 0%, #09090b 46%, #0d0d10 100%);
+      radial-gradient(circle at 18% 0%, rgba(255, 111, 97, 0.16), transparent 34%),
+      radial-gradient(circle at 86% 18%, rgba(56, 189, 248, 0.14), transparent 34%),
+      linear-gradient(180deg, var(--ql-bg-top) 0%, var(--ql-bg) 46%, var(--ql-bg-bottom) 100%);
     touch-action: manipulation;
   }
 

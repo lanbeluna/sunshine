@@ -5,23 +5,23 @@ import { QlBodyClass } from '@/components/layout/QlBodyClass';
 import { AppShell } from '@/components/layout/AppShell';
 import { OfflineNotice } from '@/components/layout/OfflineNotice';
 
-const DecisionPage = lazy(() => import('@/pages/DecisionPage'));
-const ExplorePage = lazy(() => import('@/pages/ExplorePage'));
-const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
-const AboutPage = lazy(() => import('@/pages/profile/AboutPage'));
-const CollectionsPage = lazy(() => import('@/pages/profile/CollectionsPage'));
-const DecisionHistoryPage = lazy(() => import('@/pages/profile/DecisionHistoryPage'));
-const DraftsPage = lazy(() => import('@/pages/profile/DraftsPage'));
-const LanguagePage = lazy(() => import('@/pages/profile/LanguagePage'));
-const LegalPage = lazy(() => import('@/pages/profile/LegalPage'));
-const NotesPage = lazy(() => import('@/pages/profile/NotesPage'));
-const NotificationSettingsPage = lazy(() => import('@/pages/profile/NotificationSettingsPage'));
-const PreferencesPage = lazy(() => import('@/pages/profile/PreferencesPage'));
-const DestinationDetailPage = lazy(() => import('@/pages/DestinationDetailPage'));
-const TripDetailPage = lazy(() => import('@/pages/TripDetailPage'));
-const TripPage = lazy(() => import('@/pages/TripPage'));
-const MessagesPage = lazy(() => import('@/pages/MessagesPage'));
-const AiAssistantPage = lazy(() => import('@/pages/AiAssistantPage'));
+const DecisionPage = lazy(() => import('@/features/decision/pages/DecisionPage'));
+const ExplorePage = lazy(() => import('@/features/explore/pages/ExplorePage'));
+const ProfilePage = lazy(() => import('@/features/profile/pages/ProfilePage'));
+const AboutPage = lazy(() => import('@/features/profile/pages/AboutPage'));
+const CollectionsPage = lazy(() => import('@/features/profile/pages/CollectionsPage'));
+const DecisionHistoryPage = lazy(() => import('@/features/profile/pages/DecisionHistoryPage'));
+const DraftsPage = lazy(() => import('@/features/profile/pages/DraftsPage'));
+const LanguagePage = lazy(() => import('@/features/profile/pages/LanguagePage'));
+const LegalPage = lazy(() => import('@/features/profile/pages/LegalPage'));
+const NotesPage = lazy(() => import('@/features/profile/pages/NotesPage'));
+const NotificationSettingsPage = lazy(() => import('@/features/profile/pages/NotificationSettingsPage'));
+const PreferencesPage = lazy(() => import('@/features/profile/pages/PreferencesPage'));
+const DestinationDetailPage = lazy(() => import('@/features/destinations/pages/DestinationDetailPage'));
+const TripDetailPage = lazy(() => import('@/features/trips/pages/TripDetailPage'));
+const TripPage = lazy(() => import('@/features/trips/pages/TripPage'));
+const MessagesPage = lazy(() => import('@/features/messages/pages/MessagesPage'));
+const AiAssistantPage = lazy(() => import('@/features/assistant/pages/AiAssistantPage'));
 
 function RouteFallback() {
   return (
@@ -41,7 +41,7 @@ function App() {
           <Routes>
             <Route path="/assistant" element={<AiAssistantPage />} />
             <Route element={<AppShell />}>
-              <Route path="/" element={<Navigate to="/explore" replace />} />
+              <Route path="/" element={<Navigate to="/decision" replace />} />
               <Route path="/explore" element={<ExplorePage />} />
               <Route path="/messages" element={<MessagesPage />} />
               <Route path="/decision" element={<DecisionPage />} />
@@ -59,7 +59,7 @@ function App() {
               <Route path="/profile/legal" element={<LegalPage />} />
               <Route path="/profile/preferences" element={<PreferencesPage />} />
             </Route>
-            <Route path="*" element={<Navigate to="/explore" replace />} />
+            <Route path="*" element={<Navigate to="/decision" replace />} />
           </Routes>
         </Suspense>
       </BrowserRouter>

@@ -19,7 +19,7 @@ export function PageContainer({
     <div
       className={cn(
         'min-h-dvh',
-        light ? 'bg-zinc-100 text-zinc-900' : 'ql-app-surface text-white',
+        light ? 'ql-soft-surface text-zinc-900' : 'ql-soft-surface text-white',
         className
       )}
       style={{ paddingBottom: bottomPad }}

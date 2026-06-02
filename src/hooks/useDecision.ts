@@ -8,6 +8,8 @@ import type {
   Destination,
   Duration,
   Mood,
+  PreferredActivity,
+  TravelSeason,
   Transport,
   UserDecisionProfile,
 } from '@/types/decision';
@@ -47,7 +49,15 @@ export function useDecision() {
   const profile = useMemo((): UserDecisionProfile | null => {
     const { mood, budget, duration, companion, transport } = draft;
     if (!mood || !budget || !duration || !companion || !transport) return null;
-    return { mood, budget, duration, companion, transport };
+    return {
+      mood,
+      budget,
+      duration,
+      companion,
+      transport,
+      season: draft.season,
+      activities: draft.activities,
+    };
   }, [draft]);
 
   const startQA = useCallback(() => {
@@ -73,7 +83,9 @@ export function useDecision() {
   const setMood = useCallback((v: Mood) => setDraft((d) => ({ ...d, mood: v })), []);
   const setBudget = useCallback((v: Budget) => setDraft((d) => ({ ...d, budget: v })), []);
   const setDuration = useCallback((v: Duration) => setDraft((d) => ({ ...d, duration: v })), []);
+  const setSeason = useCallback((v: TravelSeason) => setDraft((d) => ({ ...d, season: v })), []);
   const setCompanion = useCallback((v: Companion) => setDraft((d) => ({ ...d, companion: v })), []);
+  const setActivities = useCallback((v: PreferredActivity[]) => setDraft((d) => ({ ...d, activities: v })), []);
   const setTransport = useCallback((v: Transport) => setDraft((d) => ({ ...d, transport: v })), []);
 
   const canNext = useMemo(() => {
@@ -86,8 +98,12 @@ export function useDecision() {
       case 2:
         return Boolean(draft.duration);
       case 3:
-        return Boolean(draft.companion);
+        return Boolean(draft.season);
       case 4:
+        return Boolean(draft.companion);
+      case 5:
+        return Boolean(draft.activities?.length);
+      case 6:
         return Boolean(draft.transport);
       default:
         return false;
@@ -130,7 +146,7 @@ export function useDecision() {
 
   const nextStep = useCallback(() => {
     if (!canNext) return;
-    if (step < 4) {
+    if (step < 6) {
       setStep((s) => s + 1);
       return;
     }
@@ -193,7 +209,9 @@ export function useDecision() {
     setMood,
     setBudget,
     setDuration,
+    setSeason,
     setCompanion,
+    setActivities,
     setTransport,
     nextStep,
     beginBlindFlip,

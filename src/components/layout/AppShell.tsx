@@ -15,7 +15,7 @@ export function AppShell() {
     <div
       className={cn(
         'relative mx-auto min-h-dvh w-dvw max-w-[430px] overflow-x-hidden',
-        light ? 'bg-zinc-100 text-zinc-900' : 'ql-app-surface text-white'
+        light ? 'ql-soft-surface text-zinc-900' : 'ql-soft-surface text-white'
       )}
     >
       <AnimatePresence mode="popLayout" initial={false}>
