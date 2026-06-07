@@ -15,6 +15,7 @@ type Props = {
   onViewItinerary: () => void;
   onSaveItineraryDraft: () => void;
   onSaveJournalDraft: () => void;
+  savingAction?: 'favorite' | 'itinerary' | 'journal' | null;
 };
 
 export function ResultView({
@@ -26,6 +27,7 @@ export function ResultView({
   onViewItinerary,
   onSaveItineraryDraft,
   onSaveJournalDraft,
+  savingAction = null,
 }: Props) {
   const pct = destination.matchScore ?? matchPercent;
   const nights = Math.max(1, destination.itinerary.length - 1);
@@ -184,7 +186,7 @@ export function ResultView({
           <button
             type="button"
             onClick={onViewItinerary}
-            className="h-12 w-full rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 font-semibold text-white shadow-lg shadow-indigo-500/25 transition active:scale-[0.98]"
+            className="ql-focus h-12 w-full rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 font-semibold text-white shadow-lg shadow-indigo-500/25 transition active:scale-[0.98]"
           >
             查看详细行程
           </button>
@@ -192,34 +194,37 @@ export function ResultView({
             <button
               type="button"
               onClick={onSaveItineraryDraft}
-              className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-sky-400/30 bg-sky-500/12 px-3 text-sm font-semibold text-sky-100 transition active:scale-[0.98]"
+              disabled={savingAction !== null}
+              className="ql-focus flex min-h-12 items-center justify-center gap-2 rounded-xl border border-sky-400/30 bg-sky-500/12 px-3 text-sm font-semibold text-sky-100 transition active:scale-[0.98] disabled:pointer-events-none disabled:opacity-55"
             >
               <MapPlus className="h-4 w-4" />
-              生成行程草稿
+              {savingAction === 'itinerary' ? '保存中...' : '生成行程草稿'}
             </button>
             <button
               type="button"
               onClick={onSaveJournalDraft}
-              className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-amber-300/30 bg-amber-400/12 px-3 text-sm font-semibold text-amber-100 transition active:scale-[0.98]"
+              disabled={savingAction !== null}
+              className="ql-focus flex min-h-12 items-center justify-center gap-2 rounded-xl border border-amber-300/30 bg-amber-400/12 px-3 text-sm font-semibold text-amber-100 transition active:scale-[0.98] disabled:pointer-events-none disabled:opacity-55"
             >
               <BookOpen className="h-4 w-4" />
-              写入手记草稿
+              {savingAction === 'journal' ? '保存中...' : '写入手记草稿'}
             </button>
           </div>
           <div className="flex gap-3">
             <button
               type="button"
               onClick={onReset}
-              className="h-12 flex-1 rounded-xl border border-white/15 bg-wander-surface font-semibold text-wander-secondary transition active:scale-[0.98] active:bg-white/5"
+              className="ql-focus h-12 flex-1 rounded-xl border border-white/15 bg-wander-surface font-semibold text-wander-secondary transition active:scale-[0.98] active:bg-white/5"
             >
               重新决策
             </button>
             <motion.button
               type="button"
               onClick={onToggleFavorite}
+              disabled={savingAction !== null}
               whileTap={{ scale: 0.92 }}
               className={cn(
-                'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-wander-surface transition',
+                'ql-focus flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-wander-surface transition disabled:pointer-events-none disabled:opacity-55',
                 favorited && 'border-rose-500/40 bg-rose-500/15 text-rose-400'
               )}
               aria-label={favorited ? '已收藏' : '收藏目的地'}

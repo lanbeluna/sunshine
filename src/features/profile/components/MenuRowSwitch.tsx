@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 
 type Props = {
   icon: ReactNode;

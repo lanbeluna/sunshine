@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { WanderImage } from '@/components/media/WanderImage';
 import { getDestinationById } from '@/data/destinations';
-import { loadDecisionHistory, type DecisionHistoryItem } from '@/lib/decisionHistoryStore';
+import { loadDecisionHistory } from '@/lib/decisionHistoryStore';
 import { cn } from '@/lib/utils';
 
 function formatDecisionDate(iso: string): string {
@@ -18,10 +18,9 @@ type Props = {
 
 export function DecisionRecentStrip({ refreshKey }: Props) {
   const navigate = useNavigate();
-  const [items, setItems] = useState<DecisionHistoryItem[]>([]);
-
-  useEffect(() => {
-    setItems(loadDecisionHistory().slice(0, 3));
+  const items = useMemo(() => {
+    void refreshKey;
+    return loadDecisionHistory().slice(0, 3);
   }, [refreshKey]);
 
   const resolved = useMemo(() => {

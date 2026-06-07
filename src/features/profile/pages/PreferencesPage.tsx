@@ -1,6 +1,6 @@
-import { toast } from '@/lib/toast';
+﻿import { toast } from '@/lib/toast';
 import { ProfileSubPageLayout } from '@/features/profile/components/ProfileSubPageLayout';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 import { cn } from '@/lib/utils';
 
 export default function PreferencesPage() {
@@ -11,7 +11,7 @@ export default function PreferencesPage() {
     <ProfileSubPageLayout title="我的偏好标签">
       <div className={cn('space-y-4 px-4 py-6 text-sm leading-relaxed', light ? 'text-zinc-700' : 'text-wander-secondary')}>
         <p>
-          在此可设置预算档位、旅行节奏、饮食忌口与无障碍需求等信息，用于影响 AI 决策权重。当前为演示占位页，保存功能将以 Toast 提示代替。
+          在这里可以设置预算档位、旅行节奏、饮食偏好与无障碍需求等信息，用来影响 AI 决策权重。当前为演示占位页，保存功能会以提示代替。
         </p>
         <button
           type="button"
@@ -24,3 +24,4 @@ export default function PreferencesPage() {
     </ProfileSubPageLayout>
   );
 }
+

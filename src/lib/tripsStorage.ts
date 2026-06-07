@@ -1,4 +1,5 @@
 import type { Trip } from '@/types/trip';
+import { readLocalJson, writeLocalJson } from '@/services/localStorageFallback';
 
 const KEY = 'ql_custom_trips_v1';
 const KEY_LEGACY = 'wander-custom-trips-v1';
@@ -16,18 +17,14 @@ export function loadCustomTrips(): Trip[] {
       }
     }
     if (!raw) return [];
-    return JSON.parse(raw) as Trip[];
+    return readLocalJson<Trip[]>(raw === localStorage.getItem(KEY) ? KEY : KEY_LEGACY, []).data;
   } catch {
     return [];
   }
 }
 
 export function saveCustomTrips(trips: Trip[]) {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(trips));
-  } catch {
-    /* quota */
-  }
+  writeLocalJson(KEY, trips);
 }
 
 export function appendCustomTrip(trip: Trip) {

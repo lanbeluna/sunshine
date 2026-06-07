@@ -1,5 +1,5 @@
-import { ChevronDown, ChevronLeft } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+﻿import { ChevronDown, ChevronLeft } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from '@/lib/toast';
 import { PageContainer } from '@/components/layout/PageContainer';
@@ -9,7 +9,7 @@ import { getTripById } from '@/data/mockTrips';
 import { removeCustomTrip } from '@/lib/tripsStorage';
 import { formatTripDateRange } from '@/lib/formatTripDate';
 import { cn } from '@/lib/utils';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 import type { TripStatus } from '@/types/trip';
 
 const STATUS_LABEL: Record<TripStatus, string> = {
@@ -17,6 +17,14 @@ const STATUS_LABEL: Record<TripStatus, string> = {
   ongoing: '进行中',
   done: '已完成',
 };
+
+function makeOpenDays(days: { day: number }[]): Record<number, boolean> {
+  const map: Record<number, boolean> = {};
+  days.forEach((day) => {
+    map[day.day] = day.day === 1;
+  });
+  return map;
+}
 
 function statusPillClass(status: TripStatus, light: boolean): string {
   if (light) {
@@ -47,16 +55,7 @@ export default function TripDetailPage() {
 
   const trip = useMemo(() => (tripId ? getTripById(tripId) : undefined), [tripId]);
 
-  const [openDays, setOpenDays] = useState<Record<number, boolean>>({});
-
-  useEffect(() => {
-    if (!trip) return;
-    const m: Record<number, boolean> = {};
-    trip.itinerary.forEach((d) => {
-      m[d.day] = d.day === 1;
-    });
-    setOpenDays(m);
-  }, [trip?.id]);
+  const [openDaysState, setOpenDaysState] = useState<{ id: string; values: Record<number, boolean> } | null>(null);
 
   if (!trip) {
     return (
@@ -74,22 +73,23 @@ export default function TripDetailPage() {
   }
 
   const onEdit = () => {
-    toast.info('编辑行程', { description: '演示环境：可在此接入日程拖拽、酒店与交通编辑。' });
+    toast.info('编辑行程', { description: '演示环境：可在这里接入日程拖拽、酒店与交通编辑。' });
   };
 
   const onDelete = () => {
-    if (window.confirm(`确定删除「${trip.destination}」？`)) {
+    if (window.confirm(`确定删除「${trip.destination}」吗？`)) {
       if (trip.id.startsWith('c-')) {
         removeCustomTrip(trip.id);
         toast.success('已删除行程');
       } else {
-        toast.success('已删除（演示）', { description: '内置示例行程仅隐藏本次会话；刷新后仍会显示。' });
+        toast.success('已删除（演示）', { description: '内置示例行程仅隐藏本次会话，刷新后仍会显示。' });
       }
       navigate('/trips', { replace: true });
     }
   };
 
   const bottomOffset = 'calc(4.25rem + env(safe-area-inset-bottom, 0px))';
+  const openDays = openDaysState?.id === trip.id ? openDaysState.values : makeOpenDays(trip.itinerary);
 
   return (
     <PageContainer className="pb-0">
@@ -109,7 +109,7 @@ export default function TripDetailPage() {
             type="button"
             onClick={() => navigate('/trips')}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-black/45 text-white backdrop-blur-md transition active:scale-95"
-            aria-label="返回"
+            aria-label="杩斿洖"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
@@ -143,7 +143,12 @@ export default function TripDetailPage() {
                 <Collapsible
                   key={d.day}
                   open={open}
-                  onOpenChange={(next) => setOpenDays((prev) => ({ ...prev, [d.day]: next }))}
+                  onOpenChange={(next) =>
+                    setOpenDaysState((prev) => ({
+                      id: trip.id,
+                      values: { ...(prev?.id === trip.id ? prev.values : openDays), [d.day]: next },
+                    }))
+                  }
                 >
                   <div
                     className={cn(
@@ -181,7 +186,7 @@ export default function TripDetailPage() {
                       >
                         {d.items.map((item) => (
                           <li key={item} className="flex gap-2">
-                            <span className="text-indigo-400">·</span>
+                            <span className="text-indigo-400">路</span>
                             <span>{item}</span>
                           </li>
                         ))}
@@ -213,17 +218,18 @@ export default function TripDetailPage() {
                 : 'border border-white/15 bg-wander-surface text-white shadow-lg active:bg-white/5'
             )}
           >
-            编辑行程
+            缂栬緫琛岀▼
           </button>
           <button
             type="button"
             onClick={onDelete}
             className="h-11 shrink-0 px-3 text-sm font-semibold text-rose-500 transition active:opacity-80"
           >
-            删除行程
+            鍒犻櫎琛岀▼
           </button>
         </div>
       </div>
     </PageContainer>
   );
 }
+

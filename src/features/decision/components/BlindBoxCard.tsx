@@ -1,6 +1,5 @@
 import type { CSSProperties } from 'react';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
 import { WanderImage } from '@/components/media/WanderImage';
 import type { Destination } from '@/types/decision';
 import { cn } from '@/lib/utils';
@@ -90,12 +89,7 @@ function CornerFrames() {
 }
 
 export function BlindBoxCard({ flipped, disabled, preview, onActivate }: Props) {
-  const [burst, setBurst] = useState(0);
-
-  useEffect(() => {
-    if (!flipped || !preview) return;
-    setBurst((b) => b + 1);
-  }, [flipped, preview?.id]);
+  const burstKey = flipped && preview ? `${preview.id}-${preview.name}` : '';
 
   const gridStyle = {
     backgroundImage: `
@@ -163,9 +157,9 @@ export function BlindBoxCard({ flipped, disabled, preview, onActivate }: Props) 
           >
             <CornerFrames />
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden rounded-[20px]">
-              {burst > 0 ? (
+              {burstKey ? (
                 <motion.div
-                  key={burst}
+                  key={burstKey}
                   initial={{ opacity: 1 }}
                   className="absolute inset-0 flex items-center justify-center"
                 >

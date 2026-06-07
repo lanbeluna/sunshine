@@ -22,6 +22,7 @@ import { useDecision } from '@/hooks/useDecision';
 import {
   createItineraryDraft,
   createJournalDraft,
+  saveDestinationInspiration,
 } from '@/features/decision/services/inspirationSaves';
 import { appendDecisionHistoryRecord } from '@/lib/decisionHistoryStore';
 import { cn } from '@/lib/utils';
@@ -107,12 +108,11 @@ export default function DecisionPage() {
   const inboxUnread = useInboxUnread();
   const d = useDecision();
   const historyLoggedKey = useRef<string | null>(null);
-  const [idleHistoryTick, setIdleHistoryTick] = useState(0);
+  const [savingAction, setSavingAction] = useState<'favorite' | 'itinerary' | 'journal' | null>(null);
 
   useEffect(() => {
     if (d.phase === 'idle') {
       historyLoggedKey.current = null;
-      setIdleHistoryTick((t) => t + 1);
     }
   }, [d.phase]);
 
@@ -140,22 +140,44 @@ export default function DecisionPage() {
     toast.message('已重新决策', { description: '返回首页，可再次问答或使用盲盒。' });
   };
 
-  const handleSaveItineraryDraft = () => {
+  const handleSaveItineraryDraft = async () => {
     if (!d.result) return;
-    const trip = createItineraryDraft(d.result);
-    toast.success('行程草稿已生成', { description: `已保存到「行程」：${trip.destination}` });
+    setSavingAction('itinerary');
+    const { trip, sync } = await createItineraryDraft(d.result);
+    setSavingAction(null);
+    toast.success('行程草稿已生成', {
+      description:
+        sync.source === 'supabase'
+          ? `已同步到云端：${trip.destination}`
+          : `已保存到本地演示数据：${trip.destination}`,
+    });
   };
 
-  const handleSaveJournalDraft = () => {
+  const handleSaveJournalDraft = async () => {
     if (!d.result) return;
-    const note = createJournalDraft(d.result, d.profile);
-    toast.success('手记草稿已写入', { description: `可在「我的」里的草稿箱继续整理：${note.title}` });
+    setSavingAction('journal');
+    const { note, sync } = await createJournalDraft(d.result, d.profile);
+    setSavingAction(null);
+    toast.success('手记草稿已写入', {
+      description:
+        sync.source === 'supabase'
+          ? `已同步到云端：${note.title}`
+          : `可在「我的」里的草稿箱继续整理：${note.title}`,
+    });
   };
 
-  const handleSaveDestination = () => {
+  const handleSaveDestination = async () => {
     if (!d.result) return;
+    setSavingAction('favorite');
     if (!d.favorited) d.toggleFavorite();
-    toast.success('目的地已收藏', { description: '可以在「我的收藏」查看这条旅行灵感。' });
+    const sync = await saveDestinationInspiration(d.result);
+    setSavingAction(null);
+    toast.success('目的地已收藏', {
+      description:
+        sync.source === 'supabase'
+          ? '已同步到 Supabase，也可以在「我的收藏」查看。'
+          : '已使用本地演示数据兜底，可以在「我的收藏」查看。',
+    });
   };
 
   const startWithHint = () => {
@@ -171,7 +193,10 @@ export default function DecisionPage() {
     if (d.phase === 'qa' && d.step === 6 && d.canNext) {
       toast.success('正在生成方案', { description: '约 2 秒后展示目的地与行程速览。' });
     }
-    d.nextStep();
+    const moved = d.nextStep();
+    if (!moved && d.validationMessage) {
+      toast.error(d.validationMessage);
+    }
   };
 
   return (
@@ -211,7 +236,7 @@ export default function DecisionPage() {
                   <DecisionShortcutsStrip disabled={blindDisabled} onPick={d.runQuickDecision} />
                 </motion.div>
                 <motion.div variants={DEC_FLOW.item}>
-                  <DecisionRecentStrip refreshKey={idleHistoryTick} />
+                  <DecisionRecentStrip refreshKey={d.phase} />
                 </motion.div>
               </>
             )}
@@ -222,6 +247,11 @@ export default function DecisionPage() {
                   <StepDots step={d.step} total={7} />
                 </div>
                 <AIBubble question={QA_QUESTIONS[d.step] ?? preferenceQuestion(d.step)} />
+                {d.validationMessage ? (
+                  <p className="mx-4 mt-2 rounded-xl border border-rose-400/25 bg-rose-500/10 px-3 py-2 text-xs font-medium text-rose-100">
+                    {d.validationMessage}
+                  </p>
+                ) : null}
                 {d.step === 0 && (
                   <OptionGrid options={MOODS} selected={d.draft.mood} onSelect={d.setMood} />
                 )}
@@ -284,6 +314,7 @@ export default function DecisionPage() {
             onViewItinerary={openDestinationDetail}
             onSaveItineraryDraft={handleSaveItineraryDraft}
             onSaveJournalDraft={handleSaveJournalDraft}
+            savingAction={savingAction}
           />
         )}
       </div>

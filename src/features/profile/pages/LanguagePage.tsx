@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
+﻿import { useNavigate } from 'react-router-dom';
 import { toast } from '@/lib/toast';
 import { ProfileSubPageLayout } from '@/features/profile/components/ProfileSubPageLayout';
-import { useAppContext, type AppLanguage } from '@/context/AppContext';
+import { useAppContext, type AppLanguage } from '@/context/useAppContext';
 import { cn } from '@/lib/utils';
 
 export default function LanguagePage() {
@@ -13,7 +13,7 @@ export default function LanguagePage() {
     setLanguage(lang);
     navigate(-1);
     toast.success(lang === 'zh' ? '已切换为中文' : 'Switched to English', {
-      description: '当前为界面语言演示，正文未做完整翻译。',
+      description: '当前为界面语言演示，正文内容暂未完整翻译。',
     });
   };
 
@@ -54,3 +54,4 @@ export default function LanguagePage() {
     </ProfileSubPageLayout>
   );
 }
+

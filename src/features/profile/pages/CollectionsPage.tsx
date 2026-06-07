@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Bookmark, Compass, HeartOff } from 'lucide-react';
 import { Card } from '@/components/common/Card';
 import { EmptyState } from '@/components/common/EmptyState';
@@ -24,7 +24,6 @@ const TABS: { id: Tab; label: string }[] = [
 
 export default function CollectionsPage() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [tab, setTab] = useState<Tab>('all');
   const [bump, setBump] = useState(0);
 
@@ -32,7 +31,7 @@ export default function CollectionsPage() {
     void bump;
     const collections = loadCollections();
     return { destinations: collections.destinations, guides: collections.guides };
-  }, [location.key, bump]);
+  }, [bump]);
 
   const destCards = useMemo(
     () =>

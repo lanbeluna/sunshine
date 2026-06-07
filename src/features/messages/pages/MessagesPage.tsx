@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from '@/lib/toast';
 import { WanderImage } from '@/components/media/WanderImage';
@@ -22,23 +22,23 @@ import {
   type InboxChannel,
   type InboxMessage,
 } from '@/lib/messagesInboxStore';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 import { pickCover } from '@/lib/unsplashPools';
 import { cn } from '@/lib/utils';
 
 const CHANNEL_META: Record<InboxChannel, { label: string; emoji: string }> = {
-  trip: { label: '行程提醒', emoji: '🗓️' },
+  trip: { label: '行程提醒', emoji: '📅' },
   recommend: { label: '每日推荐', emoji: '✨' },
   social: { label: '互动消息', emoji: '💬' },
   system: { label: '系统通知', emoji: '⚙️' },
 };
 
 const TABS: { id: 'all' | InboxChannel; label: string }[] = [
-  { id: 'all', label: '全部' },
-  { id: 'trip', label: '行程' },
-  { id: 'recommend', label: '推荐' },
-  { id: 'social', label: '互动' },
-  { id: 'system', label: '系统' },
+  { id: 'all', label: '鍏ㄩ儴' },
+  { id: 'trip', label: '琛岀▼' },
+  { id: 'recommend', label: '鎺ㄨ崘' },
+  { id: 'social', label: '浜掑姩' },
+  { id: 'system', label: '绯荤粺' },
 ];
 
 export default function MessagesPage() {
@@ -79,7 +79,7 @@ export default function MessagesPage() {
 
   return (
     <ProfileSubPageLayout
-      title="消息"
+      title="娑堟伅"
       right={
         <button
           type="button"
@@ -89,7 +89,7 @@ export default function MessagesPage() {
             light ? 'text-indigo-600 hover:bg-indigo-50' : 'text-indigo-300 hover:bg-white/10'
           )}
         >
-          全部已读
+          鍏ㄩ儴宸茶
         </button>
       }
     >
@@ -126,7 +126,7 @@ export default function MessagesPage() {
       <div className="px-4 pb-28 pt-3">
         {hiddenHint ? (
           <p className={cn('mb-3 rounded-xl border px-3 py-2 text-xs', light ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-amber-500/30 bg-amber-500/10 text-amber-100')}>
-            部分消息因「通知设置」已关闭对应类型而未显示。{' '}
+            部分消息因「通知设置」关闭了对应类型而未显示。{' '}
             <Link to="/profile/notifications" className="font-semibold underline underline-offset-2">
               去调整
             </Link>
@@ -138,19 +138,19 @@ export default function MessagesPage() {
             <WanderImage
               src={pickCover(`inbox-empty-${tab}`, 560, 320)}
               alt=""
-              fallbackLabel="消息"
+              fallbackLabel="娑堟伅"
               className="mb-5 h-40 w-full max-w-[300px] overflow-hidden rounded-2xl shadow-lg shadow-black/25"
               width={560}
               height={320}
             />
             <p className={cn('text-sm', light ? 'text-zinc-600' : 'text-wander-secondary')}>
-              {tab === 'all' ? '暂无消息' : '该分类下暂无消息'}
+              {tab === 'all' ? '鏆傛棤娑堟伅' : '璇ュ垎绫讳笅鏆傛棤娑堟伅'}
             </p>
             <Link
               to="/profile/notifications"
               className="mt-4 text-sm font-semibold text-indigo-400"
             >
-              通知设置
+              閫氱煡璁剧疆
             </Link>
           </div>
         ) : (
@@ -215,7 +215,7 @@ export default function MessagesPage() {
         )}
 
         <p className={cn('mt-8 text-center text-[11px]', light ? 'text-zinc-400' : 'text-wander-muted')}>
-          行程提醒、每日推荐、互动与系统通知会聚合在此。已读状态保存在本机。
+          琛岀▼鎻愰啋銆佹瘡鏃ユ帹鑽愩€佷簰鍔ㄤ笌绯荤粺閫氱煡浼氳仛鍚堝湪姝ゃ€傚凡璇荤姸鎬佷繚瀛樺湪鏈満銆?
         </p>
       </div>
 
@@ -236,7 +236,7 @@ export default function MessagesPage() {
                   {active.title}
                 </DialogTitle>
                 <DialogDescription className={cn('text-left', light ? 'text-zinc-500' : 'text-wander-secondary')}>
-                  {CHANNEL_META[active.channel].label} · {formatCommentTime(active.createdAt)}
+                  {CHANNEL_META[active.channel].label} 路 {formatCommentTime(active.createdAt)}
                 </DialogDescription>
               </DialogHeader>
               <div className={cn('space-y-3 text-sm leading-relaxed', light ? 'text-zinc-700' : 'text-wander-secondary')}>
@@ -251,14 +251,14 @@ export default function MessagesPage() {
                   className={cn('font-sans', light ? '' : 'border-white/15 bg-white/10 text-white hover:bg-white/15')}
                   onClick={() => setActive(null)}
                 >
-                  关闭
+                  鍏抽棴
                 </Button>
                 <Button
                   type="button"
                   className="font-sans border-0 bg-gradient-to-r from-indigo-500 to-violet-600 text-white shadow-lg hover:from-indigo-400 hover:to-violet-500"
                   onClick={() => setActive(null)}
                 >
-                  知道了
+                  鐭ラ亾浜?
                 </Button>
               </DialogFooter>
             </>
@@ -268,3 +268,4 @@ export default function MessagesPage() {
     </ProfileSubPageLayout>
   );
 }
+

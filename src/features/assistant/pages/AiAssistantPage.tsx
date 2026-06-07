@@ -209,11 +209,14 @@ export default function AiAssistantPage() {
     if (!streaming) return;
     if (streaming.shown < streaming.full.length) return;
     const { id, full, places, table } = streaming;
-    setMessages((prev) => {
-      if (prev.some((m) => m.id === id)) return prev;
-      return [...prev, { id, role: 'assistant', text: full, createdAt: Date.now(), places, table }];
-    });
-    setStreaming(null);
+    const t = window.setTimeout(() => {
+      setMessages((prev) => {
+        if (prev.some((m) => m.id === id)) return prev;
+        return [...prev, { id, role: 'assistant', text: full, createdAt: Date.now(), places, table }];
+      });
+      setStreaming(null);
+    }, 0);
+    return () => window.clearTimeout(t);
   }, [streaming]);
 
   const finalizeUserSend = useCallback((raw: string) => {

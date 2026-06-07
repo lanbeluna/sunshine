@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { Bot, Compass, Map, Sparkles, User } from 'lucide-react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 import { cn } from '@/lib/utils';
 
 const tabClass =
@@ -18,7 +18,7 @@ function TabIcon({
   label: string;
   Icon: typeof Sparkles;
   inactiveClass: string;
-  /** 自定义高亮判断（如 /trips/:id 仍视为「行程」选中） */
+  /** 鑷畾涔夐珮浜垽鏂紙濡?/trips/:id 浠嶈涓恒€岃绋嬨€嶉€変腑锛?*/
   isActive?: (pathname: string) => boolean;
 }) {
   const { pathname } = useLocation();
@@ -49,12 +49,12 @@ export function BottomNav() {
   return (
     <nav
       className={cn(
-        'fixed bottom-0 left-1/2 z-50 w-dvw max-w-[430px] -translate-x-1/2 safe-bottom backdrop-blur-xl',
+        'fixed bottom-0 left-1/2 z-50 w-dvw max-w-[430px] -translate-x-1/2 safe-bottom backdrop-blur-xl md:max-w-[768px] lg:max-w-[960px]',
         light ? 'border-t border-zinc-200/90 bg-white/85' : 'border-t border-white/10 bg-black/80'
       )}
       aria-label="主导航"
     >
-      <div className="relative mx-auto flex w-full max-w-[430px] items-end justify-between px-2 pb-1 pt-1">
+      <div className="relative mx-auto flex w-full max-w-[430px] items-end justify-between px-2 pb-1 pt-1 md:max-w-[560px]">
         <TabIcon to="/decision" label="灵感" Icon={Sparkles} inactiveClass={inactiveTab} />
         <TabIcon to="/explore" label="探索" Icon={Compass} inactiveClass={inactiveTab} />
         <div className="w-[4.25rem] shrink-0" aria-hidden />
@@ -115,3 +115,4 @@ export function BottomNav() {
     </nav>
   );
 }
+

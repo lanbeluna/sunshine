@@ -13,7 +13,16 @@ const STATS = [
   { label: '收藏', value: '26' },
 ];
 
-export function ProfileHero() {
+type Props = {
+  email?: string | null;
+};
+
+function accountName(email?: string | null) {
+  if (!email) return '旅行家小 A';
+  return email.split('@')[0] || 'QL轻旅用户';
+}
+
+export function ProfileHero({ email }: Props) {
   return (
     <section className="px-4 pb-3 pt-[max(0.9rem,env(safe-area-inset-top))]">
       <Card className="relative overflow-hidden pb-5 pt-20 text-center">
@@ -21,7 +30,10 @@ export function ProfileHero() {
           className="absolute inset-x-0 top-0 h-32 bg-gradient-to-br from-[var(--ql-accent)] via-[var(--ql-accent-3)] to-[var(--ql-accent-2)] opacity-90"
           aria-hidden
         />
-        <div className="absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_22%_20%,rgba(255,255,255,0.38),transparent_24%),radial-gradient(circle_at_80%_18%,rgba(255,255,255,0.22),transparent_22%)]" />
+        <div
+          className="absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_22%_20%,rgba(255,255,255,0.38),transparent_24%),radial-gradient(circle_at_80%_18%,rgba(255,255,255,0.22),transparent_22%)]"
+          aria-hidden
+        />
 
         <div className="relative mx-auto h-24 w-24">
           <div className="h-24 w-24 overflow-hidden rounded-full border-4 border-white bg-white shadow-xl">
@@ -36,7 +48,7 @@ export function ProfileHero() {
           </div>
           <button
             type="button"
-            onClick={() => toast.info('资料编辑为课程演示功能')}
+            onClick={() => toast.info('资料编辑是课程演示功能，后续可以接入 Supabase profiles 表。')}
             className="ql-focus absolute bottom-1 right-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[var(--ql-accent)] text-white shadow-lg active:scale-95"
             aria-label="编辑资料"
           >
@@ -44,8 +56,8 @@ export function ProfileHero() {
           </button>
         </div>
 
-        <h2 className="mt-3 text-xl font-black tracking-tight text-[var(--ql-ink)]">旅行家小 A</h2>
-        <p className="mt-1 text-xs font-semibold text-[var(--ql-muted)]">@ql_lightrip</p>
+        <h2 className="mt-3 text-xl font-black tracking-tight text-[var(--ql-ink)]">{accountName(email)}</h2>
+        <p className="mt-1 text-xs font-semibold text-[var(--ql-muted)]">{email ?? '@ql_lightrip'}</p>
         <div className="mt-3 flex justify-center">
           <Tag icon={<Sparkles className="h-3.5 w-3.5" />}>轻量旅行灵感工具 · 学生作品</Tag>
         </div>

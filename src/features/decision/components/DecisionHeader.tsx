@@ -1,5 +1,5 @@
 import { Bell } from 'lucide-react';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 import { cn } from '@/lib/utils';
 
 type Props = {

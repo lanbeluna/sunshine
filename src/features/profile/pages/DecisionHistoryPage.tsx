@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+﻿import { useMemo } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ProfileSubPageLayout } from '@/features/profile/components/ProfileSubPageLayout';
@@ -6,7 +6,7 @@ import { WanderImage } from '@/components/media/WanderImage';
 import { getDestinationById } from '@/data/destinations';
 import { loadDecisionHistory } from '@/lib/decisionHistoryStore';
 import { itineraryDayImageUrl } from '@/data/destinationImages';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 import { cn } from '@/lib/utils';
 
 function formatDecisionDate(iso: string): string {
@@ -82,3 +82,4 @@ export default function DecisionHistoryPage() {
     </ProfileSubPageLayout>
   );
 }
+

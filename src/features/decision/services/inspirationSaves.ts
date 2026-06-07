@@ -3,7 +3,13 @@ import { appendCustomTrip } from '@/lib/tripsStorage';
 import { tripFromDestination } from '@/lib/tripFromDestination';
 import { toggleDestinationFavorite, isDestinationFavorited } from '@/lib/wanderStorage';
 import { pickPortrait } from '@/lib/unsplashPools';
+import {
+  saveDestinationFavoriteWithFallback,
+  saveJournalDraftWithFallback,
+  saveTripHistoryWithFallback,
+} from '@/services/supabase/travelData';
 import type { Destination, UserDecisionProfile } from '@/types/decision';
+import type { JournalEntry } from '@/types/domain';
 
 function addDays(date: Date, days: number) {
   const next = new Date(date);
@@ -25,21 +31,23 @@ function profileLine(profile: UserDecisionProfile | null) {
   return `偏好：${profile.mood} / ${profile.budget} / ${profile.duration} / ${profile.companion} / ${profile.transport} / ${profile.season ?? 'any'} / ${activities}`;
 }
 
-export function saveDestinationInspiration(dest: Destination) {
+export async function saveDestinationInspiration(dest: Destination) {
   if (!isDestinationFavorited(dest.id)) {
     toggleDestinationFavorite(dest.id);
   }
+  return saveDestinationFavoriteWithFallback(dest);
 }
 
-export function createItineraryDraft(dest: Destination) {
+export async function createItineraryDraft(dest: Destination) {
   const start = addDays(new Date(), 14);
   const end = addDays(start, durationDays(dest) - 1);
   const trip = tripFromDestination(dest, isoDate(start), isoDate(end), `inspiration-${dest.id}-${Date.now()}`);
   appendCustomTrip(trip);
-  return trip;
+  const result = await saveTripHistoryWithFallback(trip);
+  return { trip, sync: result };
 }
 
-export function createJournalDraft(dest: Destination, profile: UserDecisionProfile | null) {
+export async function createJournalDraft(dest: Destination, profile: UserDecisionProfile | null) {
   const body = [
     `${dest.name} 是这次 QL轻旅生成的旅行灵感。`,
     profileLine(profile),
@@ -61,5 +69,17 @@ export function createJournalDraft(dest: Destination, profile: UserDecisionProfi
     body,
   };
   appendDraftNote(note);
-  return note;
+  const entry: JournalEntry = {
+    id: note.id,
+    title: note.title,
+    coverImage: note.image,
+    tags: note.tags,
+    body,
+    isDraft: true,
+    createdAt: note.savedAt,
+    updatedAt: note.savedAt,
+    source: 'localStorage',
+  };
+  const result = await saveJournalDraftWithFallback(entry, profile);
+  return { note, sync: result };
 }

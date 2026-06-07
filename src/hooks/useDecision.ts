@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { matchDestination, randomDestination } from '@/lib/decisionEngine';
 import { isDestinationFavorited, toggleDestinationFavorite } from '@/lib/wanderStorage';
+import { validatePreferenceStep } from '@/features/decision/services/preferenceValidation';
 import type {
   Budget,
   Companion,
@@ -45,6 +46,7 @@ export function useDecision() {
   const [favorited, setFavorited] = useState(false);
   const [blindFlipped, setBlindFlipped] = useState(false);
   const [blindPreview, setBlindPreview] = useState<Destination | null>(null);
+  const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
   const profile = useMemo((): UserDecisionProfile | null => {
     const { mood, budget, duration, companion, transport } = draft;
@@ -80,34 +82,38 @@ export function useDecision() {
     setBlindPreview(null);
   }, [clearDecisionTimeouts]);
 
-  const setMood = useCallback((v: Mood) => setDraft((d) => ({ ...d, mood: v })), []);
-  const setBudget = useCallback((v: Budget) => setDraft((d) => ({ ...d, budget: v })), []);
-  const setDuration = useCallback((v: Duration) => setDraft((d) => ({ ...d, duration: v })), []);
-  const setSeason = useCallback((v: TravelSeason) => setDraft((d) => ({ ...d, season: v })), []);
-  const setCompanion = useCallback((v: Companion) => setDraft((d) => ({ ...d, companion: v })), []);
-  const setActivities = useCallback((v: PreferredActivity[]) => setDraft((d) => ({ ...d, activities: v })), []);
-  const setTransport = useCallback((v: Transport) => setDraft((d) => ({ ...d, transport: v })), []);
+  const setMood = useCallback((v: Mood) => {
+    setValidationMessage(null);
+    setDraft((d) => ({ ...d, mood: v }));
+  }, []);
+  const setBudget = useCallback((v: Budget) => {
+    setValidationMessage(null);
+    setDraft((d) => ({ ...d, budget: v }));
+  }, []);
+  const setDuration = useCallback((v: Duration) => {
+    setValidationMessage(null);
+    setDraft((d) => ({ ...d, duration: v }));
+  }, []);
+  const setSeason = useCallback((v: TravelSeason) => {
+    setValidationMessage(null);
+    setDraft((d) => ({ ...d, season: v }));
+  }, []);
+  const setCompanion = useCallback((v: Companion) => {
+    setValidationMessage(null);
+    setDraft((d) => ({ ...d, companion: v }));
+  }, []);
+  const setActivities = useCallback((v: PreferredActivity[]) => {
+    setValidationMessage(null);
+    setDraft((d) => ({ ...d, activities: v }));
+  }, []);
+  const setTransport = useCallback((v: Transport) => {
+    setValidationMessage(null);
+    setDraft((d) => ({ ...d, transport: v }));
+  }, []);
 
   const canNext = useMemo(() => {
     if (phase !== 'qa') return false;
-    switch (step) {
-      case 0:
-        return Boolean(draft.mood);
-      case 1:
-        return Boolean(draft.budget);
-      case 2:
-        return Boolean(draft.duration);
-      case 3:
-        return Boolean(draft.season);
-      case 4:
-        return Boolean(draft.companion);
-      case 5:
-        return Boolean(draft.activities?.length);
-      case 6:
-        return Boolean(draft.transport);
-      default:
-        return false;
-    }
+    return validatePreferenceStep(step, draft).valid;
   }, [phase, step, draft]);
 
   const runLoadingThenResult = useCallback((dest: Destination, pct: number) => {
@@ -119,6 +125,7 @@ export function useDecision() {
     loadingTimeoutRef.current = window.setTimeout(() => {
       loadingTimeoutRef.current = null;
       setResult(dest);
+      setFavorited(isDestinationFavorited(dest.id));
       setMatchPercent(pct);
       setPhase('result');
     }, LOADING_MS);
@@ -145,13 +152,19 @@ export function useDecision() {
   }, [profile, runLoadingThenResult]);
 
   const nextStep = useCallback(() => {
-    if (!canNext) return;
+    const validation = validatePreferenceStep(step, draft);
+    if (!validation.valid) {
+      setValidationMessage(validation.message);
+      return false;
+    }
+    setValidationMessage(null);
     if (step < 6) {
       setStep((s) => s + 1);
-      return;
+      return true;
     }
     finishQA();
-  }, [canNext, step, finishQA]);
+    return true;
+  }, [draft, step, finishQA]);
 
   const beginBlindFlip = useCallback(() => {
     if (phase === 'loading' || phase === 'result') return;
@@ -187,10 +200,6 @@ export function useDecision() {
     setFavorited(toggleDestinationFavorite(result.id));
   }, [result]);
 
-  useEffect(() => {
-    if (result) setFavorited(isDestinationFavorited(result.id));
-  }, [result]);
-
   useEffect(() => () => clearDecisionTimeouts(), [clearDecisionTimeouts]);
 
   return {
@@ -203,6 +212,7 @@ export function useDecision() {
     blindFlipped,
     blindPreview,
     canNext,
+    validationMessage,
     profile,
     startQA,
     goIdle,

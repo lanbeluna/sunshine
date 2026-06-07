@@ -1,15 +1,5 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-
-export type QlAppTheme = 'dark' | 'light';
-export type AppLanguage = 'zh' | 'en';
-
-type AppContextValue = {
-  theme: QlAppTheme;
-  setTheme: (t: QlAppTheme) => void;
-  toggleTheme: () => void;
-  language: AppLanguage;
-  setLanguage: (l: AppLanguage) => void;
-};
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { AppContext, type AppLanguage, type QlAppTheme } from '@/context/appContextCore';
 
 const THEME_KEY = 'ql_theme';
 const THEME_LEGACY = 'wander-theme';
@@ -41,8 +31,6 @@ function readStoredLanguage(): AppLanguage {
     return 'zh';
   }
 }
-
-const AppContext = createContext<AppContextValue | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<QlAppTheme>(readStoredTheme);
@@ -84,10 +72,4 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-}
-
-export function useAppContext() {
-  const ctx = useContext(AppContext);
-  if (!ctx) throw new Error('useAppContext must be used within AppProvider');
-  return ctx;
 }

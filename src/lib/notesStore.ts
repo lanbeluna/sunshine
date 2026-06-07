@@ -1,4 +1,5 @@
 import { pickPortrait } from '@/lib/unsplashPools';
+import { readLocalJson, writeLocalJson } from '@/services/localStorageFallback';
 
 const NOTES_KEY = 'ql_notes';
 const NOTES_LEGACY = 'wanderai_notes';
@@ -82,7 +83,7 @@ export function loadPublishedNotes(): UserNoteCard[] {
       localStorage.setItem(NOTES_KEY, JSON.stringify(seeded));
       return seeded;
     }
-    return JSON.parse(raw) as UserNoteCard[];
+    return readLocalJson<UserNoteCard[]>(raw === localStorage.getItem(NOTES_KEY) ? NOTES_KEY : NOTES_LEGACY, []).data;
   } catch {
     return [];
   }
@@ -101,7 +102,7 @@ export function loadDraftNotes(): UserNoteCard[] {
       }
     }
     if (!raw) return [];
-    return JSON.parse(raw) as UserNoteCard[];
+    return readLocalJson<UserNoteCard[]>(raw === localStorage.getItem(DRAFTS_KEY) ? DRAFTS_KEY : DRAFTS_LEGACY, []).data;
   } catch {
     return [];
   }
@@ -111,7 +112,7 @@ export function appendDraftNote(note: UserNoteCard) {
   if (typeof window === 'undefined') return;
   try {
     const next = [note, ...loadDraftNotes()];
-    localStorage.setItem(DRAFTS_KEY, JSON.stringify(next));
+    writeLocalJson(DRAFTS_KEY, next);
   } catch {
     /* quota */
   }

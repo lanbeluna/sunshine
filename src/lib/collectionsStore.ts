@@ -1,4 +1,5 @@
 /** 个人中心「我的收藏」数据源，与探索/决策收藏操作同步 */
+import { readLocalJson, writeLocalJson } from '@/services/localStorageFallback';
 
 const KEY = 'ql_collections';
 const KEY_LEGACY = 'wanderai_collections';
@@ -77,7 +78,10 @@ export function loadCollections(): CollectionsData {
       saveCollections(migrated);
       return migrated;
     }
-    const parsed = { ...empty(), ...(JSON.parse(raw) as Partial<CollectionsData>) };
+    const parsed = {
+      ...empty(),
+      ...readLocalJson<Partial<CollectionsData>>(raw === localStorage.getItem(KEY) ? KEY : KEY_LEGACY, {}).data,
+    };
     if (!parsed.version) {
       const d = empty();
       const migrated = migrateIfNeeded(d);
@@ -98,11 +102,7 @@ export function loadCollections(): CollectionsData {
 }
 
 export function saveCollections(data: CollectionsData) {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(data));
-  } catch {
-    /* ignore */
-  }
+  writeLocalJson(KEY, data);
 }
 
 export function syncDestinationCollection(id: string, collected: boolean) {

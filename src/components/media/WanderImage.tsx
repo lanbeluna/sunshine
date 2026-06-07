@@ -1,5 +1,5 @@
 import { MapPin } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { pickCover } from '@/lib/unsplashPools';
 import { cn } from '@/lib/utils';
 
@@ -35,8 +35,13 @@ export function WanderImage({
   loading = 'lazy',
   fetchPriority = 'auto',
 }: Props) {
-  const [phase, setPhase] = useState<'loading' | 'ok' | 'err'>('loading');
-  const [failGen, setFailGen] = useState(0);
+  const [imageState, setImageState] = useState<{
+    source: string;
+    phase: 'loading' | 'ok' | 'err';
+    failGen: number;
+  }>(() => ({ source: src, phase: 'loading', failGen: 0 }));
+  const phase = imageState.source === src ? imageState.phase : 'loading';
+  const failGen = imageState.source === src ? imageState.failGen : 0;
   const displayName = (alt && alt.trim()) || (fallbackLabel && fallbackLabel.trim()) || '图片';
   const bg = pickNeutralBg(displayName + src);
   const w = width ?? 960;
@@ -47,11 +52,6 @@ export function WanderImage({
     if (failGen === 0 && primary) return primary;
     return pickCover(`${displayName}|${primary}|fb${failGen}`, w, h);
   }, [src, displayName, failGen, w, h]);
-
-  useEffect(() => {
-    setPhase('loading');
-    setFailGen(0);
-  }, [src]);
 
   if (phase === 'err') {
     return (
@@ -76,13 +76,16 @@ export function WanderImage({
         loading={loading}
         fetchPriority={fetchPriority}
         decoding="async"
-        onLoad={() => setPhase('ok')}
+        onLoad={() => setImageState({ source: src, phase: 'ok', failGen })}
         onError={() => {
           if (failGen < 4) {
-            setFailGen((g) => g + 1);
-            setPhase('loading');
+            setImageState((current) => ({
+              source: src,
+              phase: 'loading',
+              failGen: current.source === src ? current.failGen + 1 : 1,
+            }));
           } else {
-            setPhase('err');
+            setImageState({ source: src, phase: 'err', failGen });
           }
         }}
         className={cn(

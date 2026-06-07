@@ -1,5 +1,7 @@
-/** Sonner 占位：全局关闭顶部提示，调用不产生任何 UI */
-function noop(..._args: unknown[]): void {}
+/** Sonner placeholder: keep toast calls no-op while the demo hides global toasts. */
+type ToastFn = (message?: unknown, options?: unknown) => void;
+
+const noop: ToastFn = () => {};
 
 export const toast = {
   success: noop,

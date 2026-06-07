@@ -12,7 +12,7 @@ type Props<T extends string> = {
 
 export function OptionGrid<T extends string>({ options, selected, onSelect }: Props<T>) {
   return (
-    <div className="grid grid-cols-2 gap-3 px-4 min-[430px]:gap-4">
+    <div className="grid grid-cols-2 gap-3 px-4 min-[430px]:gap-4" role="group" aria-label="单选偏好选项">
       {options.map((opt, i) => {
         const on = selected === opt.value;
         return (
@@ -24,6 +24,7 @@ export function OptionGrid<T extends string>({ options, selected, onSelect }: Pr
             transition={{ delay: i * 0.05, duration: 0.28 }}
             whileTap={{ scale: 0.96 }}
             onClick={() => onSelect(opt.value)}
+            aria-pressed={on}
             className={cn(
               'relative flex min-h-[92px] flex-col items-center justify-center gap-1 rounded-2xl border px-3 py-3 text-center transition duration-200',
               on

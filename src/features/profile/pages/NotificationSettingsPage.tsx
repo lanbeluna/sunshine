@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ProfileSubPageLayout } from '@/features/profile/components/ProfileSubPageLayout';
 import { Switch } from '@/components/ui/switch';
 import { loadNotificationSettings, patchNotificationSettings, type NotificationSettings } from '@/lib/notificationSettingsStore';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 import { cn } from '@/lib/utils';
 
 const ROWS: { key: keyof NotificationSettings; label: string }[] = [
@@ -16,10 +16,6 @@ export default function NotificationSettingsPage() {
   const { theme } = useAppContext();
   const light = theme === 'light';
   const [s, setS] = useState<NotificationSettings>(() => loadNotificationSettings());
-
-  useEffect(() => {
-    setS(loadNotificationSettings());
-  }, []);
 
   const update = (key: keyof NotificationSettings, on: boolean) => {
     const next = patchNotificationSettings({ [key]: on });

@@ -1,5 +1,6 @@
 import type { FeedItem } from '@/types/feed';
 import { syncDestinationCollection, syncGuideCollection } from '@/lib/collectionsStore';
+import { readLocalJson, writeLocalJson } from '@/services/localStorageFallback';
 
 const STORAGE_KEY = 'ql_explore_prefs_v1';
 const STORAGE_LEGACY = 'wander-ai-v1';
@@ -27,7 +28,7 @@ function read(): WanderPersist {
       }
     }
     if (!raw) return defaults();
-    const p = JSON.parse(raw) as Partial<WanderPersist>;
+    const p = readLocalJson<Partial<WanderPersist>>(raw === localStorage.getItem(STORAGE_KEY) ? STORAGE_KEY : STORAGE_LEGACY, {}).data;
     return {
       feedLikes: { ...defaults().feedLikes, ...p.feedLikes },
       feedCollected: { ...defaults().feedCollected, ...p.feedCollected },
@@ -39,11 +40,7 @@ function read(): WanderPersist {
 }
 
 function write(p: WanderPersist) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
-  } catch {
-    /* ignore quota */
-  }
+  writeLocalJson(STORAGE_KEY, p);
 }
 
 export function isFeedLiked(id: string): boolean {

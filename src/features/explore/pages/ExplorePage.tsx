@@ -58,7 +58,10 @@ export default function ExplorePage() {
   const [commentDraft, setCommentDraft] = useState('');
   const [commentBump, setCommentBump] = useState(0);
 
-  const merged = useMemo(() => mergeFeedWithStorage(FEED_CATALOG), [lsBump]);
+  const merged = useMemo(() => {
+    void lsBump;
+    return mergeFeedWithStorage(FEED_CATALOG);
+  }, [lsBump]);
 
   const previewLive = useMemo(() => {
     if (!preview) return null;
@@ -109,6 +112,7 @@ export default function ExplorePage() {
   }, []);
 
   const previewComments = useMemo(() => {
+    void commentBump;
     if (!previewLive) return [];
     return mergeFeedComments(previewLive.id, {
       title: previewLive.title,

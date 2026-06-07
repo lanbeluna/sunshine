@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { toast } from '@/lib/toast';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 
 export function MenuNotifyBlock() {
   const { theme } = useAppContext();

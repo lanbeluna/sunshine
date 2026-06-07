@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 import { cn } from '@/lib/utils';
 
 export function MenuSection({ title, children }: { title: string; children: ReactNode }) {

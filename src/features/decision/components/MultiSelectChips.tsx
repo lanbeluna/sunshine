@@ -36,7 +36,7 @@ export function MultiSelectChips<T extends string>({
   };
 
   return (
-    <div className="px-4 pt-4">
+    <div className="px-4 pt-4" role="group" aria-label="多选旅行活动">
       <div className="grid grid-cols-2 gap-3">
         {options.map((option) => {
           const on = selected.includes(option.value);
@@ -45,6 +45,7 @@ export function MultiSelectChips<T extends string>({
               key={option.value}
               type="button"
               onClick={() => toggle(option.value)}
+              aria-pressed={on}
               className={cn(
                 'ql-focus min-h-[76px] rounded-2xl border px-3 py-3 text-left transition-colors active:scale-[0.98]',
                 on
@@ -60,7 +61,7 @@ export function MultiSelectChips<T extends string>({
           );
         })}
       </div>
-      <p className="mt-3 text-center text-[11px] text-wander-muted">Pick {min}-{max} inspiration tags</p>
+      <p className="mt-3 text-center text-[11px] text-wander-muted">请选择 {min}-{max} 个旅行活动标签</p>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 
 /** 全局 body 主题类（原在 AppShell 内，现保证无壳路由如 /assistant 也有一致基底） */
 export function QlBodyClass() {

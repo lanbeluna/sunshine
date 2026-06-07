@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+﻿import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { DecisionEarthHero } from '@/features/decision/components/DecisionEarthHero';
 import { Button } from '@/components/common/Button';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 import { cn } from '@/lib/utils';
 
-const HINT = '不知道去哪？让AI帮你决定';
+const HINT = '不知道去哪？让 AI 帮你决定';
 const TYPEWRITER_DONE_KEY = 'ql_decision_cta_typewriter_done';
 const TYPEWRITER_DONE_LEGACY = 'wanderai_decision_cta_typewriter_done';
 
@@ -145,3 +145,4 @@ export function DecisionEmptyState({ onStart }: Props) {
     </div>
   );
 }
+

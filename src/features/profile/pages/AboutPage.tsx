@@ -1,6 +1,6 @@
-import { Sparkles } from 'lucide-react';
+﻿import { Sparkles } from 'lucide-react';
 import { ProfileSubPageLayout } from '@/features/profile/components/ProfileSubPageLayout';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 import { cn } from '@/lib/utils';
 
 export default function AboutPage() {
@@ -16,13 +16,14 @@ export default function AboutPage() {
         <h2 className={cn('mt-5 text-2xl font-bold', light ? 'text-zinc-900' : 'text-white')}>QL轻旅</h2>
         <p className="mt-2 text-sm font-medium text-indigo-400">v1.0.0</p>
         <p className={cn('mt-6 max-w-sm text-sm leading-relaxed', light ? 'text-zinc-600' : 'text-wander-secondary')}>
-          轻量规划，灵感出发
+          轻量规划，灵感出发。
         </p>
         <p className={cn('mt-8 text-xs', light ? 'text-zinc-500' : 'text-wander-muted')}>开发者信息</p>
         <p className={cn('mt-1 text-sm', light ? 'text-zinc-700' : 'text-wander-secondary')}>课程作业演示</p>
         <p className={cn('mt-6 text-xs', light ? 'text-zinc-500' : 'text-wander-muted')}>联系方式</p>
-        <p className={cn('mt-1 text-sm', light ? 'text-zinc-700' : 'text-wander-secondary')}>—</p>
+        <p className={cn('mt-1 text-sm', light ? 'text-zinc-700' : 'text-wander-secondary')}>暂未设置</p>
       </div>
     </ProfileSubPageLayout>
   );
 }
+

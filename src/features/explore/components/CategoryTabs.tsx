@@ -1,6 +1,6 @@
 import type { FeedCategoryId } from '@/types/wander';
 
-export const EXPLORE_CATEGORIES: { id: FeedCategoryId; label: string }[] = [
+const EXPLORE_CATEGORIES: { id: FeedCategoryId; label: string }[] = [
   { id: 'all', label: '全部' },
   { id: 'domestic', label: '国内游' },
   { id: 'international', label: '出境游' },

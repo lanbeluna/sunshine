@@ -1,7 +1,7 @@
-import { BookOpen, Compass, HeartHandshake } from 'lucide-react';
+﻿import { BookOpen, Compass, HeartHandshake } from 'lucide-react';
 import { Card } from '@/components/common/Card';
 import { Tag } from '@/components/common/Tag';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 
 function timeSubtitle(): string {
   const h = new Date().getHours();
@@ -54,3 +54,4 @@ export function WelcomeBlock() {
     </div>
   );
 }
+

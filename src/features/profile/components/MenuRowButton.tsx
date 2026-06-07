@@ -1,6 +1,6 @@
 import { ChevronRight } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   subtitle?: string;
   onClick?: () => void;
   trailing?: ReactNode;
-  /** 分组内最后一行可去掉底部分割线 */
+  /** 分组内最后一行可去掉底部分割�?*/
   noDivider?: boolean;
 };
 

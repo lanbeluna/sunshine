@@ -1,5 +1,5 @@
-import { ChevronDown, ChevronLeft, Heart, Sparkles } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+﻿import { ChevronDown, ChevronLeft, Heart, Sparkles } from 'lucide-react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast } from '@/lib/toast';
 import { PageContainer } from '@/components/layout/PageContainer';
@@ -23,11 +23,19 @@ import {
   toggleDestinationFavorite,
 } from '@/lib/wanderStorage';
 import { cn } from '@/lib/utils';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 
 type NavState = { matchPercent?: number } | null;
 
 const SLIDE_LABELS = ['封面', '美食', '风景'] as const;
+
+function makeOpenDays(days: { day: number }[]): Record<number, boolean> {
+  const map: Record<number, boolean> = {};
+  days.forEach((day) => {
+    map[day.day] = day.day === 1;
+  });
+  return map;
+}
 
 function defaultEndIso(daysAfterStart: number): string {
   const d = new Date();
@@ -52,7 +60,7 @@ export default function DestinationDetailPage() {
   const dest = useMemo(() => (id ? getDestinationById(id) : undefined), [id]);
   const matchPct = navState?.matchPercent ?? dest?.matchScore ?? 88;
 
-  const [favorited, setFavorited] = useState(false);
+  const [favoriteState, setFavoriteState] = useState<{ id: string; value: boolean } | null>(null);
   const [slide, setSlide] = useState(0);
   const scrollerRef = useRef<HTMLDivElement>(null);
 
@@ -60,21 +68,7 @@ export default function DestinationDetailPage() {
   const [startDate, setStartDate] = useState(defaultStartIso);
   const [endDate, setEndDate] = useState(() => defaultEndIso(3));
 
-  const [openDays, setOpenDays] = useState<Record<number, boolean>>({});
-
-  useEffect(() => {
-    if (!dest) return;
-    setFavorited(isDestinationFavorited(dest.id));
-  }, [dest]);
-
-  useEffect(() => {
-    if (!dest) return;
-    const m: Record<number, boolean> = {};
-    dest.itinerary.forEach((d) => {
-      m[d.day] = d.day === 1;
-    });
-    setOpenDays(m);
-  }, [dest?.id]);
+  const [openDaysState, setOpenDaysState] = useState<{ id: string; values: Record<number, boolean> } | null>(null);
 
   const onScrollCarousel = useCallback(() => {
     const el = scrollerRef.current;
@@ -88,7 +82,7 @@ export default function DestinationDetailPage() {
   const toggleFav = () => {
     if (!dest) return;
     const next = toggleDestinationFavorite(dest.id);
-    setFavorited(next);
+    setFavoriteState({ id: dest.id, value: next });
     toast.message(next ? '已收藏目的地' : '已取消收藏');
   };
 
@@ -127,7 +121,9 @@ export default function DestinationDetailPage() {
   }
 
   const nights = Math.max(1, dest.itinerary.length - 1);
-  const budgetLine = `${dest.budget.currency} ${dest.budget.min.toLocaleString()}–${dest.budget.max.toLocaleString()}`;
+  const favorited = favoriteState?.id === dest.id ? favoriteState.value : isDestinationFavorited(dest.id);
+  const openDays = openDaysState?.id === dest.id ? openDaysState.values : makeOpenDays(dest.itinerary);
+  const budgetLine = `${dest.budget.currency} ${dest.budget.min.toLocaleString()}-${dest.budget.max.toLocaleString()}`;
   const slides: { src: string; label: string }[] = [
     { src: dest.images.cover, label: SLIDE_LABELS[0] },
     { src: dest.images.food, label: SLIDE_LABELS[1] },
@@ -150,7 +146,7 @@ export default function DestinationDetailPage() {
                 <WanderImage
                   src={s.src}
                   alt={`${dest.name} ${s.label}`}
-                  fallbackLabel={`${dest.name} · ${s.label}`}
+                  fallbackLabel={`${dest.name} 路 ${s.label}`}
                   className="absolute inset-0 h-full w-full"
                   imgClassName="h-full w-full object-cover"
                   width={960}
@@ -177,7 +173,7 @@ export default function DestinationDetailPage() {
             type="button"
             onClick={() => navigate(-1)}
             className="pointer-events-auto flex h-10 w-10 items-center justify-center rounded-full bg-black/45 text-white backdrop-blur-md transition active:scale-95"
-            aria-label="返回"
+            aria-label="杩斿洖"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
@@ -247,7 +243,12 @@ export default function DestinationDetailPage() {
                 <Collapsible
                   key={d.day}
                   open={open}
-                  onOpenChange={(next) => setOpenDays((prev) => ({ ...prev, [d.day]: next }))}
+                  onOpenChange={(next) =>
+                    setOpenDaysState((prev) => ({
+                      id: dest.id,
+                      values: { ...(prev?.id === dest.id ? prev.values : openDays), [d.day]: next },
+                    }))
+                  }
                 >
                   <div
                     className={cn(
@@ -259,7 +260,7 @@ export default function DestinationDetailPage() {
                       <WanderImage
                         src={img}
                         alt={d.title}
-                        fallbackLabel={`${dest.name} · ${d.title}`}
+                        fallbackLabel={`${dest.name} 路 ${d.title}`}
                         className="absolute inset-0 h-full w-full"
                         width={640}
                         height={320}
@@ -278,7 +279,7 @@ export default function DestinationDetailPage() {
                       <div className="min-w-0">
                         <p className="font-semibold">{d.title}</p>
                         <p className={cn('mt-0.5 line-clamp-2 text-xs', light ? 'text-zinc-600' : 'text-wander-secondary')}>
-                          {d.activities.slice(0, 2).join(' · ')}
+                          {d.activities.slice(0, 2).join(' 路 ')}
                         </p>
                       </div>
                       <ChevronDown
@@ -298,7 +299,7 @@ export default function DestinationDetailPage() {
                       >
                         {d.activities.map((a) => (
                           <li key={a} className="flex gap-2">
-                            <span className="text-indigo-400">·</span>
+                            <span className="text-indigo-400">路</span>
                             <span>{a}</span>
                           </li>
                         ))}
@@ -343,12 +344,12 @@ export default function DestinationDetailPage() {
               'bg-gradient-to-r from-indigo-500 to-purple-500 shadow-lg shadow-indigo-500/25'
             )}
           >
-            生成我的行程
+            鐢熸垚鎴戠殑琛岀▼
           </button>
         </div>
         <div className="mx-auto mt-2 w-full max-w-[430px] text-center">
           <button type="button" onClick={reDecide} className="text-sm font-semibold text-wander-secondary underline-offset-2 hover:underline">
-            重新决策
+            閲嶆柊鍐崇瓥
           </button>
         </div>
       </div>
@@ -438,3 +439,4 @@ function InfoCell({
     </div>
   );
 }
+

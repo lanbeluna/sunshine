@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 import { cn } from '@/lib/utils';
 
 /** Bottom tab, center action button, and iOS/Android safe area. */

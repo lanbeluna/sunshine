@@ -2,14 +2,14 @@ import { ChevronLeft } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PageContainer } from '@/components/layout/PageContainer';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/context/useAppContext';
 import { cn } from '@/lib/utils';
 
 type Props = {
   title: string;
   right?: ReactNode;
   children: ReactNode;
-  /** 主内容底部留白（避开底栏） */
+  /** 主内容底部留白（避开底栏�?*/
   className?: string;
 };
 

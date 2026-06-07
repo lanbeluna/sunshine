@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/common/Button';
 import { PageHeader } from '@/components/common/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer';
@@ -24,10 +24,9 @@ function isPast(trip: Trip): boolean {
 
 export default function TripPage() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [segment, setSegment] = useState<TripSegment>('upcoming');
 
-  const allTrips = useMemo(() => getAllTrips(), [location.key, location.pathname]);
+  const allTrips = getAllTrips();
   const upcoming = useMemo(() => allTrips.filter(isUpcoming), [allTrips]);
   const past = useMemo(() => allTrips.filter(isPast), [allTrips]);
   const list = segment === 'upcoming' ? upcoming : past;

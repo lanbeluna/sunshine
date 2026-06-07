@@ -79,6 +79,5 @@ export function matchDestination(profile: UserDecisionProfile): { destination: D
 
 export function randomDestination(): Destination {
   const d = DESTINATIONS[Math.floor(Math.random() * DESTINATIONS.length)];
-  const { matchScore: _m, ...rest } = d;
-  return { ...rest };
+  return { ...d, matchScore: undefined };
 }
