@@ -1,160 +1,109 @@
+﻿import { Camera, Cloud, MapPin, Mountain, Ticket } from 'lucide-react';
 import { useAppContext } from '@/context/useAppContext';
 import { cn } from '@/lib/utils';
 
-/** 星空粒子固定布局，避免每次挂载跳�?*/
-const STARS = [
-  { l: 6, t: 10, d: 6.5, del: 0 },
-  { l: 18, t: 4, d: 8.2, del: 0.4 },
-  { l: 88, t: 8, d: 7.1, del: 1.1 },
-  { l: 72, t: 22, d: 5.8, del: 0.2 },
-  { l: 52, t: 6, d: 9, del: 0.8 },
-  { l: 94, t: 28, d: 6.2, del: 1.5 },
-  { l: 4, t: 42, d: 7.4, del: 0.3 },
-  { l: 28, t: 38, d: 5.5, del: 2 },
-  { l: 78, t: 48, d: 8.8, del: 0.6 },
-  { l: 12, t: 58, d: 6.9, del: 1.2 },
-  { l: 62, t: 4, d: 7.7, del: 0.9 },
-  { l: 44, t: 18, d: 5.2, del: 1.8 },
-  { l: 96, t: 14, d: 6.1, del: 0.1 },
-  { l: 34, t: 12, d: 8.4, del: 1.4 },
-];
+const tagClass =
+  'rounded-full border border-white/40 bg-white/55 px-2.5 py-1 text-[10px] font-bold text-slate-700 shadow-sm backdrop-blur-md';
 
-/** 城市灯光：相对地�?viewBox 的坐�?*/
-const CITY_LIGHTS: { cx: number; cy: number; r: number; delay: string }[] = [
-  { cx: 78, cy: 92, r: 1.4, delay: '0s' },
-  { cx: 102, cy: 88, r: 1.2, delay: '0.3s' },
-  { cx: 118, cy: 96, r: 1.5, delay: '0.6s' },
-  { cx: 132, cy: 82, r: 1.1, delay: '0.2s' },
-  { cx: 148, cy: 94, r: 1.3, delay: '0.9s' },
-  { cx: 92, cy: 108, r: 1.2, delay: '0.4s' },
-  { cx: 110, cy: 118, r: 1.4, delay: '1.1s' },
-  { cx: 128, cy: 112, r: 1, delay: '0.7s' },
-  { cx: 86, cy: 124, r: 1.2, delay: '1.3s' },
-  { cx: 140, cy: 122, r: 1.3, delay: '0.5s' },
-  { cx: 98, cy: 76, r: 1, delay: '1.5s' },
-  { cx: 124, cy: 72, r: 1.1, delay: '0.8s' },
-  { cx: 72, cy: 104, r: 1.2, delay: '1.7s' },
-  { cx: 152, cy: 108, r: 1, delay: '1s' },
-  { cx: 104, cy: 132, r: 1.3, delay: '0.15s' },
-  { cx: 118, cy: 128, r: 1.1, delay: '1.2s' },
-];
+function RouteLine() {
+  return (
+    <svg
+      className="pointer-events-none absolute inset-x-8 bottom-8 h-20 text-white/80 drop-shadow-sm"
+      viewBox="0 0 220 82"
+      fill="none"
+      aria-hidden
+    >
+      <path
+        d="M12 58C48 22 77 74 112 40C145 8 164 38 204 18"
+        stroke="currentColor"
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeDasharray="8 12"
+      />
+    </svg>
+  );
+}
+
+function MainInspirationCard() {
+  return (
+    <div className="absolute left-1/2 top-6 z-20 w-[188px] -translate-x-1/2 rotate-[-3deg] rounded-[26px] border border-white/55 bg-white/70 p-3.5 shadow-[0_22px_50px_rgba(79,70,229,0.18)] backdrop-blur-xl">
+      <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-br from-sky-200 via-violet-200 to-rose-100 p-3">
+        <div className="absolute -right-4 -top-5 h-16 w-16 rounded-full bg-white/50 blur-sm" aria-hidden />
+        <div className="flex items-center justify-between">
+          <span className="rounded-full bg-white/70 px-2 py-1 text-[10px] font-black text-violet-700">灵感推荐</span>
+          <MapPin className="h-4 w-4 text-sky-600" />
+        </div>
+        <div className="mt-8">
+          <p className="text-[11px] font-bold text-slate-500">杭州</p>
+          <h3 className="mt-1 text-lg font-black leading-tight tracking-tight text-slate-950">周末轻旅行</h3>
+        </div>
+      </div>
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        <span className={tagClass}>2天</span>
+        <span className={tagClass}>低预算</span>
+        <span className={tagClass}>文艺散步</span>
+      </div>
+    </div>
+  );
+}
+
+function SideCards() {
+  return (
+    <>
+      <div className="absolute left-1 top-16 z-10 w-[112px] rotate-[-10deg] rounded-3xl border border-white/45 bg-white/50 p-3 shadow-[0_18px_42px_rgba(14,165,233,0.14)] backdrop-blur-xl">
+        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-sky-200/80 text-sky-700">
+          <Camera className="h-5 w-5" />
+        </div>
+        <p className="mt-3 text-[11px] font-black text-slate-800">慢拍小巷</p>
+        <p className="mt-0.5 text-[10px] font-semibold text-slate-500">咖啡 · 展馆</p>
+      </div>
+
+      <div className="absolute right-2 top-20 z-10 w-[118px] rotate-[9deg] rounded-3xl border border-white/45 bg-white/50 p-3 shadow-[0_18px_42px_rgba(168,85,247,0.16)] backdrop-blur-xl">
+        <div className="flex items-center gap-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-violet-200/80 text-violet-700">
+            <Ticket className="h-5 w-5" />
+          </div>
+          <span className="rounded-full bg-white/60 px-2 py-1 text-[10px] font-black text-violet-700">周末</span>
+        </div>
+        <p className="mt-3 text-[11px] font-black text-slate-800">灵感票夹</p>
+        <p className="mt-0.5 text-[10px] font-semibold text-slate-500">可保存</p>
+      </div>
+    </>
+  );
+}
 
 export function DecisionEarthHero() {
   const { theme } = useAppContext();
   const light = theme === 'light';
 
   return (
-    <div className="relative mx-auto h-full w-full max-h-[192px] max-w-[300px]">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl">
-        {STARS.map((s, i) => (
-          <span
-            key={i}
-            className={cn(
-              'absolute h-1 w-1 rounded-full animate-wander-star-drift',
-              light ? 'bg-indigo-400/50' : 'bg-white/70'
-            )}
-            style={{
-              left: `${s.l}%`,
-              top: `${s.t}%`,
-              animationDuration: `${s.d}s`,
-              animationDelay: `${s.del}s`,
-            }}
-          />
-        ))}
-      </div>
+    <div className="relative mx-auto h-full w-full max-h-[210px] max-w-[320px]">
+      <div
+        className={cn(
+          'relative mx-auto h-[196px] w-full overflow-hidden rounded-[34px] border shadow-[0_24px_70px_rgba(99,102,241,0.16)]',
+          light
+            ? 'border-white/75 bg-gradient-to-br from-violet-100 via-sky-100 to-rose-50'
+            : 'border-white/10 bg-gradient-to-br from-indigo-950 via-violet-950 to-sky-950'
+        )}
+      >
+        <div className="absolute -left-10 -top-12 h-36 w-36 rounded-full bg-rose-200/45 blur-3xl" aria-hidden />
+        <div className="absolute -right-12 top-4 h-40 w-40 rounded-full bg-sky-300/35 blur-3xl" aria-hidden />
+        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-white/30 to-transparent" aria-hidden />
 
-      <div className="relative mx-auto flex h-full max-h-[192px] w-full min-h-[140px] max-w-[280px] items-center justify-center">
-        {/* 轨道 + 卫星光点 */}
-        <div
-          className="pointer-events-none absolute flex items-center justify-center"
-          style={{ width: '108%', height: '108%' }}
-        >
-          <div className="absolute rounded-full border border-indigo-400/25 shadow-[0_0_20px_rgba(99,102,241,0.12)]" style={{ inset: '2%' }} />
-          <div
-            className="absolute animate-[spin_18s_linear_infinite]"
-            style={{ width: '104%', height: '104%', transformOrigin: '50% 50%' }}
-          >
-            <div
-              className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-cyan-200 shadow-[0_0_14px_3px_rgba(165,243,252,0.85),0_0_28px_rgba(139,92,246,0.35)]"
-              aria-hidden
-            />
-          </div>
+        <RouteLine />
+
+        <div className="absolute right-8 top-5 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/45 bg-white/45 text-sky-600 shadow-sm backdrop-blur-md">
+          <Cloud className="h-6 w-6" />
+        </div>
+        <div className="absolute bottom-5 left-9 flex h-10 w-10 items-center justify-center rounded-2xl border border-white/45 bg-white/45 text-violet-600 shadow-sm backdrop-blur-md">
+          <Mountain className="h-5 w-5" />
+        </div>
+        <div className="absolute bottom-9 right-12 flex h-9 w-9 items-center justify-center rounded-full bg-sky-400 text-white shadow-lg shadow-sky-400/25">
+          <MapPin className="h-5 w-5" />
         </div>
 
-        {/* 地球主体 */}
-        <div
-          className={cn(
-            'relative z-[1] flex aspect-square w-[76%] items-center justify-center rounded-full',
-            'border border-indigo-400/35 shadow-[inset_0_0_48px_rgba(99,102,241,0.18),0_0_40px_rgba(79,70,229,0.15)]',
-            light ? 'bg-indigo-100/40' : 'bg-[#0c0c14]/90'
-          )}
-        >
-          <div
-            className="absolute inset-[3%] overflow-hidden rounded-full"
-            style={{ clipPath: 'circle(50% at 50% 50%)' }}
-          >
-            <div
-              className="absolute inset-[-8%] animate-[spin_30s_linear_infinite] will-change-transform"
-              style={{ transformOrigin: '50% 50%' }}
-            >
-              <svg viewBox="0 0 240 240" className="h-full w-full" aria-hidden>
-                <defs>
-                  <radialGradient id="wander-earth-ocean" cx="32%" cy="28%" r="75%">
-                    <stop offset="0%" stopColor="#4f46e5" stopOpacity="0.55" />
-                    <stop offset="45%" stopColor="#312e81" stopOpacity="0.85" />
-                    <stop offset="100%" stopColor="#0f172a" stopOpacity="0.95" />
-                  </radialGradient>
-                  <linearGradient id="wander-earth-rim" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#818cf8" stopOpacity="0.5" />
-                    <stop offset="100%" stopColor="#c4b5fd" stopOpacity="0.35" />
-                  </linearGradient>
-                </defs>
-                <circle cx="120" cy="120" r="108" fill="url(#wander-earth-ocean)" />
-                {/* 简化的陆块轮廓 */}
-                <path
-                  d="M52 98c18-22 48-28 78-18 22 8 38 28 42 52-8 14-26 22-44 20-30-4-58-22-76-54z"
-                  fill="white"
-                  opacity="0.07"
-                />
-                <path
-                  d="M118 64c28 4 52 22 58 48-12 10-32 12-48 4-22-12-34-32-10-52z"
-                  fill="white"
-                  opacity="0.055"
-                />
-                <path
-                  d="M72 138c14 18 40 28 66 22 20-4 36-18 44-36-16-8-36-6-52 4-18 12-34 28-58 10z"
-                  fill="white"
-                  opacity="0.06"
-                />
-                <ellipse cx="120" cy="120" rx="108" ry="108" fill="none" stroke="url(#wander-earth-rim)" strokeWidth="1.2" opacity="0.35" />
-                {/* 经纬网格�?*/}
-                <ellipse cx="120" cy="120" rx="108" ry="36" fill="none" stroke="white" strokeOpacity="0.04" strokeWidth="0.6" />
-                <ellipse cx="120" cy="120" rx="108" ry="72" fill="none" stroke="white" strokeOpacity="0.035" strokeWidth="0.5" />
-                <line x1="12" y1="120" x2="228" y2="120" stroke="white" strokeOpacity="0.04" strokeWidth="0.5" />
-                <line x1="120" y1="12" x2="120" y2="228" stroke="white" strokeOpacity="0.04" strokeWidth="0.5" />
-                {CITY_LIGHTS.map((p, i) => (
-                  <circle
-                    key={i}
-                    cx={p.cx}
-                    cy={p.cy}
-                    r={p.r}
-                    fill="#e0e7ff"
-                    style={{
-                      transformOrigin: `${p.cx}px ${p.cy}px`,
-                      animation: `wander-city-blink ${2.05 + (i % 5) * 0.38}s ease-in-out infinite alternate`,
-                      animationDelay: p.delay,
-                    }}
-                  />
-                ))}
-              </svg>
-            </div>
-          </div>
-          {/* 外缘高光 */}
-          <div
-            className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/10"
-            aria-hidden
-          />
-        </div>
+        <SideCards />
+        <MainInspirationCard />
       </div>
     </div>
   );

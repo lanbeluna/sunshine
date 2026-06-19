@@ -52,7 +52,7 @@ export default function NotesPage() {
           <EmptyState
             icon={<BookOpen className="h-6 w-6 text-[var(--ql-accent)]" />}
             title="还没有旅行手记"
-            description="保存推荐结果为手记草稿后，可以在这里整理成更完整的作品展示内容。"
+            description="保存推荐结果为手记草稿后，可以在这里整理成更完整的旅行记录。"
             actionLabel="查看草稿箱"
             onAction={() => navigate('/profile/drafts')}
           />

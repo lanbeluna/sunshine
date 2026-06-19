@@ -1,4 +1,4 @@
-import type { FeedCategoryId } from '@/types/wander';
+﻿import type { FeedCategoryId } from '@/types/wander';
 
 const EXPLORE_CATEGORIES: { id: FeedCategoryId; label: string }[] = [
   { id: 'all', label: '全部' },
@@ -9,7 +9,7 @@ const EXPLORE_CATEGORIES: { id: FeedCategoryId; label: string }[] = [
   { id: 'food', label: '美食' },
   { id: 'bnb', label: '民宿' },
   { id: 'pitfall', label: '避坑' },
-  { id: 'budget', label: '穷游' },
+  { id: 'budget', label: '低预算' },
   { id: 'family', label: '亲子' },
 ];
 
@@ -20,7 +20,7 @@ type Props = {
 
 export function CategoryTabs({ active, onChange }: Props) {
   return (
-    <div className="sticky top-[92px] z-10 border-b border-white/[0.06] bg-[#0b0b0e]/80 backdrop-blur-xl">
+    <div className="sticky top-[92px] z-10 border-b border-white/70 bg-white/74 backdrop-blur-xl">
       <div className="flex gap-2 overflow-x-auto px-4 py-2.5 scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {EXPLORE_CATEGORIES.map((c) => {
           const on = c.id === active;
@@ -29,10 +29,10 @@ export function CategoryTabs({ active, onChange }: Props) {
               key={c.id}
               type="button"
               onClick={() => onChange(c.id)}
-              className={`ql-focus shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-wide transition-colors active:scale-[0.96] ${
+              className={`ql-focus shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold tracking-wide transition-colors active:scale-[0.96] ${
                 on
-                  ? 'bg-white text-zinc-950 shadow-ql-card'
-                  : 'border border-white/[0.08] bg-white/[0.05] text-white/60 hover:text-white'
+                  ? 'bg-wander-coral text-white shadow-lg shadow-rose-300/25'
+                  : 'border border-white/80 bg-white/58 text-slate-500 shadow-sm hover:text-slate-800'
               }`}
             >
               {c.label}

@@ -1,34 +1,14 @@
-import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+﻿import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  ArrowLeft,
-  Bot,
-  ClipboardList,
-  Image as ImageIcon,
-  MapPin,
-  Mic,
-  Plus,
-  Send,
-  Trash2,
-} from 'lucide-react';
+import { ArrowLeft, Bot, ClipboardList, Image as ImageIcon, MapPin, Mic, Plus, Send, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { WanderImage } from '@/components/media/WanderImage';
 import { toast } from '@/lib/toast';
-import {
-  matchAssistantReply,
-  type AssistantPlaceCard,
-  type AssistantTable,
-} from '@/lib/aiAssistantQa';
+import { matchAssistantReply, type AssistantPlaceCard, type AssistantTable } from '@/lib/aiAssistantQa';
 import { pickCover } from '@/lib/unsplashPools';
 import { cn } from '@/lib/utils';
 
-const WELCOME = `👋 你好！我是 QL轻旅 的智能助手。
-我可以帮你：
-· 解答旅行准备问题
-· 推荐当地美食/住宿
-· 规划每日路线
-· 翻译/签证/交通咨询
-有什么想问的吗？`;
+const WELCOME = `你好，我是 QL轻旅助手。\n\n可以问我行前准备、住宿区域、美食清单或路线安排，我会按你的预算给出清晰建议。`;
 
 const QUICK_PROMPTS = [
   '去泰国要准备什么',
@@ -42,9 +22,7 @@ const QUICK_PROMPTS = [
 ];
 
 const QUICK_PROMPT_ICONS = ['🧳', '🏡', '🗺️', '🍜', '🛂', '👨‍👩‍👧', '🎒', '🔒'];
-
-const TYPE_MS = 20;
-const FIVE_MIN = 5 * 60 * 1000;
+const TYPE_MS = 14;
 
 type ChatMessage = {
   id: string;
@@ -64,13 +42,13 @@ function formatClock(ts: number): string {
 function RichBlock({ text }: { text: string }) {
   const blocks = text.split(/\n\n+/);
   return (
-    <div className="space-y-2 text-sm leading-relaxed text-white/95">
+    <div className="space-y-2 text-sm leading-relaxed text-slate-700">
       {blocks.map((block, bi) => (
         <p key={bi} className="whitespace-pre-wrap">
           {block.split(/(\*\*[^*]+\*\*)/g).map((part, i) => {
             if (part.startsWith('**') && part.endsWith('**')) {
               return (
-                <strong key={i} className="font-semibold text-white">
+                <strong key={i} className="font-black text-slate-950">
                   {part.slice(2, -2)}
                 </strong>
               );
@@ -87,24 +65,14 @@ function PlaceCards({ items }: { items: AssistantPlaceCard[] }) {
   return (
     <div className="mt-2 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
       {items.map((p) => (
-        <div
-          key={p.name}
-          className="flex w-[min(11rem,calc(100vw-6rem))] shrink-0 overflow-hidden rounded-xl border border-white/10 bg-black/30"
-        >
+        <div key={p.name} className="flex w-[min(11rem,calc(100vw-6rem))] shrink-0 overflow-hidden rounded-xl border border-white/80 bg-white/76 shadow-sm">
           <div className="relative h-16 w-16 shrink-0">
-            <WanderImage
-              src={pickCover(p.imageSeed, 128, 128)}
-              alt=""
-              fallbackLabel={p.name}
-              className="h-full w-full"
-              width={128}
-              height={128}
-            />
+            <WanderImage src={pickCover(p.imageSeed, 128, 128)} alt="" fallbackLabel={p.name} className="h-full w-full" width={128} height={128} />
           </div>
           <div className="flex min-w-0 flex-1 flex-col justify-center px-2 py-1">
-            <p className="truncate text-xs font-semibold text-white">{p.name}</p>
-            <p className="text-[11px] text-amber-300/95">★ {p.rating}</p>
-            {p.distance ? <p className="truncate text-[10px] text-white/55">{p.distance}</p> : null}
+            <p className="truncate text-xs font-black text-slate-900">{p.name}</p>
+            <p className="text-[11px] font-bold text-amber-500">★ {p.rating}</p>
+            {p.distance ? <p className="truncate text-[10px] font-semibold text-slate-400">{p.distance}</p> : null}
           </div>
         </div>
       ))}
@@ -114,12 +82,12 @@ function PlaceCards({ items }: { items: AssistantPlaceCard[] }) {
 
 function BudgetTable({ table }: { table: AssistantTable }) {
   return (
-    <div className="mt-2 overflow-hidden rounded-xl border border-white/10 bg-black/25">
+    <div className="mt-2 overflow-hidden rounded-xl border border-white/80 bg-white/65 shadow-sm">
       <table className="w-full text-left text-xs">
         <thead>
-          <tr className="border-b border-white/10 bg-white/[0.06]">
+          <tr className="border-b border-rose-100 bg-rose-50/80">
             {table.headers.map((h) => (
-              <th key={h} className="px-2 py-2 font-semibold text-white/90">
+              <th key={h} className="px-2 py-2 font-black text-slate-800">
                 {h}
               </th>
             ))}
@@ -127,9 +95,9 @@ function BudgetTable({ table }: { table: AssistantTable }) {
         </thead>
         <tbody>
           {table.rows.map((row, ri) => (
-            <tr key={ri} className="border-b border-white/[0.06] last:border-0">
+            <tr key={ri} className="border-b border-slate-100 last:border-0">
               {row.map((cell, ci) => (
-                <td key={ci} className="px-2 py-2 text-white/80">
+                <td key={ci} className="px-2 py-2 font-medium text-slate-600">
                   {cell}
                 </td>
               ))}
@@ -145,14 +113,7 @@ function TypingDots() {
   return (
     <div className="flex items-center gap-1 px-1 py-0.5" aria-hidden>
       {[0, 1, 2].map((i) => (
-        <span
-          key={i}
-          className="h-1.5 w-1.5 rounded-full bg-white/50"
-          style={{
-            animation: 'wander-typing-bounce 1s ease-in-out infinite',
-            animationDelay: `${i * 0.18}s`,
-          }}
-        />
+        <span key={i} className="h-1.5 w-1.5 rounded-full bg-wander-coral/70" style={{ animation: 'wander-typing-bounce 1s ease-in-out infinite', animationDelay: `${i * 0.18}s` }} />
       ))}
     </div>
   );
@@ -164,56 +125,31 @@ export default function AiAssistantPage() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>(() => [
-    {
-      id: 'welcome',
-      role: 'assistant',
-      text: WELCOME,
-      createdAt: Date.now(),
-    },
+    { id: 'welcome', role: 'assistant', text: WELCOME, createdAt: Date.now() },
   ]);
   const [typing, setTyping] = useState(false);
-  const [streaming, setStreaming] = useState<{
-    id: string;
-    full: string;
-    shown: number;
-    places?: AssistantPlaceCard[];
-    table?: AssistantTable;
-  } | null>(null);
+  const [streaming, setStreaming] = useState<{ id: string; full: string; shown: number; places?: AssistantPlaceCard[]; table?: AssistantTable } | null>(null);
   const [attachOpen, setAttachOpen] = useState(false);
-  const [sendBurst, setSendBurst] = useState(false);
-  const [quickKeys, setQuickKeys] = useState(() => QUICK_PROMPTS.map((t, i) => ({ id: `q-${i}`, text: t })));
-  const [inputFocus, setInputFocus] = useState(false);
+  const [quickKeys, setQuickKeys] = useState(() => QUICK_PROMPTS.map((text, i) => ({ id: `q-${i}`, text })));
   const isFreshChat = messages.length === 1 && messages[0]?.role === 'assistant' && !typing && !streaming;
+  const busy = typing || !!streaming;
 
-  const scrollBottom = useCallback(() => {
+  useEffect(() => {
     const el = scrollRef.current;
-    if (!el) return;
-    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
-  }, []);
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+  }, [messages, typing, streaming]);
 
-  useLayoutEffect(() => {
-    scrollBottom();
-  }, [messages, typing, streaming, scrollBottom]);
-
-  /** 打字机 */
   useEffect(() => {
     if (!streaming || streaming.shown >= streaming.full.length) return;
-    const t = window.setTimeout(() => {
-      setStreaming((s) => (s ? { ...s, shown: s.shown + 1 } : null));
-    }, TYPE_MS);
+    const t = window.setTimeout(() => setStreaming((s) => (s ? { ...s, shown: s.shown + 1 } : null)), TYPE_MS);
     return () => window.clearTimeout(t);
   }, [streaming]);
 
-  /** 流式结束 → 写入消息列表 */
   useEffect(() => {
-    if (!streaming) return;
-    if (streaming.shown < streaming.full.length) return;
+    if (!streaming || streaming.shown < streaming.full.length) return;
     const { id, full, places, table } = streaming;
     const t = window.setTimeout(() => {
-      setMessages((prev) => {
-        if (prev.some((m) => m.id === id)) return prev;
-        return [...prev, { id, role: 'assistant', text: full, createdAt: Date.now(), places, table }];
-      });
+      setMessages((prev) => (prev.some((m) => m.id === id) ? prev : [...prev, { id, role: 'assistant', text: full, createdAt: Date.now(), places, table }]));
       setStreaming(null);
     }, 0);
     return () => window.clearTimeout(t);
@@ -222,45 +158,25 @@ export default function AiAssistantPage() {
   const finalizeUserSend = useCallback((raw: string) => {
     const text = raw.trim();
     if (!text) return;
-    const userId = `u-${Date.now()}`;
-    setMessages((prev) => [...prev, { id: userId, role: 'user', text, createdAt: Date.now() }]);
+    setMessages((prev) => [...prev, { id: `u-${Date.now()}`, role: 'user', text, createdAt: Date.now() }]);
     setTyping(true);
-
     window.setTimeout(() => {
       const { response, places, table } = matchAssistantReply(text);
       setTyping(false);
-      const aid = `a-${Date.now()}`;
-      setStreaming({
-        id: aid,
-        full: response,
-        shown: 0,
-        places,
-        table,
-      });
-    }, 520 + Math.random() * 380);
+      setStreaming({ id: `a-${Date.now()}`, full: response, shown: 0, places, table });
+    }, 420 + Math.random() * 260);
   }, []);
 
-  const busy = typing || !!streaming;
-
   const handleSend = () => {
-    const t = input.trim();
-    if (!t || busy) return;
+    if (!input.trim() || busy) return;
+    const text = input;
     setInput('');
     setAttachOpen(false);
-    setSendBurst(true);
-    window.setTimeout(() => setSendBurst(false), 480);
-    finalizeUserSend(t);
+    finalizeUserSend(text);
   };
 
   const handleClear = () => {
-    setMessages([
-      {
-        id: `welcome-${Date.now()}`,
-        role: 'assistant',
-        text: WELCOME,
-        createdAt: Date.now(),
-      },
-    ]);
+    setMessages([{ id: `welcome-${Date.now()}`, role: 'assistant', text: WELCOME, createdAt: Date.now() }]);
     setStreaming(null);
     setTyping(false);
     setQuickKeys(QUICK_PROMPTS.map((text, i) => ({ id: `q-${Date.now()}-${i}`, text })));
@@ -285,310 +201,116 @@ export default function AiAssistantPage() {
 
   return (
     <div className="fixed inset-y-0 left-1/2 z-[200] w-dvw max-w-[430px] -translate-x-1/2 overflow-hidden">
-      <motion.div
-        initial={{ y: '100%' }}
-        animate={{ y: 0 }}
-        transition={{ type: 'spring', damping: 30, stiffness: 320 }}
-        className="flex h-full w-full flex-col bg-[#09090b] text-white"
-      >
-      {/* 顶栏 */}
-      <header className="flex shrink-0 items-center gap-2 border-b border-white/[0.08] bg-[#09090b]/90 px-2 pb-3 pt-safe backdrop-blur-xl">
-        <button
-          type="button"
-          onClick={handleBack}
-          className="ql-focus flex h-10 w-10 items-center justify-center rounded-full text-white/90 transition-colors active:scale-95 hover:bg-white/10"
-          aria-label="返回"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </button>
-        <div className="relative flex min-w-0 flex-1 items-center gap-2">
-          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-wander-blue via-indigo-500 to-violet-600 shadow-lg shadow-sky-500/20">
-            <span className="pointer-events-none absolute inset-0 z-[1] w-[40%] bg-gradient-to-r from-transparent via-white/35 to-transparent animate-wander-ai-avatar-shimmer" />
-            <Bot className="relative z-[2] h-5 w-5 text-white" strokeWidth={2.2} />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-bold tracking-tight">QL轻旅 助手</p>
-            <div className="mt-0.5 flex items-center gap-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-              </span>
-              <span className="text-[11px] font-medium text-emerald-400/95">在线</span>
-            </div>
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={handleClear}
-          className="ql-focus flex h-10 w-10 items-center justify-center rounded-full text-white/80 transition-colors active:scale-95 hover:bg-white/10"
-          aria-label="清空对话"
-        >
-          <Trash2 className="h-5 w-5" />
-        </button>
-      </header>
-
-      {/* 消息 */}
-      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[radial-gradient(circle_at_50%_0%,rgba(56,189,248,0.12),transparent_34%)] px-3 py-3">
-        <div className="mx-auto flex w-full flex-col gap-2 pb-4">
-          {isFreshChat ? (
-            <section className="px-1 pt-2">
-              <div className="overflow-hidden rounded-[1.75rem] border border-white/[0.09] bg-white/[0.06] p-4 shadow-2xl shadow-black/25 backdrop-blur-xl">
-                <div className="flex items-start gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-wander-blue via-indigo-500 to-violet-500 shadow-lg shadow-sky-700/20">
-                    <Bot className="h-5 w-5" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-base font-bold text-white">我是你的轻旅行助手</p>
-                    <p className="mt-1 text-sm leading-relaxed text-white/70">
-                      问我行前准备、住宿区域、美食清单或路线安排，我会按学生党预算给你一个可执行建议。
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-4 grid grid-cols-2 gap-2">
-                  {quickKeys.slice(0, 4).map((q, i) => (
-                    <motion.button
-                      key={q.id}
-                      type="button"
-                      layout
-                      onClick={() => onQuickPick(q.text, q.id)}
-                      whileTap={{ scale: 0.96 }}
-                      className="ql-focus min-h-[58px] rounded-2xl border border-white/[0.09] bg-black/25 px-3 py-2 text-left text-xs font-semibold leading-snug text-white/85 transition-colors active:bg-sky-500/15"
-                    >
-                      <span className="mb-1 block text-base leading-none" aria-hidden>
-                        {QUICK_PROMPT_ICONS[i]}
-                      </span>
-                      {q.text}
-                    </motion.button>
-                  ))}
-                </div>
-              </div>
-            </section>
-          ) : null}
-
-          {!isFreshChat && messages.map((m, idx) => {
-            const prev = messages[idx - 1];
-            const showTime = !prev || m.createdAt - prev.createdAt >= FIVE_MIN;
-            return (
-              <Fragment key={m.id}>
-                {showTime ? (
-                  <div className="py-1 text-center text-[11px] text-zinc-500">{formatClock(m.createdAt)}</div>
-                ) : null}
-                {m.role === 'user' ? (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex justify-end"
-                  >
-                    <div
-                      className={cn(
-                        'max-w-[70%] rounded-2xl rounded-bl-md px-3.5 py-2.5',
-                        'bg-gradient-to-br from-wander-coral to-orange-400 text-white shadow-md shadow-rose-900/25'
-                      )}
-                    >
-                      <p className="whitespace-pre-wrap text-sm leading-relaxed">{m.text}</p>
-                    </div>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex justify-start gap-2"
-                  >
-                    <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-wander-blue/90 to-violet-600/90 shadow-md shadow-black/30">
-                      <Bot className="h-3.5 w-3.5 text-white" />
-                    </div>
-                    <div className="max-w-[80%] min-w-0">
-                      <div
-                        className={cn(
-                          'rounded-2xl rounded-br-md border border-white/[0.08]',
-                          'bg-white/[0.065] px-3.5 py-2.5 shadow-inner shadow-black/20'
-                        )}
-                      >
-                        <RichBlock text={m.text} />
-                        {m.places?.length ? <PlaceCards items={m.places} /> : null}
-                        {m.table ? <BudgetTable table={m.table} /> : null}
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </Fragment>
-            );
-          })}
-
-          {typing ? (
-            <div className="flex justify-start gap-2">
-              <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/10">
-                <Bot className="h-3.5 w-3.5 text-white/70" />
-              </div>
-              <div className="rounded-2xl rounded-br-md border border-white/[0.08] bg-white/[0.06] px-4 py-3">
-                <div className="flex items-center gap-2 text-xs text-white/55">
-                  <span>正在输入</span>
-                  <TypingDots />
-                </div>
-              </div>
-            </div>
-          ) : null}
-
-          {streaming ? (
-            <div className="flex justify-start gap-2">
-              <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-wander-blue/90 to-violet-600/90">
-                <Bot className="h-3.5 w-3.5 text-white" />
-              </div>
-              <div className="max-w-[80%] min-w-0">
-                <div
-                  className={cn(
-                    'rounded-2xl rounded-br-md border border-white/[0.08]',
-                    'bg-white/[0.06] px-3.5 py-2.5 shadow-inner shadow-black/20'
-                  )}
-                >
-                  <div className="relative">
-                    <RichBlock text={streaming.full.slice(0, streaming.shown)} />
-                    {streaming.shown < streaming.full.length ? (
-                      <span className="ml-0.5 inline-block h-3 w-0.5 animate-pulse bg-indigo-300 align-middle" />
-                    ) : null}
-                  </div>
-                  {streaming.shown >= streaming.full.length && streaming.places?.length ? (
-                    <PlaceCards items={streaming.places} />
-                  ) : null}
-                  {streaming.shown >= streaming.full.length && streaming.table ? (
-                    <BudgetTable table={streaming.table} />
-                  ) : null}
-                </div>
-              </div>
-            </div>
-          ) : null}
-        </div>
-      </div>
-
-      {/* 快捷问题 */}
-      <div className={cn('shrink-0 border-t border-white/[0.06] bg-black/20 px-2 py-2', isFreshChat && 'hidden')}>
-        <div className="mx-auto flex w-full gap-2 overflow-x-auto pb-1 scrollbar-none">
-          {quickKeys.map((q) => (
-            <motion.button
-              key={q.id}
-              type="button"
-              layout
-              onClick={() => onQuickPick(q.text, q.id)}
-              whileTap={{ scale: 0.94 }}
-              className={cn(
-                'shrink-0 rounded-full border border-indigo-500/50 px-3 py-1.5 text-xs font-medium',
-                'text-indigo-100 transition hover:border-indigo-400 hover:bg-indigo-500/20 active:bg-indigo-500/30'
-              )}
-            >
-              {q.text}
-            </motion.button>
-          ))}
-        </div>
-      </div>
-
-      {/* 展开功能 */}
-      {attachOpen ? (
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: 'auto', opacity: 1 }}
-          className="shrink-0 overflow-hidden border-t border-white/[0.06] bg-black/25 px-3 py-2"
-        >
-          <div className="mx-auto grid w-full grid-cols-2 gap-2 text-xs">
-            <button
-              type="button"
-              className="ql-focus flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition-colors hover:bg-white/[0.08]"
-              onClick={() => simAttach('发送图片', '演示：将分析照片中的景点与光线时段。')}
-            >
-              <ImageIcon className="h-4 w-4 shrink-0 text-indigo-300" />
-              发送图片
-            </button>
-            <button
-              type="button"
-              className="ql-focus flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition-colors hover:bg-white/[0.08]"
-              onClick={() => simAttach('语音输入', '演示：将把你的语音转成文字并发送。')}
-            >
-              <Mic className="h-4 w-4 shrink-0 text-violet-300" />
-              语音输入
-            </button>
-            <button
-              type="button"
-              className="ql-focus flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition-colors hover:bg-white/[0.08]"
-              onClick={() => simAttach('发送位置', '演示：将基于当前位置推荐附近步行可达景点。')}
-            >
-              <MapPin className="h-4 w-4 shrink-0 text-emerald-300" />
-              发送位置
-            </button>
-            <button
-              type="button"
-              className="ql-focus flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition-colors hover:bg-white/[0.08]"
-              onClick={() => {
-                setAttachOpen(false);
-                setInput((prev) =>
-                  prev
-                    ? `${prev}\n\n（从行程导入）帮我看看下面这段行程有没有不合理的地方：\n- Day1 古城\n- Day2 洱海东线`
-                    : '（从行程导入）帮我看看下面这段行程有没有不合理的地方：\n- Day1 古城\n- Day2 洱海东线'
-                );
-                toast.info('已从行程导入', { description: '演示：已将示例行程要点填入输入框。' });
-                inputRef.current?.focus();
-              }}
-            >
-              <ClipboardList className="h-4 w-4 shrink-0 text-amber-200" />
-              从行程导入
-            </button>
-          </div>
-        </motion.div>
-      ) : null}
-
-      {/* 输入区 */}
-      <div className="shrink-0 border-t border-white/[0.08] bg-black/70 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl">
-        <div className="mx-auto flex w-full items-end gap-2">
-          <button
-            type="button"
-            onClick={() => setAttachOpen((o) => !o)}
-            className={cn(
-              'ql-focus mb-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-colors',
-              attachOpen
-                ? 'border-sky-400/60 bg-sky-500/20 text-white'
-                : 'border-white/10 bg-[#1A1A1A] text-white/80 hover:bg-white/10'
-            )}
-            aria-label="更多"
-          >
-            <Plus className="h-5 w-5" />
+      <motion.div initial={{ y: '100%' }} animate={{ y: 0 }} transition={{ type: 'spring', damping: 30, stiffness: 320 }} className="ql-soft-surface flex h-full w-full flex-col text-slate-900">
+        <header className="flex shrink-0 items-center gap-2 border-b border-white/70 bg-white/78 px-2 pb-3 pt-safe shadow-sm shadow-rose-100/40 backdrop-blur-xl">
+          <button type="button" onClick={handleBack} className="ql-focus flex h-10 w-10 items-center justify-center rounded-full text-slate-600 transition-colors active:scale-95 hover:bg-white/60" aria-label="返回">
+            <ArrowLeft className="h-5 w-5" />
           </button>
-          <div className="relative min-w-0 flex-1">
-            <textarea
-              ref={inputRef}
-              rows={1}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  if (!busy) handleSend();
-                }
-              }}
-              onFocus={() => setInputFocus(true)}
-              onBlur={() => setInputFocus(false)}
-              placeholder="问 anything..."
-              className={cn(
-                'ql-focus max-h-24 min-h-[42px] w-full resize-none rounded-[24px] border px-4 py-2.5 text-sm text-white',
-                'bg-[#17171A] placeholder:text-zinc-500',
-                inputFocus ? 'border-sky-400/55 ring-1 ring-sky-400/25' : 'border-white/10'
-              )}
-            />
+          <div className="relative flex min-w-0 flex-1 items-center gap-2">
+            <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-sky-300 via-violet-400 to-rose-300 shadow-lg shadow-violet-200/40">
+              <Bot className="relative z-[2] h-5 w-5 text-white" strokeWidth={2.2} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-black tracking-tight text-slate-950">QL轻旅助手</p>
+              <div className="mt-0.5 flex items-center gap-1.5">
+                <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" /><span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" /></span>
+                <span className="text-[11px] font-bold text-emerald-500">在线</span>
+              </div>
+            </div>
           </div>
-          <motion.button
-            type="button"
-            onClick={handleSend}
-            disabled={busy}
-            whileTap={busy ? undefined : { scale: 0.9 }}
-            className={cn(
-              'ql-focus relative mb-1 flex h-11 w-11 shrink-0 items-center justify-center overflow-visible rounded-full bg-gradient-to-br from-wander-coral to-orange-400 text-white shadow-lg shadow-rose-600/25',
-              busy && 'opacity-45'
-            )}
-            aria-label="发送"
-          >
-            <Send className={cn('relative z-[1] h-4 w-4', sendBurst && 'animate-wander-send-plane')} />
-          </motion.button>
+          <button type="button" onClick={handleClear} className="ql-focus flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-colors active:scale-95 hover:bg-white/60" aria-label="清空对话">
+            <Trash2 className="h-5 w-5" />
+          </button>
+        </header>
+
+        <div ref={scrollRef} className="ql-soft-surface min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-3">
+          <div className="mx-auto flex w-full flex-col gap-2 pb-4">
+            {isFreshChat ? (
+              <section className="px-1 pt-2">
+                <div className="overflow-hidden rounded-[1.75rem] border border-white/80 bg-white/72 p-4 shadow-2xl shadow-rose-100/40 backdrop-blur-xl">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-300 via-violet-400 to-rose-300 shadow-lg shadow-violet-200/35">
+                      <Bot className="h-5 w-5 text-white" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-base font-black text-slate-950">我是你的轻旅行助手</p>
+                      <p className="mt-1 text-sm leading-relaxed text-slate-500">问我行前准备、住宿区域、美食清单或路线安排，我会按你的预算给你一个可执行建议。</p>
+                    </div>
+                  </div>
+                  <div className="mt-4 grid grid-cols-2 gap-2">
+                    {quickKeys.slice(0, 4).map((q, i) => (
+                      <motion.button key={q.id} type="button" layout onClick={() => onQuickPick(q.text, q.id)} whileTap={{ scale: 0.96 }} className="ql-focus min-h-[58px] rounded-2xl border border-white/80 bg-white/65 px-3 py-2 text-left text-xs font-bold leading-snug text-slate-700 shadow-sm transition-colors active:bg-rose-50">
+                        <span className="mb-1 block text-base leading-none" aria-hidden>{QUICK_PROMPT_ICONS[i]}</span>
+                        {q.text}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            ) : null}
+
+            {!isFreshChat && messages.map((m, idx) => (
+              <div key={m.id} className={cn('flex', m.role === 'user' ? 'justify-end' : 'justify-start gap-2')}>
+                {m.role === 'assistant' ? <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-300 to-violet-400"><Bot className="h-3.5 w-3.5 text-white" /></div> : null}
+                <div className={cn('max-w-[80%]', m.role === 'user' && 'max-w-[70%]')}>
+                  {idx === 0 ? <div className="mb-1 text-center text-[11px] text-slate-400">{formatClock(m.createdAt)}</div> : null}
+                  <div className={cn('rounded-2xl px-3.5 py-2.5 shadow-sm', m.role === 'user' ? 'rounded-bl-md bg-gradient-to-br from-wander-coral to-orange-400 text-white shadow-rose-200/60' : 'rounded-br-md border border-white/80 bg-white/72')}>
+                    {m.role === 'user' ? <p className="whitespace-pre-wrap text-sm leading-relaxed">{m.text}</p> : <RichBlock text={m.text} />}
+                    {m.places?.length ? <PlaceCards items={m.places} /> : null}
+                    {m.table ? <BudgetTable table={m.table} /> : null}
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {typing ? <div className="flex justify-start gap-2"><div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/70"><Bot className="h-3.5 w-3.5 text-slate-500" /></div><div className="rounded-2xl rounded-br-md border border-white/80 bg-white/72 px-4 py-3"><div className="flex items-center gap-2 text-xs font-semibold text-slate-500"><span>正在输入</span><TypingDots /></div></div></div> : null}
+
+            {streaming ? (
+              <div className="flex justify-start gap-2">
+                <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-300 to-violet-400"><Bot className="h-3.5 w-3.5 text-white" /></div>
+                <div className="max-w-[80%] min-w-0 rounded-2xl rounded-br-md border border-white/80 bg-white/72 px-3.5 py-2.5 shadow-sm">
+                  <RichBlock text={streaming.full.slice(0, streaming.shown)} />
+                  {streaming.shown < streaming.full.length ? <span className="ml-0.5 inline-block h-3 w-0.5 animate-pulse bg-wander-coral align-middle" /> : null}
+                  {streaming.shown >= streaming.full.length && streaming.places?.length ? <PlaceCards items={streaming.places} /> : null}
+                  {streaming.shown >= streaming.full.length && streaming.table ? <BudgetTable table={streaming.table} /> : null}
+                </div>
+              </div>
+            ) : null}
+          </div>
         </div>
-      </div>
+
+        <div className={cn('shrink-0 border-t border-white/70 bg-white/60 px-2 py-2 backdrop-blur-xl', isFreshChat && 'hidden')}>
+          <div className="mx-auto flex w-full gap-2 overflow-x-auto pb-1 scrollbar-none">
+            {quickKeys.map((q) => (
+              <motion.button key={q.id} type="button" layout onClick={() => onQuickPick(q.text, q.id)} whileTap={{ scale: 0.94 }} className="shrink-0 rounded-full border border-white/80 bg-white/65 px-3 py-1.5 text-xs font-bold text-slate-600 shadow-sm transition active:bg-rose-50">
+                {q.text}
+              </motion.button>
+            ))}
+          </div>
+        </div>
+
+        {attachOpen ? (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="shrink-0 overflow-hidden border-t border-white/70 bg-white/65 px-3 py-2 backdrop-blur-xl">
+            <div className="mx-auto grid w-full grid-cols-2 gap-2 text-xs">
+              <button type="button" className="ql-focus flex items-center gap-2 rounded-xl border border-white/80 bg-white/70 px-3 py-2.5 text-left font-bold text-slate-600 shadow-sm" onClick={() => simAttach('发送图片', '演示：后续可分析照片中的景点与光线时段。')}><ImageIcon className="h-4 w-4 shrink-0 text-sky-500" />发送图片</button>
+              <button type="button" className="ql-focus flex items-center gap-2 rounded-xl border border-white/80 bg-white/70 px-3 py-2.5 text-left font-bold text-slate-600 shadow-sm" onClick={() => simAttach('语音输入', '演示：后续可将语音转成文字并发送。')}><Mic className="h-4 w-4 shrink-0 text-violet-500" />语音输入</button>
+              <button type="button" className="ql-focus flex items-center gap-2 rounded-xl border border-white/80 bg-white/70 px-3 py-2.5 text-left font-bold text-slate-600 shadow-sm" onClick={() => simAttach('发送位置', '演示：后续可基于当前位置推荐附近步行可达的灵感点。')}><MapPin className="h-4 w-4 shrink-0 text-emerald-500" />发送位置</button>
+              <button type="button" className="ql-focus flex items-center gap-2 rounded-xl border border-white/80 bg-white/70 px-3 py-2.5 text-left font-bold text-slate-600 shadow-sm" onClick={() => { setAttachOpen(false); setInput('帮我看看这段行程有没有不合理的地方：\n- Day1 古城散步\n- Day2 海边慢游'); inputRef.current?.focus(); }}><ClipboardList className="h-4 w-4 shrink-0 text-amber-500" />导入行程</button>
+            </div>
+          </motion.div>
+        ) : null}
+
+        <div className="shrink-0 border-t border-white/70 bg-white/78 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-12px_30px_rgba(244,114,182,0.08)] backdrop-blur-xl">
+          <div className="mx-auto flex w-full items-end gap-2">
+            <button type="button" onClick={() => setAttachOpen((o) => !o)} className={cn('ql-focus mb-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-colors', attachOpen ? 'border-sky-300 bg-sky-100 text-sky-600' : 'border-white/80 bg-white/70 text-slate-500 shadow-sm')} aria-label="更多">
+              <Plus className="h-5 w-5" />
+            </button>
+            <textarea ref={inputRef} rows={1} value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (!busy) handleSend(); } }} placeholder="问 anything..." className="ql-focus max-h-24 min-h-[42px] min-w-0 flex-1 resize-none rounded-[24px] border border-white/80 bg-white/75 px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm placeholder:text-slate-400 focus:border-wander-coral/40" />
+            <motion.button type="button" onClick={handleSend} disabled={busy} whileTap={busy ? undefined : { scale: 0.9 }} className={cn('ql-focus mb-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-wander-coral to-orange-400 text-white shadow-lg shadow-rose-300/40', busy && 'opacity-45')} aria-label="发送">
+              <Send className="h-4 w-4" />
+            </motion.button>
+          </div>
+        </div>
       </motion.div>
     </div>
   );

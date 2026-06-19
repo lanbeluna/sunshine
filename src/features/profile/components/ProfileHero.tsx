@@ -1,4 +1,4 @@
-import { Pencil, Sparkles } from 'lucide-react';
+﻿import { Pencil, Sparkles } from 'lucide-react';
 import { Card } from '@/components/common/Card';
 import { Tag } from '@/components/common/Tag';
 import { WanderImage } from '@/components/media/WanderImage';
@@ -48,7 +48,7 @@ export function ProfileHero({ email }: Props) {
           </div>
           <button
             type="button"
-            onClick={() => toast.info('资料编辑是课程演示功能，后续可以接入 Supabase profiles 表。')}
+            onClick={() => toast.info('资料编辑功能后续可以接入 Supabase profiles 表。')}
             className="ql-focus absolute bottom-1 right-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[var(--ql-accent)] text-white shadow-lg active:scale-95"
             aria-label="编辑资料"
           >
@@ -59,7 +59,7 @@ export function ProfileHero({ email }: Props) {
         <h2 className="mt-3 text-xl font-black tracking-tight text-[var(--ql-ink)]">{accountName(email)}</h2>
         <p className="mt-1 text-xs font-semibold text-[var(--ql-muted)]">{email ?? '@ql_lightrip'}</p>
         <div className="mt-3 flex justify-center">
-          <Tag icon={<Sparkles className="h-3.5 w-3.5" />}>轻量旅行灵感工具 · 学生作品</Tag>
+          <Tag icon={<Sparkles className="h-3.5 w-3.5" />}>轻量旅行灵感工具</Tag>
         </div>
 
         <div className="mt-5 grid grid-cols-3 gap-2">
