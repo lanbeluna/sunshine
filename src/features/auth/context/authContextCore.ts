@@ -10,7 +10,7 @@ export type AuthContextValue = {
   isConfigured: boolean;
   isAuthenticated: boolean;
   signIn: (email: string, password: string) => Promise<AuthResult>;
-  signUp: (email: string, password: string) => Promise<AuthResult>;
+  signUp: (email: string, password: string, emailRedirectTo?: string) => Promise<AuthResult>;
   signOut: () => Promise<{ ok: true } | { ok: false; error: string }>;
   clearError: () => void;
 };

@@ -62,12 +62,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return result;
   }, []);
 
-  const signUp = useCallback(async (email: string, password: string): Promise<AuthResult> => {
-    setError(null);
-    const result = await signUpWithEmail(email, password);
-    if (!result.ok) setError(result.error);
-    return result;
-  }, []);
+  const signUp = useCallback(
+    async (email: string, password: string, emailRedirectTo?: string): Promise<AuthResult> => {
+      setError(null);
+      const result = await signUpWithEmail(email, password, emailRedirectTo);
+      if (!result.ok) setError(result.error);
+      return result;
+    },
+    []
+  );
 
   const signOut = useCallback(async () => {
     setError(null);

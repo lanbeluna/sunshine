@@ -51,8 +51,10 @@ export default function RegisterPage() {
       return;
     }
 
+    const emailRedirectTo = `${window.location.origin}/login?redirect=${encodeURIComponent(redirectTo)}`;
+
     setSubmitting(true);
-    const result = await signUp(email, password);
+    const result = await signUp(email, password, emailRedirectTo);
     setSubmitting(false);
 
     if (result.ok) {
@@ -82,14 +84,11 @@ export default function RegisterPage() {
           </div>
           <p className="text-sm font-bold text-[var(--ql-accent)]">创建账号</p>
           <h1 className="mt-2 text-3xl font-black tracking-tight">开始保存旅行灵感</h1>
-          <p className="mt-2 text-sm leading-6 text-[var(--ql-muted)]">
-            这是课程 Demo 的轻量账号系统，用于保护个人页和本地旅行内容。
-          </p>
         </section>
 
         <Card className="space-y-5">
           {!isConfigured ? (
-            <div className="rounded-2xl border border-amber-300/30 bg-amber-300/10 p-4 text-sm leading-6 text-amber-100">
+            <div className="rounded-2xl border border-amber-300/30 bg-amber-300/10 p-4 text-sm leading-6 text-amber-900">
               当前未配置 Supabase，注册功能不可用。请先在 Netlify 或本地环境变量中配置 Supabase URL 和 anon key。
             </div>
           ) : null}
@@ -144,13 +143,13 @@ export default function RegisterPage() {
             </label>
 
             {formError || error ? (
-              <p className="rounded-2xl bg-rose-500/10 px-3 py-2 text-sm font-semibold text-rose-200" role="alert">
+              <p className="rounded-2xl bg-rose-500/10 px-3 py-2 text-sm font-semibold text-rose-700" role="alert">
                 {formError ?? error}
               </p>
             ) : null}
 
             {successMessage ? (
-              <p className="rounded-2xl bg-emerald-500/10 px-3 py-2 text-sm font-semibold text-emerald-200" role="status">
+              <p className="rounded-2xl bg-emerald-500/10 px-3 py-2 text-sm font-semibold text-emerald-700" role="status">
                 {successMessage}
               </p>
             ) : null}

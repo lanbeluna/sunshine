@@ -43,7 +43,11 @@ export async function signInWithEmail(email: string, password: string): Promise<
   return { ok: true, session: data.session, user: data.user };
 }
 
-export async function signUpWithEmail(email: string, password: string): Promise<AuthResult> {
+export async function signUpWithEmail(
+  email: string,
+  password: string,
+  emailRedirectTo?: string
+): Promise<AuthResult> {
   const supabase = getSupabase();
   if (!supabase) {
     return { ok: false, error: '当前未配置 Supabase，注册功能不可用。' };
@@ -52,6 +56,7 @@ export async function signUpWithEmail(email: string, password: string): Promise<
   const { data, error } = await supabase.auth.signUp({
     email: email.trim(),
     password,
+    options: emailRedirectTo ? { emailRedirectTo } : undefined,
   });
 
   if (error) return { ok: false, error: errorMessage(error) };
