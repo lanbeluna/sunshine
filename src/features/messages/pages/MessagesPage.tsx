@@ -22,7 +22,6 @@ import {
   type InboxChannel,
   type InboxMessage,
 } from '@/lib/messagesInboxStore';
-import { useAppContext } from '@/context/useAppContext';
 import { pickCover } from '@/lib/unsplashPools';
 import { cn } from '@/lib/utils';
 
@@ -34,16 +33,14 @@ const CHANNEL_META: Record<InboxChannel, { label: string; emoji: string }> = {
 };
 
 const TABS: { id: 'all' | InboxChannel; label: string }[] = [
-  { id: 'all', label: '鍏ㄩ儴' },
-  { id: 'trip', label: '琛岀▼' },
-  { id: 'recommend', label: '鎺ㄨ崘' },
-  { id: 'social', label: '浜掑姩' },
-  { id: 'system', label: '绯荤粺' },
+  { id: 'all', label: '全部' },
+  { id: 'trip', label: '行程' },
+  { id: 'recommend', label: '推荐' },
+  { id: 'social', label: '互动' },
+  { id: 'system', label: '系统' },
 ];
 
 export default function MessagesPage() {
-  const { theme } = useAppContext();
-  const light = theme === 'light';
   const [bump, setBump] = useState(0);
   const [tab, setTab] = useState<'all' | InboxChannel>('all');
   const [active, setActive] = useState<InboxMessage | null>(null);
@@ -52,71 +49,59 @@ export default function MessagesPage() {
     void bump;
     const all = loadInboxMessages();
     const visible = visibleInboxMessages(all);
-    const filtered =
-      tab === 'all' ? visible : visible.filter((m) => m.channel === tab);
-    const hidden = hiddenInboxCountBySettings();
+    const filtered = tab === 'all' ? visible : visible.filter((message) => message.channel === tab);
     return {
       rows: filtered,
-      hiddenHint: hidden > 0,
+      hiddenHint: hiddenInboxCountBySettings() > 0,
     };
   }, [bump, tab]);
 
-  const openDetail = (m: InboxMessage) => {
-    if (!m.read) {
-      markInboxMessageRead(m.id);
-      setBump((b) => b + 1);
-      setActive({ ...m, read: true });
+  const openDetail = (message: InboxMessage) => {
+    if (!message.read) {
+      markInboxMessageRead(message.id);
+      setBump((value) => value + 1);
+      setActive({ ...message, read: true });
       return;
     }
-    setActive(m);
+    setActive(message);
   };
 
   const onMarkAll = () => {
     markAllInboxRead();
-    setBump((b) => b + 1);
+    setBump((value) => value + 1);
     toast.success('已全部标为已读');
   };
 
   return (
     <ProfileSubPageLayout
-      title="娑堟伅"
+      title="消息"
       right={
         <button
           type="button"
           onClick={onMarkAll}
-          className={cn(
-            'rounded-lg px-2 py-1.5 text-xs font-semibold transition active:scale-95',
-            light ? 'text-indigo-600 hover:bg-indigo-50' : 'text-indigo-300 hover:bg-white/10'
-          )}
+          className="ql-focus rounded-full px-3 py-1.5 text-xs font-semibold text-wander-brand transition-colors active:bg-wander-coral/10"
         >
-          鍏ㄩ儴宸茶
+          全部已读
         </button>
       }
     >
-      <div
-        className={cn(
-          'sticky top-0 z-10 border-b px-2 py-2 backdrop-blur-md',
-          light ? 'border-zinc-200 bg-white/95' : 'border-white/10 bg-wander-bg/95'
-        )}
-      >
+      <div className="sticky top-0 z-10 border-b border-[var(--ql-card-border)] bg-[var(--ql-bg)]/90 px-2 py-2 backdrop-blur-xl">
         <div className="flex gap-2 overflow-x-auto px-2 pb-1 scrollbar-none">
-          {TABS.map((t) => {
-            const on = tab === t.id;
+          {TABS.map((item) => {
+            const activeTab = tab === item.id;
             return (
               <button
-                key={t.id}
+                key={item.id}
                 type="button"
-                onClick={() => setTab(t.id)}
+                onClick={() => setTab(item.id)}
                 className={cn(
-                  'shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition',
-                  on
-                    ? 'bg-indigo-500 text-white shadow-md'
-                    : light
-                      ? 'bg-zinc-100 text-zinc-600'
-                      : 'bg-white/10 text-wander-secondary'
+                  'ql-focus shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition-colors',
+                  activeTab
+                    ? 'bg-wander-brand text-white shadow-md shadow-indigo-200/50'
+                    : 'bg-white/80 text-[var(--ql-muted)] ring-1 ring-[var(--ql-card-border)]'
                 )}
               >
-                {t.label}
+                {item.label}
               </button>
             );
           })}
@@ -125,9 +110,9 @@ export default function MessagesPage() {
 
       <div className="px-4 pb-28 pt-3">
         {hiddenHint ? (
-          <p className={cn('mb-3 rounded-xl border px-3 py-2 text-xs', light ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-amber-500/30 bg-amber-500/10 text-amber-100')}>
-            部分消息因「通知设置」关闭了对应类型而未显示。{' '}
-            <Link to="/profile/notifications" className="font-semibold underline underline-offset-2">
+          <p className="mb-3 rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
+            部分消息因「通知设置」关闭了对应类型而未显示。
+            <Link to="/profile/notifications" className="ml-1 font-semibold underline underline-offset-2">
               去调整
             </Link>
           </p>
@@ -137,76 +122,53 @@ export default function MessagesPage() {
           <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
             <WanderImage
               src={pickCover(`inbox-empty-${tab}`, 560, 320)}
-              alt=""
-              fallbackLabel="娑堟伅"
-              className="mb-5 h-40 w-full max-w-[300px] overflow-hidden rounded-2xl shadow-lg shadow-black/25"
+              alt="空消息状态"
+              fallbackLabel="消息"
+              className="mb-5 h-40 w-full max-w-[300px] overflow-hidden rounded-3xl shadow-lg shadow-rose-100/70"
               width={560}
               height={320}
             />
-            <p className={cn('text-sm', light ? 'text-zinc-600' : 'text-wander-secondary')}>
-              {tab === 'all' ? '鏆傛棤娑堟伅' : '璇ュ垎绫讳笅鏆傛棤娑堟伅'}
-            </p>
-            <Link
-              to="/profile/notifications"
-              className="mt-4 text-sm font-semibold text-indigo-400"
-            >
-              閫氱煡璁剧疆
+            <p className="text-sm text-[var(--ql-muted)]">{tab === 'all' ? '暂无消息' : '该分类下暂无消息'}</p>
+            <Link to="/profile/notifications" className="mt-4 text-sm font-semibold text-wander-brand">
+              通知设置
             </Link>
           </div>
         ) : (
           <ul className="space-y-2">
-            {rows.map((m) => {
-              const meta = CHANNEL_META[m.channel];
+            {rows.map((message) => {
+              const meta = CHANNEL_META[message.channel];
               return (
-                <li key={m.id}>
+                <li key={message.id}>
                   <button
                     type="button"
-                    onClick={() => openDetail(m)}
+                    onClick={() => openDetail(message)}
                     className={cn(
-                      'flex w-full gap-3 rounded-2xl border p-3.5 text-left transition active:scale-[0.99]',
-                      light
-                        ? 'border-zinc-200 bg-white shadow-sm hover:border-indigo-200'
-                        : 'border-white/10 bg-wander-card hover:border-white/20',
-                      !m.read && (light ? 'ring-1 ring-indigo-200' : 'ring-1 ring-indigo-500/35')
+                      'ql-focus flex w-full gap-3 rounded-3xl border bg-white/88 p-3.5 text-left shadow-sm transition-transform active:scale-[0.99]',
+                      message.read ? 'border-white/80' : 'border-indigo-200 ring-1 ring-indigo-100'
                     )}
                   >
-                    <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl">
+                    <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-2xl bg-white">
                       <WanderImage
-                        src={pickCover(`inbox-row-${m.id}-${m.channel}`, 88, 88)}
+                        src={pickCover(`inbox-row-${message.id}-${message.channel}`, 88, 88)}
                         alt=""
                         fallbackLabel={meta.label}
                         className="h-full w-full"
                         width={88}
                         height={88}
                       />
-                      <span
-                        className="pointer-events-none absolute bottom-0 right-0 flex h-5 w-5 items-center justify-center rounded-tl-md bg-black/45 text-[11px] leading-none backdrop-blur-[2px]"
-                        aria-hidden
-                      >
+                      <span className="pointer-events-none absolute bottom-0 right-0 flex h-5 w-5 items-center justify-center rounded-tl-lg bg-white/75 text-[11px] leading-none backdrop-blur" aria-hidden>
                         {meta.emoji}
                       </span>
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-2">
-                        <span className={cn('text-xs font-medium', light ? 'text-indigo-600' : 'text-indigo-300')}>
-                          {meta.label}
-                        </span>
-                        <span className={cn('shrink-0 text-[11px]', light ? 'text-zinc-400' : 'text-wander-muted')}>
-                          {formatCommentTime(m.createdAt)}
-                        </span>
+                        <span className="text-xs font-semibold text-wander-brand">{meta.label}</span>
+                        <span className="shrink-0 text-[11px] text-[var(--ql-muted)]">{formatCommentTime(message.createdAt)}</span>
                       </div>
-                      <p className={cn('mt-0.5 font-semibold leading-snug', light ? 'text-zinc-900' : 'text-white')}>
-                        {m.title}
-                      </p>
-                      <p className={cn('mt-1 line-clamp-2 text-sm', light ? 'text-zinc-600' : 'text-wander-secondary')}>
-                        {m.body}
-                      </p>
+                      <p className="mt-0.5 font-bold leading-snug text-[var(--ql-ink)]">{message.title}</p>
+                      <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-[var(--ql-muted)]">{message.body}</p>
                     </div>
-                    {!m.read ? (
-                      <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-rose-500 ring-2 ring-rose-500/30" />
-                    ) : (
-                      <span className="w-2 shrink-0" />
-                    )}
+                    {!message.read ? <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-rose-500 ring-4 ring-rose-100" /> : <span className="w-2 shrink-0" />}
                   </button>
                 </li>
               );
@@ -214,51 +176,35 @@ export default function MessagesPage() {
           </ul>
         )}
 
-        <p className={cn('mt-8 text-center text-[11px]', light ? 'text-zinc-400' : 'text-wander-muted')}>
-          琛岀▼鎻愰啋銆佹瘡鏃ユ帹鑽愩€佷簰鍔ㄤ笌绯荤粺閫氱煡浼氳仛鍚堝湪姝ゃ€傚凡璇荤姸鎬佷繚瀛樺湪鏈満銆?
+        <p className="mt-8 text-center text-[11px] leading-relaxed text-[var(--ql-muted)]">
+          行程提醒、每日推荐、互动与系统通知会集中显示在这里。已读状态保存在本机浏览器。
         </p>
       </div>
 
-      <Dialog open={active !== null} onOpenChange={(o) => !o && setActive(null)}>
-        <DialogContent
-          className={cn(
-            'max-h-[85vh] overflow-y-auto border sm:max-w-md [&_svg]:text-current',
-            light
-              ? 'border-zinc-200 bg-white text-zinc-900 [&_svg]:text-zinc-700'
-              : 'border-white/10 bg-wander-card text-white [&_svg]:text-white'
-          )}
-        >
+      <Dialog open={active !== null} onOpenChange={(open) => !open && setActive(null)}>
+        <DialogContent className="max-h-[85vh] overflow-y-auto border-[var(--ql-card-border)] bg-white text-[var(--ql-ink)] sm:max-w-md [&_svg]:text-current">
           {active ? (
             <>
               <DialogHeader>
-                <DialogTitle className={cn('text-left', light ? 'text-zinc-900' : 'text-white')}>
+                <DialogTitle className="text-left text-[var(--ql-ink)]">
                   <span className="mr-2">{CHANNEL_META[active.channel].emoji}</span>
                   {active.title}
                 </DialogTitle>
-                <DialogDescription className={cn('text-left', light ? 'text-zinc-500' : 'text-wander-secondary')}>
-                  {CHANNEL_META[active.channel].label} 路 {formatCommentTime(active.createdAt)}
+                <DialogDescription className="text-left text-[var(--ql-muted)]">
+                  {CHANNEL_META[active.channel].label} · {formatCommentTime(active.createdAt)}
                 </DialogDescription>
               </DialogHeader>
-              <div className={cn('space-y-3 text-sm leading-relaxed', light ? 'text-zinc-700' : 'text-wander-secondary')}>
-                {active.body.split(/\n+/).map((para, i) => (
-                  <p key={i}>{para}</p>
+              <div className="space-y-3 text-sm leading-relaxed text-[var(--ql-muted)]">
+                {active.body.split(/\n+/).map((para, index) => (
+                  <p key={index}>{para}</p>
                 ))}
               </div>
               <DialogFooter className="gap-2 sm:justify-stretch">
-                <Button
-                  type="button"
-                  variant="secondary"
-                  className={cn('font-sans', light ? '' : 'border-white/15 bg-white/10 text-white hover:bg-white/15')}
-                  onClick={() => setActive(null)}
-                >
-                  鍏抽棴
+                <Button type="button" variant="secondary" className="font-sans" onClick={() => setActive(null)}>
+                  关闭
                 </Button>
-                <Button
-                  type="button"
-                  className="font-sans border-0 bg-gradient-to-r from-indigo-500 to-violet-600 text-white shadow-lg hover:from-indigo-400 hover:to-violet-500"
-                  onClick={() => setActive(null)}
-                >
-                  鐭ラ亾浜?
+                <Button type="button" className="font-sans border-0 bg-gradient-to-r from-wander-coral to-sky-400 text-white shadow-lg" onClick={() => setActive(null)}>
+                  知道了
                 </Button>
               </DialogFooter>
             </>
@@ -268,4 +214,3 @@ export default function MessagesPage() {
     </ProfileSubPageLayout>
   );
 }
-

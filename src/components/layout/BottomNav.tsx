@@ -18,7 +18,7 @@ function TabIcon({
   label: string;
   Icon: typeof Sparkles;
   inactiveClass: string;
-  /** 鑷畾涔夐珮浜垽鏂紙濡?/trips/:id 浠嶈涓恒€岃绋嬨€嶉€変腑锛?*/
+  /** Custom active-state check, e.g. /trip/:id should still highlight Trips. */
   isActive?: (pathname: string) => boolean;
 }) {
   const { pathname } = useLocation();

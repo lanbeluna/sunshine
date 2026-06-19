@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { WanderImage } from '@/components/media/WanderImage';
 import { formatTripDateRange } from '@/lib/formatTripDate';
@@ -12,9 +12,9 @@ const STATUS_LABEL: Record<TripStatus, string> = {
 };
 
 const STATUS_STYLE: Record<TripStatus, string> = {
-  planned: 'bg-amber-500/20 text-amber-300 border-amber-500/35',
-  ongoing: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/35',
-  done: 'bg-zinc-600/40 text-zinc-400 border-zinc-500/30',
+  planned: 'bg-amber-100 text-amber-900 border-amber-300',
+  ongoing: 'bg-emerald-100 text-emerald-900 border-emerald-300',
+  done: 'bg-zinc-100 text-zinc-600 border-zinc-200',
 };
 
 type Props = {
@@ -35,7 +35,7 @@ export function TripCard({ trip, index, onOpen }: Props) {
       transition={{ delay: index * 0.05, duration: 0.28 }}
       whileTap={{ scale: 0.99 }}
       onClick={onOpen}
-      className="ql-focus flex min-h-[116px] w-full cursor-pointer items-stretch gap-3 rounded-2xl border border-white/[0.08] bg-[#17171A] p-3 text-left shadow-ql-card transition-colors hover:border-white/15 active:bg-white/[0.04]"
+      className="ql-focus flex min-h-[116px] w-full cursor-pointer items-stretch gap-3 rounded-3xl border border-white/80 bg-white/86 p-3 text-left shadow-sm transition-transform active:scale-[0.99]"
     >
       <div className="relative h-[5.25rem] w-[5.25rem] shrink-0 overflow-hidden rounded-2xl bg-wander-surface ql-photo-shadow">
         <WanderImage
@@ -49,31 +49,23 @@ export function TripCard({ trip, index, onOpen }: Props) {
       </div>
       <div className="flex min-w-0 flex-1 flex-col justify-between py-0.5">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="truncate text-base font-bold text-white">{trip.destination}</h3>
-          <ChevronRight className="mt-0.5 h-5 w-5 shrink-0 text-wander-muted" aria-hidden />
+          <h3 className="truncate text-base font-bold text-[var(--ql-ink)]">{trip.destination}</h3>
+          <ChevronRight className="mt-0.5 h-5 w-5 shrink-0 text-[var(--ql-muted)]" aria-hidden />
         </div>
-        <p className="text-xs font-medium text-white/55">{formatTripDateRange(trip.startDate, trip.endDate)}</p>
+        <p className="text-xs font-medium text-[var(--ql-muted)]">{formatTripDateRange(trip.startDate, trip.endDate)}</p>
         <div className="flex flex-wrap items-center gap-2">
-          <span
-            className={cn(
-              'rounded-full border px-2 py-0.5 text-[10px] font-semibold tracking-wide',
-              STATUS_STYLE[trip.status]
-            )}
-          >
+          <span className={cn('rounded-full border px-2 py-0.5 text-[10px] font-semibold tracking-wide', STATUS_STYLE[trip.status])}>
             {STATUS_LABEL[trip.status]}
           </span>
           {trip.companionAvatars.length > 0 ? (
             <div className="flex items-center pl-1">
               {shown.map((url, i) => (
-                <div
-                  key={`${trip.id}-c-${i}`}
-                  className={cn('h-6 w-6 shrink-0 overflow-hidden rounded-full border-2 border-wander-card', i > 0 && '-ml-2')}
-                >
-                  <WanderImage src={url} alt="" fallbackLabel="友" className="h-full w-full" width={48} height={48} />
+                <div key={`${trip.id}-c-${i}`} className={cn('h-6 w-6 shrink-0 overflow-hidden rounded-full border-2 border-white', i > 0 && '-ml-2')}>
+                  <WanderImage src={url} alt="同行人头像" fallbackLabel="同行" className="h-full w-full" width={48} height={48} />
                 </div>
               ))}
               {extra > 0 ? (
-                <span className="-ml-2 flex h-6 min-w-[1.5rem] items-center justify-center rounded-full border-2 border-wander-card bg-wander-surface px-1 text-[10px] font-bold text-wander-secondary">
+                <span className="-ml-2 flex h-6 min-w-[1.5rem] items-center justify-center rounded-full border-2 border-white bg-white px-1 text-[10px] font-bold text-[var(--ql-muted)]">
                   +{extra}
                 </span>
               ) : null}

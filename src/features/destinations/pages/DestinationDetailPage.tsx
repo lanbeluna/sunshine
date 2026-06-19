@@ -130,7 +130,7 @@ export default function DestinationDetailPage() {
     { src: dest.images.scenery, label: SLIDE_LABELS[2] },
   ];
 
-  const bottomOffset = 'calc(4.25rem + env(safe-area-inset-bottom, 0px))';
+  const bottomOffset = 'calc(5.75rem + env(safe-area-inset-bottom, 0px))';
 
   return (
     <PageContainer className="pb-0">
@@ -173,7 +173,7 @@ export default function DestinationDetailPage() {
             type="button"
             onClick={() => navigate(-1)}
             className="pointer-events-auto flex h-10 w-10 items-center justify-center rounded-full bg-black/45 text-white backdrop-blur-md transition active:scale-95"
-            aria-label="杩斿洖"
+            aria-label="返回"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
@@ -344,7 +344,7 @@ export default function DestinationDetailPage() {
               'bg-gradient-to-r from-indigo-500 to-purple-500 shadow-lg shadow-indigo-500/25'
             )}
           >
-            鐢熸垚鎴戠殑琛岀▼
+            生成我的行程
           </button>
         </div>
         <div className="mx-auto mt-2 w-full max-w-[430px] text-center">

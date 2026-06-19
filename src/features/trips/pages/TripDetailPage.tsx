@@ -88,7 +88,7 @@ export default function TripDetailPage() {
     }
   };
 
-  const bottomOffset = 'calc(4.25rem + env(safe-area-inset-bottom, 0px))';
+  const bottomOffset = 'calc(5.75rem + env(safe-area-inset-bottom, 0px))';
   const openDays = openDaysState?.id === trip.id ? openDaysState.values : makeOpenDays(trip.itinerary);
 
   return (
@@ -109,7 +109,7 @@ export default function TripDetailPage() {
             type="button"
             onClick={() => navigate('/trips')}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-black/45 text-white backdrop-blur-md transition active:scale-95"
-            aria-label="杩斿洖"
+            aria-label="返回"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
@@ -213,19 +213,17 @@ export default function TripDetailPage() {
             onClick={onEdit}
             className={cn(
               'h-11 flex-1 rounded-xl font-semibold transition active:scale-[0.98]',
-              light
-                ? 'bg-zinc-900 text-white shadow-md'
-                : 'border border-white/15 bg-wander-surface text-white shadow-lg active:bg-white/5'
+              'bg-gradient-to-r from-wander-coral to-sky-400 text-white shadow-lg shadow-rose-200/60'
             )}
           >
-            缂栬緫琛岀▼
+            编辑行程
           </button>
           <button
             type="button"
             onClick={onDelete}
             className="h-11 shrink-0 px-3 text-sm font-semibold text-rose-500 transition active:opacity-80"
           >
-            鍒犻櫎琛岀▼
+            删除行程
           </button>
         </div>
       </div>

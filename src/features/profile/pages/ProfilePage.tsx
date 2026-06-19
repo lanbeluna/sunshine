@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import { Loader2, Moon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/lib/toast';
@@ -60,7 +60,7 @@ export default function ProfilePage() {
 
   const runClearCache = () => {
     clearUserLocalData();
-    toast.success('本地演示数据已清除');
+    toast.success('本地数据已清除');
     setClearOpen(false);
     window.location.reload();
   };
@@ -85,7 +85,7 @@ export default function ProfilePage() {
     <PageContainer>
       <ProfileHero email={user?.email} />
 
-      <div className="space-y-6 px-4 pb-10 pt-3">
+      <div className="space-y-6 px-4 pb-8 pt-3">
         <section className="grid grid-cols-3 gap-2" aria-label="保存概览">
           <OverviewButton label="收藏灵感" value={savedOverview.destinations} onClick={() => navigate('/profile/collections')} />
           <OverviewButton label="行程草稿" value={savedOverview.trips} onClick={() => navigate('/trips')} />
@@ -95,7 +95,7 @@ export default function ProfilePage() {
         <MenuSection title="账号状态">
           <MenuRowButton
             icon={<span className="text-lg leading-none">✓</span>}
-            title="Supabase Auth 已登录"
+            title="已登录"
             subtitle={user?.email ?? '当前账号已通过 Supabase 会话保护'}
             onClick={() => undefined}
             noDivider
@@ -104,7 +104,7 @@ export default function ProfilePage() {
 
         <MenuSection title="旅行偏好">
           <MenuRowButton
-            icon={<span className="text-lg leading-none">★</span>}
+            icon={<span className="text-lg leading-none">☀</span>}
             title="我的偏好标签"
             subtitle="预算范围、旅行风格、饮食偏好等"
             onClick={() => navigate('/profile/preferences')}
@@ -112,7 +112,7 @@ export default function ProfilePage() {
           <MenuRowButton
             icon={<span className="text-lg leading-none">🎯</span>}
             title="决策历史"
-            subtitle="历次旅行灵感推荐记录"
+            subtitle="查看最近生成过的旅行灵感"
             onClick={() => navigate('/profile/decision-history')}
             noDivider
           />
@@ -120,7 +120,7 @@ export default function ProfilePage() {
 
         <MenuSection title="内容管理">
           <MenuRowButton
-            icon={<span className="text-lg leading-none">♡</span>}
+            icon={<span className="text-lg leading-none">♥</span>}
             title="我的收藏"
             subtitle="收藏的目的地和旅行灵感"
             onClick={() => navigate('/profile/collections')}
@@ -128,13 +128,13 @@ export default function ProfilePage() {
           <MenuRowButton
             icon={<span className="text-lg leading-none">📝</span>}
             title="我的笔记"
-            subtitle="你发布或保存的旅行记录"
+            subtitle="保存或整理过的旅行记录"
             onClick={() => navigate('/profile/notes')}
           />
           <MenuRowButton
             icon={<span className="text-lg leading-none">✎</span>}
             title="草稿箱"
-            subtitle="还没整理完的手记草稿"
+            subtitle="还没有整理完成的手记草稿"
             onClick={() => navigate('/profile/drafts')}
             noDivider
           />
@@ -164,12 +164,12 @@ export default function ProfilePage() {
           />
           <MenuRowButton
             icon={<span className="text-lg leading-none">⌫</span>}
-            title="清除本地演示数据"
+            title="清除本地数据"
             onClick={() => setClearOpen(true)}
-            trailing={<span className="text-xs text-wander-muted">{cacheLabel}</span>}
+            trailing={<span className="text-xs text-[var(--ql-muted)]">{cacheLabel}</span>}
           />
           <MenuRowButton
-            icon={<span className="text-lg leading-none">ℹ</span>}
+            icon={<span className="text-lg leading-none">i</span>}
             title="关于我们"
             onClick={() => navigate('/profile/about')}
           />
@@ -184,22 +184,22 @@ export default function ProfilePage() {
         <button
           type="button"
           onClick={() => setLogoutOpen(true)}
-          className="ql-focus w-full rounded-full border border-red-500/20 bg-red-500/10 py-3.5 text-center text-sm font-semibold text-red-300 transition-colors active:bg-red-500/10"
+          className="ql-focus w-full rounded-full border border-red-200 bg-red-50 py-3.5 text-center text-sm font-semibold text-red-500 transition-colors active:bg-red-100"
         >
           退出登录
         </button>
       </div>
 
       <AlertDialog open={clearOpen} onOpenChange={setClearOpen}>
-        <AlertDialogContent className="border-white/10 bg-wander-card text-white sm:max-w-md [&_svg]:text-white">
+        <AlertDialogContent className="border-[var(--ql-card-border)] bg-white text-[var(--ql-ink)] sm:max-w-md [&_svg]:text-current">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-white">清除本地演示数据</AlertDialogTitle>
-            <AlertDialogDescription className="!text-wander-secondary">
-              这会清除收藏、草稿、通知等本地演示数据，但不会退出当前 Supabase 账号。
+            <AlertDialogTitle>清除本地数据</AlertDialogTitle>
+            <AlertDialogDescription className="!text-[var(--ql-muted)]">
+              这会清除收藏、草稿、通知等保存在本机浏览器的数据，但不会退出当前账号。
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="border-white/15 bg-transparent text-wander-secondary">取消</AlertDialogCancel>
+            <AlertDialogCancel>取消</AlertDialogCancel>
             <AlertDialogAction onClick={runClearCache} className="bg-rose-600 text-white hover:bg-rose-500">
               确认清除
             </AlertDialogAction>
@@ -208,17 +208,15 @@ export default function ProfilePage() {
       </AlertDialog>
 
       <AlertDialog open={logoutOpen} onOpenChange={setLogoutOpen}>
-        <AlertDialogContent className="border-white/10 bg-wander-card text-white sm:max-w-md [&_svg]:text-white">
+        <AlertDialogContent className="border-[var(--ql-card-border)] bg-white text-[var(--ql-ink)] sm:max-w-md [&_svg]:text-current">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-white">退出登录</AlertDialogTitle>
-            <AlertDialogDescription className="!text-wander-secondary">
-              退出后需要重新登录才能访问个人页、收藏和草稿。
+            <AlertDialogTitle>退出登录</AlertDialogTitle>
+            <AlertDialogDescription className="!text-[var(--ql-muted)]">
+              退出后需要重新登录，才能访问个人页、收藏和草稿。
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="border-white/15 bg-transparent text-wander-secondary" disabled={loggingOut}>
-              取消
-            </AlertDialogCancel>
+            <AlertDialogCancel disabled={loggingOut}>取消</AlertDialogCancel>
             <AlertDialogAction onClick={runLogout} className="bg-rose-600 text-white hover:bg-rose-500" disabled={loggingOut}>
               {loggingOut ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               确认退出
@@ -230,23 +228,15 @@ export default function ProfilePage() {
   );
 }
 
-function OverviewButton({
-  label,
-  value,
-  onClick,
-}: {
-  label: string;
-  value: number;
-  onClick: () => void;
-}) {
+function OverviewButton({ label, value, onClick }: { label: string; value: number; onClick: () => void }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="ql-focus rounded-2xl border border-white/10 bg-white/[0.06] px-2 py-3 text-left transition-colors active:bg-white/[0.08]"
+      className="ql-focus rounded-2xl border border-white/80 bg-white/86 px-2 py-3 text-left shadow-sm transition-transform active:scale-[0.98]"
     >
-      <span className="block text-lg font-bold text-white">{value}</span>
-      <span className="mt-1 block text-[11px] font-medium text-wander-secondary">{label}</span>
+      <span className="block text-lg font-bold text-[var(--ql-ink)]">{value}</span>
+      <span className="mt-1 block text-[11px] font-medium text-[var(--ql-muted)]">{label}</span>
     </button>
   );
 }
