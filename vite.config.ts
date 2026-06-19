@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => ({
   /** 使用根路径，避免 IDE/隧道预览、子路径下模块 404 导致白屏 */
   base: '/',
   server: {
-    /** 监听 0.0.0.0，手机与电脑同一 WiFi 时可用「Network」里的地址访问 */
+    /** 监听 0.0.0.0，手机与电脑同一 WiFi 时可用 Network 里的地址访问 */
     host: true,
     port: 5173,
   },
