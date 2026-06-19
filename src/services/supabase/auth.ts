@@ -28,6 +28,25 @@ export async function getCurrentAuthSession(): Promise<Session | null> {
   return session;
 }
 
+export async function completeEmailRedirect(url: string): Promise<AuthResult> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    return { ok: false, error: '当前未配置 Supabase，无法完成邮箱验证。' };
+  }
+
+  const parsed = new URL(url);
+  const code = parsed.searchParams.get('code');
+
+  if (code) {
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error) return { ok: false, error: errorMessage(error) };
+    return { ok: true, session: data.session, user: data.user };
+  }
+
+  const session = await getCurrentAuthSession();
+  return { ok: true, session, user: session?.user ?? null };
+}
+
 export async function signInWithEmail(email: string, password: string): Promise<AuthResult> {
   const supabase = getSupabase();
   if (!supabase) {

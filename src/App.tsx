@@ -9,6 +9,7 @@ import { OfflineNotice } from '@/components/layout/OfflineNotice';
 
 const LoginPage = lazy(() => import('@/features/auth/pages/LoginPage'));
 const RegisterPage = lazy(() => import('@/features/auth/pages/RegisterPage'));
+const AuthCallbackPage = lazy(() => import('@/features/auth/pages/AuthCallbackPage'));
 const DecisionPage = lazy(() => import('@/features/decision/pages/DecisionPage'));
 const ExplorePage = lazy(() => import('@/features/explore/pages/ExplorePage'));
 const ProfilePage = lazy(() => import('@/features/profile/pages/ProfilePage'));
@@ -54,6 +55,7 @@ function App() {
             <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/auth/callback" element={<AuthCallbackPage />} />
               <Route path="/assistant" element={<AiAssistantPage />} />
               <Route element={<AppShell />}>
                 <Route path="/" element={<Navigate to="/decision" replace />} />

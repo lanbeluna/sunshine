@@ -51,7 +51,7 @@ export default function RegisterPage() {
       return;
     }
 
-    const emailRedirectTo = `${window.location.origin}/login?redirect=${encodeURIComponent(redirectTo)}`;
+    const emailRedirectTo = `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`;
 
     setSubmitting(true);
     const result = await signUp(email, password, emailRedirectTo);
