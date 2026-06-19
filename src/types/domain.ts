@@ -5,7 +5,7 @@ export type ISODateString = string;
 export type ISODateTimeString = string;
 export type EntityId = string;
 
-export type DemoDataSource = 'supabase' | 'localStorage';
+export type DataSource = 'supabase' | 'localStorage';
 
 export interface AppUser {
   id: EntityId;
@@ -22,7 +22,7 @@ export interface FavoriteItem {
   title?: string;
   imageUrl?: string;
   savedAt: ISODateTimeString;
-  source: DemoDataSource;
+  source: DataSource;
 }
 
 export interface JournalEntry {
@@ -34,7 +34,7 @@ export interface JournalEntry {
   isDraft: boolean;
   createdAt: ISODateTimeString;
   updatedAt: ISODateTimeString;
-  source: DemoDataSource;
+  source: DataSource;
 }
 
 export interface ItineraryDraft {
@@ -46,7 +46,7 @@ export interface ItineraryDraft {
   endDate: ISODateString;
   status: TripStatus;
   days: TripItineraryDay[];
-  source: DemoDataSource;
+  source: DataSource;
 }
 
 export interface TravelPreferenceInput {
@@ -70,5 +70,5 @@ export type DestinationSummary = Pick<
 >;
 
 export type SavedTrip = Trip & {
-  source?: DemoDataSource;
+  source?: DataSource;
 };

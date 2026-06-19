@@ -1,4 +1,4 @@
-/** Sonner placeholder: keep toast calls no-op while the demo hides global toasts. */
+/** Sonner placeholder: keep toast calls no-op while global toasts are hidden. */
 type ToastFn = (message?: unknown, options?: unknown) => void;
 
 const noop: ToastFn = () => {};

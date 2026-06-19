@@ -13,7 +13,7 @@ export function readLocalJson<T>(key: string, fallback: T): StorageResult<T> {
     return {
       ok: false,
       data: fallback,
-      error: error instanceof Error ? error.message : 'Unable to read local demo data.',
+      error: error instanceof Error ? error.message : 'Unable to read local data.',
     };
   }
 }
@@ -28,7 +28,7 @@ export function writeLocalJson<T>(key: string, value: T): StorageResult<T> {
     return {
       ok: false,
       data: value,
-      error: error instanceof Error ? error.message : 'Unable to save local demo data.',
+      error: error instanceof Error ? error.message : 'Unable to save local data.',
     };
   }
 }

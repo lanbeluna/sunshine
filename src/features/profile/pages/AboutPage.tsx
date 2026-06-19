@@ -18,8 +18,8 @@ export default function AboutPage() {
         <p className={cn('mt-6 max-w-sm text-sm leading-relaxed', light ? 'text-zinc-600' : 'text-wander-secondary')}>
           轻量规划，灵感出发。
         </p>
-        <p className={cn('mt-8 text-xs', light ? 'text-zinc-500' : 'text-wander-muted')}>开发者信息</p>
-        <p className={cn('mt-1 text-sm', light ? 'text-zinc-700' : 'text-wander-secondary')}>课程作业演示</p>
+        <p className={cn('mt-8 text-xs', light ? 'text-zinc-500' : 'text-wander-muted')}>产品定位</p>
+        <p className={cn('mt-1 text-sm', light ? 'text-zinc-700' : 'text-wander-secondary')}>旅行灵感与轻量规划工具</p>
         <p className={cn('mt-6 text-xs', light ? 'text-zinc-500' : 'text-wander-muted')}>联系方式</p>
         <p className={cn('mt-1 text-sm', light ? 'text-zinc-700' : 'text-wander-secondary')}>暂未设置</p>
       </div>
